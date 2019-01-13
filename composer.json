@@ -1,0 +1,46 @@
+{
+    "name": "soatok/faq-off",
+    "description": "Challenge-Response Automation",
+    "keywords": ["faq", "Slim Framework", "microservice"],
+    "homepage": "http://github.com/soatok/faq-off",
+    "license": "ISC",
+    "authors": [
+        {
+            "name": "Soatok",
+            "email": "soatok.dhole@gmail.com",
+            "homepage": "https://soatok.com"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "monolog/monolog": "^1.17",
+        "paragonie/constant_time_encoding": "^2",
+        "paragonie/easydb": "^2",
+        "paragonie/hidden-string": "^1",
+        "paragonie/sodium_compat": "^1.8",
+        "slim/slim": "^3.1",
+        "twig/twig": "^2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7",
+        "vimeo/psalm": "^3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Soatok\\FaqOff\\": "src/FaqOff/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Soatok\\FaqOff\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "process-timeout" : 0
+    },
+    "scripts": {
+        "start": "php -S localhost:8080 -t public",
+        "static-analysis": "psalm",
+        "test": "phpunit"
+    }
+}
