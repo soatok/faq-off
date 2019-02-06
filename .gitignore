@@ -1,3 +1,6 @@
 /composer.lock
 /.idea
 /vendor
+/local
+!/local/.gitkeep
+
