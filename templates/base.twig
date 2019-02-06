@@ -1,11 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ lang|default('en') }}">
 {% block html %}
     <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>{{ pageTitle|default('FAQ Off') }}</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous" />
     </head>
     <body>
-    {% block body %}test{% endblock %}
+    {% block body %}
+        <nav>{% include "layout/nav.twig" %}</nav>
+        {% block main %}
+            <h2>Filter does not define <code>main</code> block</h2>
+            <p>
+                Soatok is silly. Please override me.
+            </p>
+        {% endblock %}
+    {% endblock %}
     </body>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
