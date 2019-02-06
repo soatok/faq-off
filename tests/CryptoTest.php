@@ -12,6 +12,24 @@ use Soatok\FaqOff\Crypto;
  */
 class CryptoTest extends TestCase
 {
+    public function testEncryption()
+    {
+        $message = new HiddenString("Im goin to MacDonalds, Watchyu want");
+        $key = new HiddenString(random_bytes(32));
+
+        $cipher = Crypto::encrypt($message, $key);
+        $this->assertSame(
+            $message->getString(),
+            Crypto::decrypt($cipher, $key)->getString()
+        );
+
+        $cipher = Crypto::encrypt($message, $key, 'Figgy_Newtons');
+        $this->assertSame(
+            $message->getString(),
+            Crypto::decrypt($cipher, $key, 'Figgy_Newtons')->getString()
+        );
+    }
+
     public function testIdempotent()
     {
         $password = new HiddenString('correct horse battery staple');
