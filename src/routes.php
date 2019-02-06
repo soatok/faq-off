@@ -10,3 +10,8 @@ $app->get('/', function (Request $request, Response $response, array $args) {
     $handler = Utility::getHandler('StaticPage', $this);
     return $handler($request);
 });
+
+$c = $app->getContainer();
+$c['notFoundHandler'] = function ($c) {
+    return  Utility::getHandler('StaticPage', $c);
+};

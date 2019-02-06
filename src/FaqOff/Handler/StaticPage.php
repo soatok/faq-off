@@ -39,5 +39,6 @@ class StaticPage implements HandlerInterface
             case '':
                 return $this->index($request);
         }
+        return $this->errorPage(404);
     }
 }

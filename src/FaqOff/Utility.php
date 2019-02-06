@@ -5,7 +5,6 @@ namespace Soatok\FaqOff;
 use Slim\Container;
 use Slim\Http\Headers;
 use Slim\Http\Response;
-use Slim\Http\Stream;
 
 /**
  * Class Utility
@@ -25,18 +24,7 @@ abstract class Utility
         int $statusCode = 200
     ): Response {
         return (new Response($statusCode, new Headers($headers)))
-            ->withBody(static::stream($body));
-    }
-
-    /**
-     * @param string $data
-     * @return Stream
-     */
-    public static function stream(string $data): Stream
-    {
-        $fp = \fopen('php://temp', 'wb');
-        \fwrite($fp, $data);
-        return new Stream($fp);
+            ->write($body);
     }
 
     /**
