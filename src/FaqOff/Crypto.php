@@ -14,20 +14,23 @@ use ParagonIE_Sodium_Compat as NaCl;
 abstract class Crypto
 {
     /**
-     * @param HiddenString $pw
-     * @param HiddenString $sk
+     * @param HiddenString $plaintext
+     * @param HiddenString $key
      * @param string $aad
      * @return string
      * @throws \SodiumException
      */
-    public static function pwHash(HiddenString $pw, HiddenString $sk, string $aad = ''): string
-    {
+    public static function encrypt(
+        HiddenString $plaintext,
+        HiddenString $key,
+        string $aad = ''
+    ): string {
         $nonce = \random_bytes(24);
         $cipher = NaCl::crypto_aead_xchacha20poly1305_ietf_encrypt(
-            \password_hash($pw->getString(), PASSWORD_ARGON2ID),
+            $plaintext->getString(),
             $nonce . $aad,
             $nonce,
-            $sk->getString()
+            $key->getString()
         );
         if (!\is_string($cipher)) {
             throw new \SodiumException('Could not encrypt');
@@ -36,16 +39,18 @@ abstract class Crypto
     }
 
     /**
-     * @param HiddenString $pw
-     * @param HiddenString $sk
-     * @param string $hash
+     * @param string $cipher
+     * @param HiddenString $key
      * @param string $aad
-     * @return bool
+     * @return HiddenString
      * @throws \SodiumException
      */
-    public static function pwVerify(HiddenString $pw, HiddenString $sk, string $hash, string $aad = ''): bool
-    {
-        $decoded = Base64UrlSafe::decode($hash);
+    public static function decrypt(
+        string $cipher,
+        HiddenString $key,
+        string $aad = ''
+    ): HiddenString {
+        $decoded = Base64UrlSafe::decode($cipher);
         $nonce = Binary::safeSubstr($decoded, 0, 24);
         $cipher = Binary::safeSubstr($decoded, 24);
 
@@ -53,10 +58,51 @@ abstract class Crypto
             $cipher,
             $nonce . $aad,
             $nonce,
-            $sk->getString()
+            $key->getString()
         );
-        $valid = \password_verify($pw->getString(), $plaintext);
+        if (!\is_string($plaintext)) {
+            throw new \Error('Could not decrypt message');
+        }
+        $hidden = new HiddenString($plaintext);
         \sodium_memzero($plaintext);
+        return $hidden;
+    }
+
+    /**
+     * @param HiddenString $pw
+     * @param HiddenString $sk
+     * @param string $aad
+     * @return string
+     * @throws \SodiumException
+     */
+    public static function pwHash(
+        HiddenString $pw,
+        HiddenString $sk,
+        string $aad = ''
+    ): string {
+        return static::encrypt(
+            new HiddenString(\password_hash($pw->getString(), PASSWORD_ARGON2ID)),
+            $sk,
+            $aad
+        );
+    }
+
+    /**
+     * @param HiddenString $pw
+     * @param HiddenString $sk
+     * @param string $hash
+     * @param string $aad
+     * @return bool
+     *
+     * @throws \Error
+     * @throws \SodiumException
+     */
+    public static function pwVerify(HiddenString $pw, HiddenString $sk, string $hash, string $aad = ''): bool
+    {
+        $valid = \password_verify(
+            $pw->getString(),
+            self::decrypt($hash, $sk, $aad)->getString()
+        );
         return $valid;
     }
 }
