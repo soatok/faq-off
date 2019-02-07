@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+basedir=$( dirname $( readlink -f ${BASH_SOURCE[0]} ) )
+
+php ${basedir}/install-keygen.php
+php ${basedir}/install-database.php

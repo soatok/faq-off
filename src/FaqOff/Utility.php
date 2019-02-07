@@ -2,6 +2,9 @@
 declare(strict_types=1);
 namespace Soatok\FaqOff;
 
+use ParagonIE\Ionizer\InputFilterContainer;
+use ParagonIE\Ionizer\InvalidDataException;
+use Psr\Http\Message\RequestInterface;
 use Slim\Container;
 use Slim\Http\Headers;
 use Slim\Http\Response;
@@ -50,6 +53,33 @@ abstract class Utility
             throw new \Error('Handler is missing the setContainer() method.');
         }
         $handler->setContainer($container);
+        if (\method_exists($handler, 'init')) {
+            $handler->init();
+        }
         return $handler;
+    }
+
+    /**
+     * @param RequestInterface $request
+     * @param InputFilterContainer|null $filter
+     * @return array
+     */
+    public static function getPostVars(
+        RequestInterface $request,
+        ?InputFilterContainer $filter = null
+    ): array {
+        if (\strtolower($request->getMethod()) !== 'post') {
+            return [];
+        }
+        $array = [];
+        \parse_str((string) $request->getBody(), $array);
+        if (!\is_null($filter)) {
+            try {
+                return $filter($array);
+            } catch (InvalidDataException $ex) {
+                return [];
+            }
+        }
+        return $array;
     }
 }

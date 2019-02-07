@@ -1,0 +1,15 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <form method="post">
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" />
+        <hr />
+
+        <label for="passphrase">Passphrase</label>:
+        <input id="passphrase" name="passphrase" type="password" />
+
+        <hr />
+        <button type="submit">Create Account</button>
+    </form>
+{% endblock %}
