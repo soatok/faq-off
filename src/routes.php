@@ -1,22 +1,32 @@
 <?php
+namespace Soatok\FaqOff\Endpoints;
 
-use Slim\Http\Request;
-use Slim\Http\Response;
-use Soatok\FaqOff\Utility;
-
-// Routes
-
-$app->any('/auth/{action:(?:login|logout|register)}', function (Request $request, Response $response, array $args) {
-    $handler = Utility::getHandler('AuthGateway', $this);
-    return $handler($request);
-});
-
-$app->get('/', function (Request $request, Response $response, array $args) {
-    $handler = Utility::getHandler('StaticPage', $this);
-    return $handler($request);
-});
-
-$c = $app->getContainer();
-$c['notFoundHandler'] = function ($c) {
-    return  Utility::getHandler('StaticPage', $c);
+use Slim\App;
+use Slim\Container;
+use Soatok\AnthroKit\Auth\Endpoints\Authorize;
+use Soatok\AnthroKit\Auth\Middleware\{
+    AuthorizedUsersOnly,
+    GuestsOnly
 };
+
+/** @var App $app */
+
+    /** @var Container $container */
+    $container = $app->getContainer();
+    $guestsOnly = new GuestsOnly($container);
+    $authOnly = new AuthorizedUsersOnly($container);
+
+    $app->any('/auth/{action:[^/]+}[/{extra:[^/]+}]', 'authorize');
+    $app->get('/', 'staticpage');
+    $app->get('', 'staticpage');
+
+    $container['staticpage'] = function (Container $c) {
+        return new StaticPage($c);
+    };
+    $container['authorize'] = function (Container $c) {
+        return new Authorize($c);
+    };
+
+    $container['notFoundHandler'] = function (Container $c) {
+        return new StaticPage($c);
+    };

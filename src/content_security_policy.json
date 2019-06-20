@@ -1,0 +1,16 @@
+{
+  "report-only": false,
+  "script-src": {
+    "allow": [
+      "https://code.jquery.com",
+      "https://stackpath.bootstrapcdn.com",
+      "https://cdnjs.cloudflare.com"
+    ]
+  },
+  "style-src": {
+    "allow": [
+      "https://stackpath.bootstrapcdn.com"
+    ],
+    "self": true
+  }
+}
