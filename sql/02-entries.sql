@@ -39,3 +39,6 @@ CREATE TABLE faqoff_collection_index (
     collectionid BIGINT REFERENCES faqoff_collection(collectionid),
     entryid BIGINT REFERENCES faqoff_entry(entryid)
 );
+
+CREATE UNIQUE INDEX ON faqoff_collection (authorid, url);
+CREATE UNIQUE INDEX ON faqoff_entry (url);
