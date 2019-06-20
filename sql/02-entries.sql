@@ -27,6 +27,7 @@ CREATE TABLE faqoff_collection (
 CREATE TABLE faqoff_entry (
     entryid BIGSERIAL PRIMARY KEY,
     authorid BIGINT REFERENCES faqoff_author(authorid),
+    collectionid BIGINT REFERENCES faqoff_collection(collectionid),
     url TEXT,
     title TEXT,
     contents TEXT,
