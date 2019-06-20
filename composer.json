@@ -21,6 +21,8 @@
         "paragonie/hidden-string": "^1",
         "paragonie/ionizer": "^0",
         "paragonie/sodium_compat": "^1.8",
+        "soatok/anthrokit": "^0|^1",
+        "soatok/anthrokit-auth": "^0|^1",
         "slim/slim": "^3.1",
         "twig/twig": "^2"
     },

@@ -2,12 +2,17 @@
 declare(strict_types=1);
 namespace Soatok\FaqOff;
 
+use ParagonIE\ConstantTime\Base64UrlSafe;
+use ParagonIE\CSPBuilder\CSPBuilder;
 use ParagonIE\Ionizer\InputFilterContainer;
 use ParagonIE\Ionizer\InvalidDataException;
 use Psr\Http\Message\RequestInterface;
 use Slim\Container;
 use Slim\Http\Headers;
 use Slim\Http\Response;
+use Twig\Environment;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 /**
  * Class Utility
@@ -15,6 +20,16 @@ use Slim\Http\Response;
  */
 abstract class Utility
 {
+    private static $container;
+
+    /**
+     * @param Container $container
+     */
+    public static function setContainer(Container $container)
+    {
+        self::$container = $container;
+    }
+
     /**
      * @param string $body
      * @param array $headers
@@ -28,35 +43,6 @@ abstract class Utility
     ): Response {
         return (new Response($statusCode, new Headers($headers)))
             ->write($body);
-    }
-
-    /**
-     * @param string $class
-     * @param Container $container
-     * @return HandlerInterface
-     */
-    public static function getHandler(string $class, Container $container)
-    {
-        $class = \preg_replace('#/[^A-Za-z0-9_\\\\]+/#', '', $class);
-        if (empty($class)) {
-            throw new \Error('Class name cannot be empty');
-        }
-        /** @var string $fqcn Fully Qualified Class Name */
-        $fqcn = 'Soatok\\FaqOff\\Handler\\' . $class;
-        if (!\class_exists($fqcn)) {
-            throw new \Error('Handler not found: '. $fqcn);
-        }
-
-        /** @var HandlerInterface $handler */
-        $handler = new $fqcn;
-        if (!\method_exists($handler, 'setContainer')) {
-            throw new \Error('Handler is missing the setContainer() method.');
-        }
-        $handler->setContainer($container);
-        if (\method_exists($handler, 'init')) {
-            $handler->init();
-        }
-        return $handler;
     }
 
     /**
@@ -81,5 +67,60 @@ abstract class Utility
             }
         }
         return $array;
+    }
+
+    /**
+     * Customize our Twig\Environment object
+     *
+     * @param Environment $env
+     * @return Environment
+     */
+    public static function terraform(Environment $env): Environment
+    {
+        $container = self::$container;
+
+        /**
+         * @twig-filter cachebust
+         * Usage: {{ "/static/main.css"|cachebust }}
+         */
+        $env->addFilter(
+            new TwigFilter(
+                'cachebust',
+                function (string $filePath): string {
+                    $realpath = realpath(CANIS_PUBLIC . '/' . trim($filePath, '/'));
+                    if (!is_string($realpath)) {
+                        return $filePath . '?__404notfound';
+                    }
+
+                    $sha384 = hash_file('sha384', $realpath, true);
+
+                    return $filePath . '?' . Base64UrlSafe::encode($sha384);
+                }
+            )
+        );
+        $env->addFunction(
+            new TwigFunction(
+                'anti_csrf',
+                function () {
+                    return '<input type="hidden" name="csrf-protect" value="' .
+                        Base64UrlSafe::encode($_SESSION['anti-csrf']) .
+                        '" />';
+                },
+                ['is_safe' => ['html']]
+            )
+        );
+
+        $env->addFunction(
+            new TwigFunction(
+                'csp_nonce',
+                function (string $directive = 'script-src') use ($container) {
+                    /** @var CSPBuilder $csp */
+                    $csp = $container->get('csp');
+                    return $csp->nonce($directive);
+                }
+            )
+        );
+
+        return $env;
     }
 }
