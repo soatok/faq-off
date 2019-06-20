@@ -13,7 +13,6 @@ use Twig\Error\{
     RuntimeError,
     SyntaxError
 };
-use Soatok\FaqOff\Utility;
 
 /**
  * Class StaticPage
