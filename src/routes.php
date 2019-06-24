@@ -15,6 +15,22 @@ $container = $app->getContainer();
 $guestsOnly = new GuestsOnly($container);
 $authOnly = new AuthorizedUsersOnly($container);
 
+$app->group('/manage', function () use ($app, $container) {
+    // Authenticated users only...
+    $app->get('collection/{collection:[0-9]+}/entry/{entry:[0-9]+}[/{action:[a-z]+}]', 'manage.entry');
+    $app->get('collection/{id:[0-9]+}/entry/create', 'manage.create-entry');
+
+    $app->get('collection/{id:[0-9]+}[/{action:[a-z]+}]', 'manage.collections');
+
+    $app->get('author/{action:create}', 'manage.author');
+    $app->get('author/{id:[0-9]+}/{action:[^/]+}[/{sub:[^/]+}]', 'manage.author');
+    $app->get('author/{id:[0-9]+}[/{action:[^/]+}]', 'manage.author');
+    $app->get('author/{id:[0-9]+}', 'manage.author');
+    $app->get('authors', 'manage.author');
+    $app->get('invite', 'manage.invite');
+    $app->get('', 'manage');
+})->add($authOnly);
+
 $app->get('/@{author:[^/]+}/{collection:[^/]+}/[{entry:[^/]+}]', 'entry');
 $app->get('/@{author:[^/]+}/{collection:[^/]+}', 'collection');
 $app->get('/@{author:[^/]+}', 'collection');
@@ -22,6 +38,29 @@ $app->any('/auth/{action:[^/]+}[/{extra:[^/]+}]', 'authorize');
 $app->get('/', 'staticpage');
 $app->get('', 'staticpage');
 
+
+$container['manage'] = function (Container $c) {
+    return new Manage\ControlPanel($c);
+};
+$container['manage.author'] = function (Container $c) {
+    return new Manage\Author($c);
+};
+$container['manage.invite'] = function (Container $c) {
+    return new Manage\Invite($c);
+};
+$container['manage.collections'] = function (Container $c) {
+    return new Manage\Collections($c);
+};
+$container['manage.entry'] = function (Container $c) {
+    return new Manage\Entries($c);
+};
+$container['manage.create-entry'] = function (Container $c) {
+    return new Manage\Entries($c);
+};
+
+$container['authorize'] = function (Container $c) {
+    return new Authorize($c);
+};
 $container['author'] = function (Container $c) {
     return new Author($c);
 };
@@ -33,9 +72,6 @@ $container['entry'] = function (Container $c) {
 };
 $container['staticpage'] = function (Container $c) {
     return new StaticPage($c);
-};
-$container['authorize'] = function (Container $c) {
-    return new Authorize($c);
 };
 
 $container['notFoundHandler'] = function (Container $c) {
