@@ -2,6 +2,7 @@
 
 {% block main %}
     <form method="post">
+        {{ anti_csrf() }}
         <label for="username">Username</label>
         <input id="username" name="username" type="text" />
         <hr />

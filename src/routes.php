@@ -17,17 +17,17 @@ $authOnly = new AuthorizedUsersOnly($container);
 
 $app->group('/manage', function () use ($app, $container) {
     // Authenticated users only...
-    $app->get('/collection/{collection:[0-9]+}/entry/{entry:[0-9]+}[/{action:[a-z]+}]', 'manage.entry');
-    $app->get('/collection/{id:[0-9]+}/entry/create', 'manage.create-entry');
-    $app->get('/collection/{id:[0-9]+}[/{action:[a-z]+}]', 'manage.collections');
-    $app->get('/collections', 'manage.collections');
-    $app->get('/collection', 'manage.collections');
-    $app->get('/author/{action:create}', 'manage.author');
-    $app->get('/author/{id:[0-9]+}/{action:[^/]+}[/{sub:[^/]+}]', 'manage.author');
-    $app->get('/author/{id:[0-9]+}', 'manage.author');
-    $app->get('/authors', 'manage.author');
-    $app->get('/author', 'manage.author');
-    $app->get('/invite', 'manage.invite');
+    $app->any('/collection/{collection:[0-9]+}/entry/{entry:[0-9]+}[/{action:[a-z]+}]', 'manage.entry');
+    $app->any('/collection/{id:[0-9]+}/entry/create', 'manage.create-entry');
+    $app->any('/collection/{id:[0-9]+}[/{action:[a-z]+}]', 'manage.collections');
+    $app->any('/collections', 'manage.collections');
+    $app->any('/collection', 'manage.collections');
+    $app->any('/author/{action:create}', 'manage.author');
+    $app->any('/author/{id:[0-9]+}/{action:[^/]+}[/{sub:[^/]+}]', 'manage.author');
+    $app->any('/author/{id:[0-9]+}', 'manage.author');
+    $app->any('/authors', 'manage.author');
+    $app->any('/author', 'manage.author');
+    $app->any('/invite', 'manage.invite');
     $app->get('/', 'manage');
     $app->get('', 'manage');
 })->add($authOnly);

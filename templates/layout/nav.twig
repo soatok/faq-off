@@ -14,16 +14,15 @@
                     Control Panel
                 </a>
                 <div class="dropdown-menu" aria-labelledby="manageDropdown">
-                    <a class="dropdown-item" href="/manage/collection">Collections</a>
+                    <a class="dropdown-item" href="/manage">Home</a>
+                    <a class="dropdown-item" href="/manage/collections">Collections</a>
                     <a class="dropdown-item" href="/manage/authors">Authors</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="/manage/invite">Invite Users</a>
                 </div>
             </li>
             <li>
-                <a class="nav-link" href="/logout/{{ session.logout_token }}">Manage {#
-                    #}{% if navbar == "manage" %}<span class="sr-only">(current)</span>{% endif %}{#
-                #}</a>
+                <a class="nav-link" href="/auth/logout/{{ session.logout_token }}">Log Out</a>
             </li>
         {% else %}
             <li>
@@ -34,5 +33,3 @@
         {% endif %}
     </ul>
 </nav>
-
-{# Todo: Navigation and maybe top-level branding (header image, etc.) #}

@@ -7,6 +7,8 @@ use Psr\Http\Message\{
     RequestInterface,
     ResponseInterface
 };
+use Slim\Container;
+use Soatok\AnthroKit\Auth\Splices\Accounts;
 use Soatok\AnthroKit\Endpoint;
 use Twig\Error\{
     LoaderError,
@@ -20,6 +22,15 @@ use Twig\Error\{
  */
 class Invite extends Endpoint
 {
+    /** @var Accounts $accounts */
+    private $accounts;
+
+    public function __construct(Container $container)
+    {
+        parent::__construct($container);
+        $this->accounts = $this->splice('Accounts');
+    }
+
     /**
      * @param RequestInterface $request
      * @param ResponseInterface|null $response

@@ -1,0 +1,16 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h2>Control Panel &rsaquo; Author &rsaquo; {{ author.screenname|e }}</h2>
+
+    <h3>Collections (<a href="/manage/author/{{ author.authorid }}/collection/create">Create New</a>)</h3>
+    {% if collections %}
+        <ul>
+        {% for i, collection in collections %}
+            <li>
+                <a href="/manage/collection/{{ collection.collectionid }}">{{ collection.title|e }}</a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

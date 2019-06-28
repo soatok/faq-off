@@ -66,12 +66,13 @@ class Authors extends Splice
      * @param int $accountId
      * @param string $bio
      * @return bool
+     *
+     * @throws \Exception
      */
     public function create(string $screenName, int $accountId, string $bio = ''): bool
     {
         if ($this->screenNameIsTaken($screenName)) {
-            // TODO: Throw an exception instead.
-            return false;
+            throw new \Exception('Screen name is already taken');
         }
         $this->db->beginTransaction();
         $this->db->insert(
@@ -108,6 +109,22 @@ class Authors extends Splice
             $accountId,
             $accountId
         );
+    }
+
+    /**
+     * @param int $authorId
+     * @return array
+     */
+    public function getById(int $authorId): array
+    {
+        $author = $this->db->row(
+            "SELECT * FROM faqoff_author WHERE authorid = ?",
+            $authorId
+        );
+        if (!$author) {
+            return [];
+        }
+        return $author;
     }
 
     /**

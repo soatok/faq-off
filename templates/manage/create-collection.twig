@@ -1,0 +1,43 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h2>Control Panel &rsaquo; Collections &rsaquo; Create New Collection</h2>
+    {% if errors %}
+        {% for i, error in errors %}
+            <p class="error" id="error-{{ i|e('html_attr') }}">{{ error }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        {{ anti_csrf() }}
+        <div class="form-group">
+            Author: <a href="/manage/author/{{ author.authorid }}">@{{ author.screenname|e('html_attr') }}</a>
+            (<a href="/manage/author/create">Create New Author</a>)
+
+        </div>
+        <div class="form-group">
+        <label class="bg-dark text-light" for="collection-title">Collection Title:</label>
+        <input
+            class="form-control"
+            id="collection-title"
+            name="title"
+            required="required"
+            type="text"
+            value="{{ post.title|e('html_attr') }}"
+        />
+        </div>
+        <div class="form-group">
+            <label class="bg-dark text-light" for="collection-url">Collection URL:</label>
+            <input
+                class="form-control"
+                id="collection-url"
+                name="url"
+                type="text"
+                value="{{ post.url|e('html_attr') }}"
+            />
+            <small>Optional. Will be automatically generated if not provided.</small>
+        </div>
+        <button type="submit" class="btn btn-verydark">Create New Collection</button>
+    </form>
+
+{% endblock %}

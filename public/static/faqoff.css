@@ -1,0 +1,10 @@
+.btn-verydark {
+    background-color: #23272b;
+    border-color: #23272b;
+    color: #fff;
+}
+.btn-verydark:hover {
+    background-color: #111314;
+    border-color: #111314;
+    color: #fff;
+}
