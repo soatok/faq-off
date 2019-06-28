@@ -30,15 +30,21 @@ $default = [
 ];
 
 $anthrokit = [
+        'allow-password-auth' => false,
         'allow-twitter-auth' => true,
         'redirect' => [
             'auth-success' => '/',
+            'auth-failure' => '/',
             'activate-success' => '/',
             'empty-params' => '/',
             'invalid-action' => '/',
+            'invite-required' => '/',
             'login' => '/auth/login',
+            'logout-fail' => '/',
+            'logout-success' => '/',
             'register' => '/auth/register',
         ],
+        'require-invite-register' => false,
         'sql' => [
             'accounts' => [
                 'table' => 'faqoff_accounts',
@@ -60,6 +66,19 @@ $anthrokit = [
                     'created' => 'created',
                     'selector' => 'selector',
                     'validator' => 'validator'
+                ]
+            ],
+            'invites' => [
+                'table' => 'faqoff_invites',
+                'field' => [
+                    'id' => 'inviteid',
+                    'from' => 'invitefrom',
+                    'twitter' => 'twitter',
+                    'email' => 'email',
+                    'invite_code' => 'invite_code',
+                    'claimed' => 'claimed',
+                    'created' => 'created',
+                    'newaccountid' => 'newaccountid'
                 ]
             ]
         ],

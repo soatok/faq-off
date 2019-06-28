@@ -83,6 +83,14 @@ abstract class Utility
          * @twig-filter cachebust
          * Usage: {{ "/static/main.css"|cachebust }}
          */
+        $env->addFunction(
+            new TwigFunction(
+                'authorized',
+                function () {
+                    return !empty($_SESSION['account_id']);
+                }
+            )
+        );
         $env->addFilter(
             new TwigFilter(
                 'cachebust',
@@ -120,6 +128,8 @@ abstract class Utility
                 }
             )
         );
+
+        $env->addGlobal('session', $_SESSION);
 
         return $env;
     }

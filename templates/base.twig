@@ -7,15 +7,17 @@
         <title>{{ pageTitle|default('FAQ Off') }}</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous" />
     </head>
-    <body>
+    <body class="text-light bg-dark">
     {% block body %}
         <nav>{% include "layout/nav.twig" %}</nav>
+        <div id="main" class="container">
         {% block main %}
             <h2>Filter does not define <code>main</code> block</h2>
             <p>
                 Soatok is silly. Please override me.
             </p>
         {% endblock %}
+        </div>
     {% endblock %}
     </body>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

@@ -20,6 +20,7 @@ $app->group('/manage', function () use ($app, $container) {
     $app->get('/collection/{collection:[0-9]+}/entry/{entry:[0-9]+}[/{action:[a-z]+}]', 'manage.entry');
     $app->get('/collection/{id:[0-9]+}/entry/create', 'manage.create-entry');
     $app->get('/collection/{id:[0-9]+}[/{action:[a-z]+}]', 'manage.collections');
+    $app->get('/collection', 'manage.collections');
     $app->get('/author/{action:create}', 'manage.author');
     $app->get('/author/{id:[0-9]+}/{action:[^/]+}[/{sub:[^/]+}]', 'manage.author');
     $app->get('/author/{id:[0-9]+}', 'manage.author');
@@ -36,7 +37,7 @@ $app->get('/@{author:[^/]+}', 'collection');
 $app->any('/auth/{action:logout}[/{extra:[^/]+}]', 'authorize')
     ->add($authOnly);
 // Only guests can do this:
-$app->any('/auth/{action:register|login|twitter|verify}[/{extra:[^/]+}]', 'authorize')
+$app->any('/auth/{action:register|invite|login|twitter|verify}[/{extra:[^/]+}]', 'authorize')
     ->add($guestsOnly);
 // No middleware on activation:
 $app->any('/auth/{action:activate}[/{extra:[^/]+}]', 'authorize');
