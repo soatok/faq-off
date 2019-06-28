@@ -1,0 +1,42 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h2>Control Panel</h2>
+
+    <ul>
+        <li>
+            <a href="/manage/authors">Authors</a>
+            {% if authors %}<ul>
+            {% for author in authors %}
+                <li>
+                    <a href="/manage/author/{{ author.authorid }}">{{ author.screenname|e }}</a>
+                </li>
+            {% endfor %}
+            </ul>{% endif %}
+        </li>
+        <li>
+            <a href="/manage/collections">Collections</a>
+            {% if collections %}<ul>
+                {% for collection in collections %}
+                    <li>
+                        <a href="/manage/collection/{{ collection.collectionid }}">{#
+                            #}{{ collection.title|e }} {#
+                            #}(<strong>@{{ collection['author_screenname']|e }}</strong>){#
+                        #}</a>
+                        <ul>
+                            <li>
+                                <a href="/manage/collection/{{ collection.collectionid }}/entry/create">
+                                    Create Entry
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                {% endfor %}
+                </ul>{% endif %}
+        </li>
+        <li>
+            <a href="/manage/invite">Invite Users</a>
+        </li>
+    </ul>
+
+{% endblock %}

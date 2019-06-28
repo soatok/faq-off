@@ -20,11 +20,13 @@ $app->group('/manage', function () use ($app, $container) {
     $app->get('/collection/{collection:[0-9]+}/entry/{entry:[0-9]+}[/{action:[a-z]+}]', 'manage.entry');
     $app->get('/collection/{id:[0-9]+}/entry/create', 'manage.create-entry');
     $app->get('/collection/{id:[0-9]+}[/{action:[a-z]+}]', 'manage.collections');
+    $app->get('/collections', 'manage.collections');
     $app->get('/collection', 'manage.collections');
     $app->get('/author/{action:create}', 'manage.author');
     $app->get('/author/{id:[0-9]+}/{action:[^/]+}[/{sub:[^/]+}]', 'manage.author');
     $app->get('/author/{id:[0-9]+}', 'manage.author');
     $app->get('/authors', 'manage.author');
+    $app->get('/author', 'manage.author');
     $app->get('/invite', 'manage.invite');
     $app->get('/', 'manage');
     $app->get('', 'manage');

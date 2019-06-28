@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
-namespace Soatok\FaqOff\Splice;
+namespace Soatok\FaqOff\Splices;
 
 use Soatok\AnthroKit\Splice;
 
 /**
  * Class Authors
- * @package Soatok\FaqOff\Splice
+ * @package Soatok\FaqOff\Splices
  */
 class Authors extends Splice
 {
@@ -83,6 +83,31 @@ class Authors extends Splice
             ]
         );
         return $this->db->commit();
+    }
+
+    /**
+     * @param int $accountId
+     * @param bool $ownedOnly
+     * @return array
+     */
+    public function getByAccount(int $accountId, bool $ownedOnly = false): array
+    {
+        if ($ownedOnly) {
+            return $this->db->run(
+                "SELECT * FROM faqoff_author WHERE ownerid = ? ORDER BY screenname ASC",
+                $accountId
+            );
+        }
+        return $this->db->run(
+            "SELECT * FROM faqoff_author
+               WHERE ownerid = ? OR authorid IN (
+                   SELECT authorid FROM faqoff_author_contributor WHERE accountid = ?
+               )
+               ORDER BY screenname ASC
+            ",
+            $accountId,
+            $accountId
+        );
     }
 
     /**

@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
-namespace Soatok\FaqOff\Splice;
+namespace Soatok\FaqOff\Splices;
 
 use Soatok\AnthroKit\Splice;
 
 /**
  * Class Entry
- * @package Soatok\FaqOff\Splice
+ * @package Soatok\FaqOff\Splices
  */
 class Entry extends Splice
 {
