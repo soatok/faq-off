@@ -123,7 +123,7 @@ abstract class Utility
                 'csp_nonce',
                 function (string $directive = 'script-src') use ($container) {
                     /** @var CSPBuilder $csp */
-                    $csp = $container->get('csp');
+                    $csp = Utility::$container['csp'];
                     return $csp->nonce($directive);
                 }
             )

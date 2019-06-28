@@ -1,0 +1,27 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h2>Control Panel &rsaquo; Invites</h2>
+
+    <p>
+        Invite codes allow users to register when this website is placed in
+        <strong>invite only</strong> mode.
+    </p>
+
+    <ol id="invite-codes" data-baseurl="{{ baseurl }}">
+        {% for code in unused_codes %}
+            <li class="invite-code">{{ baseurl }}/{{ code['invite_code'] }}</li>
+        {% endfor %}
+    </ol>
+
+    <form id="create-invite-form" method="post">{{ anti_csrf() }}
+        <button id="create-invite" name="create-code" class="btn btn-verydark" type="submit">
+            Create Invite Code
+        </button>
+    </form>
+{% endblock %}
+
+{% block javascript %}
+{{ parent() }}
+<script src="/static/manage-invites.js" nonce="{{ csp_nonce() }}"></script>
+{% endblock %}

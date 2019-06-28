@@ -50,6 +50,7 @@ $container['twig'] = function (Container $c): Environment {
     if (!$twig) {
         $settings = $c->get('settings')['twig'];
         $loader = new FilesystemLoader($settings['template_paths']);
+        Utility::setContainer($c);
         $twig = Utility::terraform(new Environment($loader));
     }
     return $twig;

@@ -8,3 +8,18 @@
     border-color: #111314;
     color: #fff;
 }
+
+#invite-codes {
+    padding-left: 0;
+}
+.invite-code {
+    background-color: #23272b;
+    border: 1px solid #111314;
+    border-radius: 0.33rem;
+    font-family: monospace;
+    list-style: none;
+    padding: 0.33rem;
+}
+.invite-code + .invite-code {
+    margin-top: 1rem;
+}
