@@ -15,22 +15,10 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="manageDropdown">
                     <a class="dropdown-item" href="/manage/collection">Collections</a>
-                    <a class="dropdown-item" href="/manage/collection">Collections</a>
+                    <a class="dropdown-item" href="/manage/authors">Authors</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="/manage/invite">Invite Users</a>
                 </div>
-                {#
-                    $app->get('/collection/{collection:[0-9]+}/entry/{entry:[0-9]+}[/{action:[a-z]+}]', 'manage.entry');
-                    $app->get('/collection/{id:[0-9]+}/entry/create', 'manage.create-entry');
-                    $app->get('/collection/{id:[0-9]+}[/{action:[a-z]+}]', 'manage.collections');
-                    $app->get('/author/{action:create}', 'manage.author');
-                    $app->get('/author/{id:[0-9]+}/{action:[^/]+}[/{sub:[^/]+}]', 'manage.author');
-                    $app->get('/author/{id:[0-9]+}', 'manage.author');
-                    $app->get('/authors', 'manage.author');
-                    $app->get('/invite', 'manage.invite');
-                    $app->get('/', 'manage');
-                    $app->get('', 'manage');
-                #}
             </li>
             <li>
                 <a class="nav-link" href="/logout/{{ session.logout_token }}">Manage {#
