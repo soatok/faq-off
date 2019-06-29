@@ -75,6 +75,23 @@ class EntryCollection extends Splice
     }
 
     /**
+     * @param int $collectionId
+     * @return int
+     * @throws CollectionNotFoundException
+     */
+    public function getCollectionAuthorId(int $collectionId): int
+    {
+        $authorId = $this->db->cell(
+            "SELECT authorid FROM faqoff_collection WHERE collectionid = ?",
+            $collectionId
+        );
+        if (!$authorId) {
+            throw new CollectionNotFoundException();
+        }
+        return $authorId;
+    }
+
+    /**
      * @param int $accountId
      * @return array
      */

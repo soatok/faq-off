@@ -8,6 +8,7 @@ use Psr\Http\Message\{
     ResponseInterface
 };
 use Slim\Container;
+use Slim\Http\StatusCode;
 use Soatok\AnthroKit\Endpoint;
 use Soatok\FaqOff\Filter\CreateCollectionFilter;
 use Soatok\FaqOff\Splices\Authors;
@@ -74,6 +75,9 @@ class Author extends Endpoint
         int $authorId,
         RequestInterface $request
     ): ResponseInterface {
+        if (!$this->authors->accountHasAccess($authorId, $_SESSION['account_id'])) {
+            return $this->redirect('/manage/authors', StatusCode::HTTP_FORBIDDEN);
+        }
         $errors = [];
         $filter = new CreateCollectionFilter();
         $post = $this->post($request, self::TYPE_FORM, $filter);
@@ -113,6 +117,9 @@ class Author extends Endpoint
         int $authorId,
         RequestInterface $request
     ): ResponseInterface {
+        if (!$this->authors->accountHasAccess($authorId, $_SESSION['account_id'])) {
+            return $this->redirect('/manage/authors', StatusCode::HTTP_FORBIDDEN);
+        }
         $errors = [];
         $post = $this->post($request);
         if ($post) {

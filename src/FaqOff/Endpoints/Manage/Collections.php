@@ -8,6 +8,7 @@ use Psr\Http\Message\{
     ResponseInterface
 };
 use Slim\Container;
+use Slim\Http\StatusCode;
 use Soatok\AnthroKit\Endpoint;
 use Soatok\FaqOff\Exceptions\CollectionNotFoundException;
 use Soatok\FaqOff\Filter\EditCollectionFilter;
@@ -57,6 +58,10 @@ class Collections extends Endpoint
         int $collectionId,
         array $routerParams = []
     ): ResponseInterface {
+        $authorId = $this->collections->getCollectionAuthorId($collectionId);
+        if (!$this->authors->accountHasAccess($authorId, $_SESSION['account_id'])) {
+            return $this->redirect('/manage/authors', StatusCode::HTTP_FORBIDDEN);
+        }
         $errors = [];
         $filter = new EditCollectionFilter();
         $post = $this->post($request, self::TYPE_FORM, $filter);
