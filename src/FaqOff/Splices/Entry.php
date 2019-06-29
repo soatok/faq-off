@@ -32,4 +32,19 @@ class Entry extends Splice
         }
         return $collection;
     }
+    /**
+     * @param int $collectionId
+     * @return array
+     */
+    public function listByCollectionId(int $collectionId): array
+    {
+        $collections = $this->db->run(
+            "SELECT * FROM faqoff_entry WHERE collectionid = ? ORDER BY modified DESC, created DESC",
+            $collectionId
+        );
+        if (!$collections) {
+            return [];
+        }
+        return $collections;
+    }
 }

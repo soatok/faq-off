@@ -12,6 +12,7 @@
     {% block body %}
         <nav>{% include "layout/nav.twig" %}</nav>
         <div id="main" class="container">
+        {% if session.message_once %}{% include "layout/message-once.twig" %}{% endif %}
         {% block main %}
             <h2>Filter does not define <code>main</code> block</h2>
             <p>

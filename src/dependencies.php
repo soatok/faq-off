@@ -56,6 +56,9 @@ $container['twig'] = function (Container $c): Environment {
     return $twig;
 };
 
+if (!isset($_SESSION['message_once'])) {
+    $_SESSION['message_once'] = [];
+}
 if (empty($_SESSION['anti-csrf'])) {
     $_SESSION['anti-csrf'] = random_bytes(33);
 }

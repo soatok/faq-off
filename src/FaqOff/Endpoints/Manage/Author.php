@@ -10,7 +10,9 @@ use Psr\Http\Message\{
 use Slim\Container;
 use Slim\Http\StatusCode;
 use Soatok\AnthroKit\Endpoint;
+use Soatok\FaqOff\Filter\CreateAuthorFilter;
 use Soatok\FaqOff\Filter\CreateCollectionFilter;
+use Soatok\FaqOff\Filter\EditAuthorFilter;
 use Soatok\FaqOff\Splices\Authors;
 use Soatok\FaqOff\Splices\EntryCollection;
 use Twig\Error\{
@@ -54,12 +56,39 @@ class Author extends Endpoint
      * @param RequestInterface $request
      * @param array $routerParams
      * @return ResponseInterface
+     *
+     * @throws ContainerException
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
-    protected function createAuthor(
-        RequestInterface $request,
-        array $routerParams = []
-    ): ResponseInterface {
-        return $this->json($routerParams);
+    protected function createAuthor(RequestInterface $request): ResponseInterface
+    {
+        $filter = new CreateAuthorFilter();
+        $errors = [];
+        $post = $this->post($request, self::TYPE_FORM, $filter);
+        if ($post) {
+            try {
+                if ($this->authors->create(
+                    $post['name'],
+                    $_SESSION['account_id'],
+                    $post['bio'] ?? ''
+                )) {
+                    return $this->redirect('/manage/authors');
+                } else {
+                    $errors[] = 'An unknown error occurred creating a new author.';
+                }
+            } catch (\Exception $ex) {
+                $errors []= $ex->getMessage();
+            }
+        }
+        return $this->view(
+            'manage/author-create.twig',
+            [
+                'errors' => $errors,
+                'post' => $post
+            ]
+        );
     }
 
     /**
@@ -120,18 +149,25 @@ class Author extends Endpoint
         if (!$this->authors->accountHasAccess($authorId, $_SESSION['account_id'])) {
             return $this->redirect('/manage/authors', StatusCode::HTTP_FORBIDDEN);
         }
+        $filter = new EditAuthorFilter();
         $errors = [];
-        $post = $this->post($request);
+        $post = $this->post($request, self::TYPE_FORM, $filter);
         if ($post) {
-
+            if ($this->authors->updateBiography($authorId, $post['biography'])) {
+                $_SESSION['message_once'][] = 'Author biography updated successfully';
+                return $this->redirect('/manage/author/' . $authorId);
+            } else {
+                $errors []= 'An unknown error has occurred updating your biography.';
+            }
         }
+        $author = $this->authors->getById($authorId);
         return $this->view(
             'manage/author-edit.twig',
             [
-                'author' => $this->authors->getById($authorId),
+                'author' => $author,
                 'collections' => $this->collections->getAllByAuthor($authorId),
                 'errors' => $errors,
-                'post' => $post
+                'post' => $post + $author
             ]
         );
     }
@@ -187,7 +223,7 @@ class Author extends Endpoint
             }
         } elseif (isset($routerParams['action'])) {
             if ($routerParams['action'] === 'create') {
-                return $this->createAuthor($request, $routerParams);
+                return $this->createAuthor($request);
             }
         }
         return $this->homePage();

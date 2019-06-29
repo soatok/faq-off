@@ -12,10 +12,7 @@ use Slim\Http\StatusCode;
 use Soatok\AnthroKit\Endpoint;
 use Soatok\FaqOff\Exceptions\CollectionNotFoundException;
 use Soatok\FaqOff\Filter\EditCollectionFilter;
-use Soatok\FaqOff\Splices\{
-    Authors,
-    EntryCollection
-};
+use Soatok\FaqOff\Splices\{Authors, Entry, EntryCollection};
 use Twig\Error\{
     LoaderError,
     RuntimeError,
@@ -34,11 +31,15 @@ class Collections extends Endpoint
     /** @var EntryCollection $collections */
     private $collections;
 
+    /** @var Entry $entries */
+    private $entries;
+
     public function __construct(Container $container)
     {
         parent::__construct($container);
         $this->authors = $this->splice('Authors');
         $this->collections = $this->splice('EntryCollection');
+        $this->entries = $this->splice('Entry');
     }
 
     /**
@@ -68,7 +69,8 @@ class Collections extends Endpoint
         if ($post) {
             if ($this->collections->update($collectionId, $post)) {
                 // Success
-                return $this->redirect('/manage/collections');
+                $_SESSION['message_once'][] = 'Collection updated successfully';
+                return $this->redirect('/manage/collection/' . $collectionId);
             } else {
                 $errors[] = "An unknown error occurred trying to update the collection";
             }
@@ -79,6 +81,27 @@ class Collections extends Endpoint
             [
                 'collection' => $collection,
                 'post' => $post + $collection
+            ]
+        );
+    }
+
+    /**
+     * @param int $collectionId
+     * @return ResponseInterface
+     * @throws CollectionNotFoundException
+     * @throws ContainerException
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
+    protected function listEntries(int $collectionId): ResponseInterface
+    {
+        $collection = $this->collections->getById($collectionId);
+        return $this->view(
+            'manage/collection-entries.twig',
+            [
+                'collection' => $collection,
+                'entries' => $this->entries->listByCollectionId($collectionId)
             ]
         );
     }
@@ -121,6 +144,8 @@ class Collections extends Endpoint
         if (isset($routerParams['id'])) {
             $action = $routerParams['action'] ?? null;
             switch ($action) {
+                case 'entries':
+                    return $this->listEntries((int) $routerParams['id']);
                 default:
                     return $this->editCollection(
                         $request,

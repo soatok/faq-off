@@ -1,6 +1,15 @@
 {% extends "base.twig" %}
 
 {% block main %}
+    <h2>Control Panel &rsaquo; Collections &rsaquo; {{ collection.title|e('html_attr') }}</h2>
+
+    <h3>Actions</h3>
+    <ul>
+        <li><a href="/manage/collection/{{ collection.collectionid }}/entries">View/Manage Entries</a></li>
+    </ul>
+
+
+    <h3>Edit Collection</h3>
     {% if errors %}
         {% for i, error in errors %}
             <p class="error" id="error-{{ i|e('html_attr') }}">{{ error }}</p>

@@ -13,4 +13,18 @@
         {% endfor %}
         </ul>
     {% endif %}
+
+    <h3>Edit Author Information</h3>
+    <form method="post">{{ anti_csrf() }}
+        <div class="form-group">
+            <label class="bg-dark text-light" for="author-bio">Author Biography:</label>
+            <textarea
+                class="form-control"
+                id="author-bio"
+                name="biography"
+            >{{ post.biography|e('html_attr') }}</textarea>
+            <small>Markdown allowed.</small>
+        </div>
+        <button type="submit" class="btn btn-verydark form-control">Update Author</button>
+    </form>
 {% endblock %}

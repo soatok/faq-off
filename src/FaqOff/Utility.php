@@ -129,6 +129,15 @@ abstract class Utility
             )
         );
 
+        $env->addFunction(
+            new TwigFunction(
+                'clear_message_once',
+                function () {
+                    $_SESSION['message_once'] = [];
+                }
+            )
+        );
+
         $env->addGlobal('session', $_SESSION);
 
         return $env;
