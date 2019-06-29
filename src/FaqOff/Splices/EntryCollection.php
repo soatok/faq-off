@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace Soatok\FaqOff\Splices;
 
 use Soatok\AnthroKit\Splice;
+use Soatok\FaqOff\Exceptions\CollectionNotFoundException;
 
 /**
  * Class EntryCollection
@@ -49,6 +50,28 @@ class EntryCollection extends Splice
             return null;
         }
         return (int) $collectionId;
+    }
+
+    /**
+     * @param int $collectionId
+     * @return array
+     * @throws CollectionNotFoundException
+     */
+    public function getById(int $collectionId): array
+    {
+        $collection = $this->db->row(
+            "SELECT
+                 faqoff_collection.*,
+                 faqoff_author.screenname AS author_screenname
+            FROM faqoff_collection
+            JOIN faqoff_author ON faqoff_collection.authorid = faqoff_author.authorid
+            WHERE faqoff_collection.collectionid = ?",
+            $collectionId
+        );
+        if (!$collection) {
+            throw new CollectionNotFoundException();
+        }
+        return $collection;
     }
 
     /**
@@ -120,6 +143,8 @@ class EntryCollection extends Splice
     }
 
     /**
+     * Get a unique URL even if an author/URL collision occurs.
+     *
      * @param string $title
      * @param int|null $authorId
      * @return string
@@ -140,5 +165,25 @@ class EntryCollection extends Splice
             $url = $base . '-' . (++$i);
         }
         return $url;
+    }
+
+    /**
+     * @param int $collectionId
+     * @param array $postData
+     * @return bool
+     */
+    public function update(int $collectionId, array $postData = []): bool
+    {
+        $this->db->beginTransaction();
+        $this->db->update(
+            'faqoff_collection',
+            [
+                'title' => $postData['title']
+            ],
+            [
+                'collectionid' => $collectionId
+            ]
+        );
+        return $this->db->commit();
     }
 }

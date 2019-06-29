@@ -4,7 +4,6 @@ namespace Soatok\FaqOff\Filter;
 
 use ParagonIE\Ionizer\Filter\StringFilter;
 use ParagonIE\Ionizer\InputFilterContainer;
-use ParagonIE\Ionizer\InvalidDataException;
 
 /**
  * Class CreateCollectionFilter

@@ -43,6 +43,7 @@ $anthrokit = [
             'logout-fail' => '/',
             'logout-success' => '/',
             'register' => '/auth/register',
+            'twitter' => '/auth/twitter',
         ],
         'require-invite-register' => false,
         'sql' => [

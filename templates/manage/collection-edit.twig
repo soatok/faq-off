@@ -1,0 +1,28 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    {% if errors %}
+        {% for i, error in errors %}
+            <p class="error" id="error-{{ i|e('html_attr') }}">{{ error }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        {{ anti_csrf() }}
+        <div class="form-group">
+            Author: <a href="/manage/author/{{ collection.authorid }}">@{{ collection.author_screenname|e('html_attr') }}</a>
+        </div>
+        <div class="form-group">
+            <label class="bg-dark text-light" for="collection-title">Collection Title:</label>
+            <input
+                class="form-control"
+                id="collection-title"
+                name="title"
+                required="required"
+                type="text"
+                value="{{ post.title|e('html_attr') }}"
+            />
+        </div>
+        <button type="submit" class="btn btn-verydark">Update Collection</button>
+    </form>
+{% endblock %}

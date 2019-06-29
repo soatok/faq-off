@@ -90,7 +90,7 @@ class Author extends Endpoint
             }
         }
         return $this->view(
-            'manage/create-collection.twig',
+            'manage/collection-create.twig',
             [
                 'author' => $this->authors->getById($authorId),
                 'errors' => $errors,
