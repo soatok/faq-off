@@ -8,10 +8,10 @@ use Psr\Http\Message\{
     ResponseInterface
 };
 use Slim\Container;
-use Slim\Http\StatusCode;
 use Soatok\AnthroKit\Endpoint;
 use Soatok\FaqOff\Exceptions\CollectionNotFoundException;
 use Soatok\FaqOff\Filter\EditCollectionFilter;
+use Soatok\FaqOff\MessageOnceTrait;
 use Soatok\FaqOff\Splices\{Authors, Entry, EntryCollection};
 use Twig\Error\{
     LoaderError,
@@ -25,6 +25,8 @@ use Twig\Error\{
  */
 class Collections extends Endpoint
 {
+    use MessageOnceTrait;
+
     /** @var Authors $authors */
     private $authors;
 
@@ -45,7 +47,6 @@ class Collections extends Endpoint
     /**
      * @param RequestInterface $request
      * @param int $collectionId
-     * @param array $routerParams
      * @return ResponseInterface
      *
      * @throws ContainerException
@@ -56,12 +57,17 @@ class Collections extends Endpoint
      */
     protected function editCollection(
         RequestInterface $request,
-        int $collectionId,
-        array $routerParams = []
+        int $collectionId
     ): ResponseInterface {
-        $authorId = $this->collections->getCollectionAuthorId($collectionId);
+        try {
+            $authorId = $this->collections->getCollectionAuthorId($collectionId);
+        } catch (CollectionNotFoundException $ex) {
+            $this->messageOnce('This collection does not exist.', 'error');
+            return $this->redirect('/manage/collections');
+        }
         if (!$this->authors->accountHasAccess($authorId, $_SESSION['account_id'])) {
-            return $this->redirect('/manage/authors', StatusCode::HTTP_FORBIDDEN);
+            $this->messageOnce('You do not have access to collections belonging to this author.', 'error');
+            return $this->redirect('/manage/authors');
         }
         $errors = [];
         $filter = new EditCollectionFilter();
@@ -69,7 +75,7 @@ class Collections extends Endpoint
         if ($post) {
             if ($this->collections->update($collectionId, $post)) {
                 // Success
-                $_SESSION['message_once'][] = 'Collection updated successfully';
+                $this->messageOnce('Collection updated successfully');
                 return $this->redirect('/manage/collection/' . $collectionId);
             } else {
                 $errors[] = "An unknown error occurred trying to update the collection";
@@ -96,6 +102,11 @@ class Collections extends Endpoint
      */
     protected function listEntries(int $collectionId): ResponseInterface
     {
+        $authorId = $this->collections->getCollectionAuthorId($collectionId);
+        if (!$this->authors->accountHasAccess($authorId, $_SESSION['account_id'])) {
+            $this->messageOnce('You do not have access to collections belonging to this author.', 'error');
+            return $this->redirect('/manage/authors');
+        }
         $collection = $this->collections->getById($collectionId);
         return $this->view(
             'manage/collection-entries.twig',
@@ -147,11 +158,7 @@ class Collections extends Endpoint
                 case 'entries':
                     return $this->listEntries((int) $routerParams['id']);
                 default:
-                    return $this->editCollection(
-                        $request,
-                        (int) $routerParams['id'],
-                        $routerParams
-                    );
+                    return $this->editCollection($request, (int) $routerParams['id']);
             }
         }
         return $this->homePage();

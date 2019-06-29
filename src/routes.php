@@ -18,7 +18,7 @@ $authOnly = new AuthorizedUsersOnly($container);
 $app->group('/manage', function () use ($app, $container) {
     // Authenticated users only...
     $app->any('/collection/{collection:[0-9]+}/entry/{entry:[0-9]+}[/{action:[a-z]+}]', 'manage.entry');
-    $app->any('/collection/{id:[0-9]+}/{action:entry}/{create:create}', 'manage.create-entry');
+    $app->any('/collection/{collection:[0-9]+}/{action:entry}/{create:create}', 'manage.entry');
 
     $app->any('/collection/{id:[0-9]+}[/{action:[a-z]+}]', 'manage.collections');
     $app->any('/collections', 'manage.collections');
@@ -62,9 +62,6 @@ $container['manage.collections'] = function (Container $c) {
     return new Manage\Collections($c);
 };
 $container['manage.entry'] = function (Container $c) {
-    return new Manage\Entries($c);
-};
-$container['manage.create-entry'] = function (Container $c) {
     return new Manage\Entries($c);
 };
 

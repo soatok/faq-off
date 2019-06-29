@@ -12,6 +12,21 @@ class Entry extends Splice
 {
     /**
      * @param int $collectionId
+     * @param int $entryId
+     * @return bool
+     */
+    public function belongsTo(int $collectionId, int $entryId): bool
+    {
+        return $this->db->exists(
+            "SELECT count(*) FROM faqoff_entry 
+            WHERE collectionid = ? AND entryid = ?",
+            $collectionId,
+            $entryId
+        );
+    }
+
+    /**
+     * @param int $collectionId
      * @param string $url
      * @return array
      */
@@ -32,6 +47,7 @@ class Entry extends Splice
         }
         return $collection;
     }
+
     /**
      * @param int $collectionId
      * @return array
@@ -39,7 +55,9 @@ class Entry extends Splice
     public function listByCollectionId(int $collectionId): array
     {
         $collections = $this->db->run(
-            "SELECT * FROM faqoff_entry WHERE collectionid = ? ORDER BY modified DESC, created DESC",
+            "SELECT * FROM faqoff_entry
+            WHERE collectionid = ? 
+            ORDER BY modified DESC, created DESC",
             $collectionId
         );
         if (!$collections) {

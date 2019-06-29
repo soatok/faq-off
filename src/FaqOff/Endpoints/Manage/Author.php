@@ -8,11 +8,11 @@ use Psr\Http\Message\{
     ResponseInterface
 };
 use Slim\Container;
-use Slim\Http\StatusCode;
 use Soatok\AnthroKit\Endpoint;
 use Soatok\FaqOff\Filter\CreateAuthorFilter;
 use Soatok\FaqOff\Filter\CreateCollectionFilter;
 use Soatok\FaqOff\Filter\EditAuthorFilter;
+use Soatok\FaqOff\MessageOnceTrait;
 use Soatok\FaqOff\Splices\Authors;
 use Soatok\FaqOff\Splices\EntryCollection;
 use Twig\Error\{
@@ -27,6 +27,8 @@ use Twig\Error\{
  */
 class Author extends Endpoint
 {
+    use MessageOnceTrait;
+
     /** @var Authors $authors */
     private $authors;
 
@@ -105,7 +107,8 @@ class Author extends Endpoint
         RequestInterface $request
     ): ResponseInterface {
         if (!$this->authors->accountHasAccess($authorId, $_SESSION['account_id'])) {
-            return $this->redirect('/manage/authors', StatusCode::HTTP_FORBIDDEN);
+            $this->messageOnce('You do not have access to this author.', 'error');
+            return $this->redirect('/manage/authors');
         }
         $errors = [];
         $filter = new CreateCollectionFilter();
@@ -147,14 +150,15 @@ class Author extends Endpoint
         RequestInterface $request
     ): ResponseInterface {
         if (!$this->authors->accountHasAccess($authorId, $_SESSION['account_id'])) {
-            return $this->redirect('/manage/authors', StatusCode::HTTP_FORBIDDEN);
+            $this->messageOnce('You do not have access to this author.', 'error');
+            return $this->redirect('/manage/authors');
         }
         $filter = new EditAuthorFilter();
         $errors = [];
         $post = $this->post($request, self::TYPE_FORM, $filter);
         if ($post) {
             if ($this->authors->updateBiography($authorId, $post['biography'])) {
-                $_SESSION['message_once'][] = 'Author biography updated successfully';
+                $this->messageOnce('Author biography updated successfully');
                 return $this->redirect('/manage/author/' . $authorId);
             } else {
                 $errors []= 'An unknown error has occurred updating your biography.';

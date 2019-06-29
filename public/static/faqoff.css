@@ -23,3 +23,19 @@
 .invite-code + .invite-code {
     margin-top: 1rem;
 }
+
+.message-once {
+    background-color: #23272b;
+    border: 1px solid #111314;
+    border-radius: 0.33rem;
+    list-style: none;
+    padding: 0.33rem;
+}
+.message-once .error {
+    color: #F66;
+}
+.message-once .error:before {
+    color: #F33;
+    content: "ERROR: ";
+    font-weight: bold;
+}
