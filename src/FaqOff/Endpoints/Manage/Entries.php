@@ -109,6 +109,12 @@ class Entries extends Endpoint
      * @param array $routerParams
      * @return ResponseInterface
      * @throws CollectionNotFoundException
+     *
+     * @throws CollectionNotFoundException
+     * @throws ContainerException
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function __invoke(
         RequestInterface $request,

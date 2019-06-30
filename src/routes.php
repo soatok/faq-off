@@ -45,6 +45,7 @@ $app->any('/auth/{action:register|invite|login|twitter|verify}[/{extra:[^/]+}]',
     ->add($guestsOnly);
 // No middleware on activation:
 $app->any('/auth/{action:activate}[/{extra:[^/]+}]', 'authorize');
+$app->any('/generic-error[/{error:[^/]+}]', 'error');
 $app->get('/', 'staticpage');
 $app->get('', 'staticpage');
 
@@ -76,6 +77,9 @@ $container['collection'] = function (Container $c) {
 };
 $container['entry'] = function (Container $c) {
     return new Entry($c);
+};
+$container['error'] = function (Container $c) {
+    return new GenericError($c);
 };
 $container['staticpage'] = function (Container $c) {
     return new StaticPage($c);
