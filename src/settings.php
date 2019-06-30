@@ -92,6 +92,12 @@ $anthrokit = [
         ]
 ];
 
+// Merge local changes to AnthroKit configuration
+if (is_readable(APP_ROOT . '/local/anthrokit.php')) {
+    $local = require_once APP_ROOT . '/local/anthrokit.php';
+    $anthrokit = $local + $anthrokit;
+}
+
 if (is_readable(APP_ROOT . '/local/settings.php')) {
     $local = require_once APP_ROOT . '/local/settings.php';
     return [
