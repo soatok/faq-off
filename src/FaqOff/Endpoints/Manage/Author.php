@@ -74,7 +74,7 @@ class Author extends Endpoint
                 if ($this->authors->create(
                     $post['name'],
                     $_SESSION['account_id'],
-                    $post['bio'] ?? ''
+                    $post['biography'] ?? ''
                 )) {
                     return $this->redirect('/manage/authors');
                 } else {
