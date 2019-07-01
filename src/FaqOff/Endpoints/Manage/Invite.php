@@ -105,6 +105,6 @@ class Invite extends Endpoint
         if ($routerParams['action'] === 'create') {
             return $this->ajaxCreateCode();
         }
-        $this->redirect('/manage/invite');
+        return $this->redirect('/manage/invite');
     }
 }

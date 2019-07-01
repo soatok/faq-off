@@ -37,15 +37,38 @@
         <div class="form-group">
             <label class="bg-dark text-light" for="entry-contents">Contents:</label>
             <textarea
-                    class="form-control"
-                    id="entry-contents"
-                    name="contents"
+                class="form-control"
+                data-collectionid="{{ collection.collectionid }}"
+                id="entry-contents"
+                name="contents"
             >{{ post.contents|e('html_attr') }}</textarea>
             <small>Markdown allowed.</small>
         </div>
         <div class="form-group">
             <label class="bg-dark text-light" for="contents-preview">Preview:</label>
-            <div class="scrollbox" id="contents-preview"></div>
+            <div class="scrollbox entry-preview" id="contents-preview"></div>
+        </div>
+        <div class="form-group full-width">
+            <label class="bg-dark text-light" for="entry-attach-to">Attach to:</label>
+            <ol id="entry-follow-ups">{#
+                #}{% for row in entry['follow-ups'] %}
+                    <li id="entry-follow-up-{{ row.entryid }}">
+                        <input type="hidden" name="follow-up[]" value="{{ row.entryid }}" />
+                        {{ entry.title }}
+                        {# @todo Delete button #}
+                    </li>
+                    {# Make sortable? #}
+                {% endfor %}{#
+            #}</ol>
+            <hr />
+            <div class="form-group row full-width">
+                <div class="col-sm-10">
+                    <input class="form-control full-width" type="text" id="entry-attach-to-search" value="" name="dummy" />
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-verydark">Attach Another</button>
+                </div>
+            </div>
         </div>
 
         <button type="submit" class="btn btn-verydark">Update Entry</button>
@@ -55,4 +78,5 @@
 {% block javascript %}
     {{ parent() }}
     <script src="/static/manage-entry.js" nonce="{{ csp_nonce() }}"></script>
+    <script src="/static/manage-entry-edit.js" nonce="{{ csp_nonce() }}"></script>
 {% endblock %}

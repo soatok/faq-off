@@ -49,6 +49,7 @@ class Entries extends Endpoint
 
     /**
      * @param int $collectionId
+     * @param int $authorId
      * @param RequestInterface $request
      * @return ResponseInterface
      * @throws CollectionNotFoundException
@@ -59,11 +60,27 @@ class Entries extends Endpoint
      */
     protected function createEntry(
         int $collectionId,
+        int $authorId,
         RequestInterface $request
     ): ResponseInterface {
         $filter = new CreateEntryFilter();
         $errors = [];
-        $post = $this->post($request);
+        $post = $this->post($request, self::TYPE_FORM, $filter);
+        if ($post) {
+            $newEntryId = $this->entries->create(
+                $collectionId,
+                $authorId,
+                $post['title'] ?? '',
+                $post['contents'] ?? '',
+                $post['attach-to'] ?? []
+            );
+            if ($newEntryId) {
+                $this->messageOnce('Entry created successfully', 'success');
+                return $this->redirect(
+                    '/manage/collection/' . $collectionId . '/entry/' . $newEntryId
+                );
+            }
+        }
         return $this->view(
             'manage/entry-create.twig',
             [
@@ -129,7 +146,7 @@ class Entries extends Endpoint
         }
 
         if (!empty($routerParams['create'])) {
-            return $this->createEntry($collectionId, $request);
+            return $this->createEntry($collectionId, $authorId, $request);
         }
         $entryId = (int) $routerParams['entry'];
         if (!$this->entries->belongsTo($collectionId, $entryId)) {

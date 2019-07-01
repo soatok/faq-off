@@ -17,6 +17,7 @@ $authOnly = new AuthorizedUsersOnly($container);
 
 $app->group('/manage', function () use ($app, $container) {
     // Authenticated users only...
+    $app->any('/ajax/{action:[A-Za-z0-9\-_]+}', 'manage.ajax');
     $app->any('/collection/{collection:[0-9]+}/entry/{entry:[0-9]+}[/{action:[a-z]+}]', 'manage.entry');
     $app->any('/collection/{collection:[0-9]+}/{action:entry}/{create:create}', 'manage.entry');
 
@@ -52,6 +53,9 @@ $app->get('', 'staticpage');
 
 $container['manage'] = function (Container $c) {
     return new Manage\ControlPanel($c);
+};
+$container['manage.ajax'] = function (Container $c) {
+    return new Manage\AJAX($c);
 };
 $container['manage.author'] = function (Container $c) {
     return new Manage\Author($c);

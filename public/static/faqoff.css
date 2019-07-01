@@ -39,3 +39,31 @@
     content: "ERROR: ";
     font-weight: bold;
 }
+.message-once .success {
+    color: #6C6;
+}
+.message-once .success:before {
+    color: #393;
+    content: "Success: ";
+    font-weight: bold;
+}
+.entry-preview {
+    background: #eee;
+    border: 1px solid #000;
+    color: #000;
+    margin: 0.33rem;
+    padding: 0 0.33rem;
+}
+.entry-preview *:first-child {
+    margin-top: 0.33rem;
+}
+.entry-preview *:last-child {
+    margin-bottom: 0.33rem;
+}
+.full-width {
+    width: 100%;
+}
+.scrollbox {
+    max-height: 15rem;
+    overflow-y: auto;
+}
