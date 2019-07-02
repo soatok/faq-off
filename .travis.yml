@@ -1,0 +1,22 @@
+language: php
+sudo: false
+
+services:
+  - postgresql
+
+matrix:
+  fast_finish: true
+  include:
+    - php: "7.3"
+    - php: "nightly"
+    - php: "master"
+  allow_failures:
+    - php: "nightly"
+    - php: "master"
+
+install:
+  - tests/travis-install.sh
+  - composer update
+
+script:
+  - vendor/bin/phpunit

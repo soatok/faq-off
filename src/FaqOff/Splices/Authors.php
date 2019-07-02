@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
-namespace Soatok\FaqOff\Splice;
+namespace Soatok\FaqOff\Splices;
 
 use Soatok\AnthroKit\Splice;
 
 /**
  * Class Authors
- * @package Soatok\FaqOff\Splice
+ * @package Soatok\FaqOff\Splices
  */
 class Authors extends Splice
 {
@@ -66,12 +66,13 @@ class Authors extends Splice
      * @param int $accountId
      * @param string $bio
      * @return bool
+     *
+     * @throws \Exception
      */
     public function create(string $screenName, int $accountId, string $bio = ''): bool
     {
         if ($this->screenNameIsTaken($screenName)) {
-            // TODO: Throw an exception instead.
-            return false;
+            throw new \Exception('Screen name is already taken');
         }
         $this->db->beginTransaction();
         $this->db->insert(
@@ -83,6 +84,47 @@ class Authors extends Splice
             ]
         );
         return $this->db->commit();
+    }
+
+    /**
+     * @param int $accountId
+     * @param bool $ownedOnly
+     * @return array
+     */
+    public function getByAccount(int $accountId, bool $ownedOnly = false): array
+    {
+        if ($ownedOnly) {
+            return $this->db->run(
+                "SELECT * FROM faqoff_author WHERE ownerid = ? ORDER BY screenname ASC",
+                $accountId
+            );
+        }
+        return $this->db->run(
+            "SELECT * FROM faqoff_author
+               WHERE ownerid = ? OR authorid IN (
+                   SELECT authorid FROM faqoff_author_contributor WHERE accountid = ?
+               )
+               ORDER BY screenname ASC
+            ",
+            $accountId,
+            $accountId
+        );
+    }
+
+    /**
+     * @param int $authorId
+     * @return array
+     */
+    public function getById(int $authorId): array
+    {
+        $author = $this->db->row(
+            "SELECT * FROM faqoff_author WHERE authorid = ?",
+            $authorId
+        );
+        if (!$author) {
+            return [];
+        }
+        return $author;
     }
 
     /**

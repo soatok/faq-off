@@ -30,15 +30,22 @@ $default = [
 ];
 
 $anthrokit = [
+        'allow-password-auth' => false,
         'allow-twitter-auth' => true,
         'redirect' => [
             'auth-success' => '/',
+            'auth-failure' => '/generic-error/auth-failure',
             'activate-success' => '/',
-            'empty-params' => '/',
-            'invalid-action' => '/',
+            'empty-params' => '/generic-error/empty-params',
+            'invalid-action' => '/generic-error/invalid-action',
+            'invite-required' => '/generic-error/invite-required',
             'login' => '/auth/login',
+            'logout-fail' => '/generic-error/logout-fail',
+            'logout-success' => '/',
             'register' => '/auth/register',
+            'twitter' => '/auth/twitter',
         ],
+        'require-invite-register' => false,
         'sql' => [
             'accounts' => [
                 'table' => 'faqoff_accounts',
@@ -61,6 +68,19 @@ $anthrokit = [
                     'selector' => 'selector',
                     'validator' => 'validator'
                 ]
+            ],
+            'invites' => [
+                'table' => 'faqoff_invites',
+                'field' => [
+                    'id' => 'inviteid',
+                    'from' => 'invitefrom',
+                    'twitter' => 'twitter',
+                    'email' => 'email',
+                    'invite_code' => 'invite_code',
+                    'claimed' => 'claimed',
+                    'created' => 'created',
+                    'newaccountid' => 'newaccountid'
+                ]
             ]
         ],
         'templates' => [
@@ -71,6 +91,12 @@ $anthrokit = [
             'two-factor' => 'two-factor.twig'
         ]
 ];
+
+// Merge local changes to AnthroKit configuration
+if (is_readable(APP_ROOT . '/local/anthrokit.php')) {
+    $local = require_once APP_ROOT . '/local/anthrokit.php';
+    $anthrokit = $local + $anthrokit;
+}
 
 if (is_readable(APP_ROOT . '/local/settings.php')) {
     $local = require_once APP_ROOT . '/local/settings.php';

@@ -1,2 +1,35 @@
+<nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand">FAQ Off!</a>
 
-{# Todo: Navigation and maybe top-level branding (header image, etc.) #}
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+            <a class="nav-link" href="/">Home {#
+                #}{% if not navbar or navbar == "" %}<span class="sr-only">(current)</span>{% endif %}{#
+            #}</a>
+        </li>
+        {% if authorized() %}
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="manageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Control Panel
+                </a>
+                <div class="dropdown-menu" aria-labelledby="manageDropdown">
+                    <a class="dropdown-item" href="/manage">Home</a>
+                    <a class="dropdown-item" href="/manage/collections">Collections</a>
+                    <a class="dropdown-item" href="/manage/authors">Authors</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/manage/invite">Invite Users</a>
+                </div>
+            </li>
+            <li>
+                <a class="nav-link" href="/auth/logout/{{ session.logout_token }}">Log Out</a>
+            </li>
+        {% else %}
+            <li>
+            <a class="nav-link" href="/auth/twitter">Log In {#
+                #}{% if navbar == "authorize" %}<span class="sr-only">(current)</span>{% endif %}{#
+            #}</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>

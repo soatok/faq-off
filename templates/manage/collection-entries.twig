@@ -1,0 +1,50 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h2>Control Panel &rsaquo; Collections &rsaquo; {{ collection.title|e('html_attr') }} &rsaquo; Entries</h2>
+
+    <h3>Actions</h3>
+    <ul>
+        <li><a href="/manage/collection/{{ collection.collectionid }}">Edit Collection Info</a></li>
+        <li><a href="/manage/collection/{{ collection.collectionid }}/entry/create">Create New Entry</a></li>
+    </ul>
+
+    <h3>Entries</h3>
+
+    <div class="table-responsive table-striped">
+    <table id="collection-entries" class="table">
+        <thead>
+        <tr>
+            <th>Question</th>
+            <th>Created</th>
+            <th>Modified</th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <th>Question</th>
+            <th>Created</th>
+            <th>Modified</th>
+        </tr>
+        </tfoot>
+        <tbody>
+            {% for entry in entries %}
+            <tr>
+                <td>
+                    <a href="/manage/collection/{{ collection.collectionid }}/entry/{{ entry.entryid }}">
+                        #{{ entry.entryid }} - {{ entry.title|e('html_attr') }}
+                    </a>
+                </td>
+                <td>
+                    <time datetime="{{ entry.created }}">{{ entry.created|format('F j, Y g:i A') }}</time>
+                </td>
+                <td>
+                    <time datetime="{{ entry.modified }}">{{ entry.modified|format('F j, Y g:i A') }}</time>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    
+{% endblock %}

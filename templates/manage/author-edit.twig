@@ -1,0 +1,30 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h2>Control Panel &rsaquo; Author &rsaquo; {{ author.screenname|e }}</h2>
+
+    <h3>Collections (<a href="/manage/author/{{ author.authorid }}/collection/create">Create New</a>)</h3>
+    {% if collections %}
+        <ul>
+        {% for i, collection in collections %}
+            <li>
+                <a href="/manage/collection/{{ collection.collectionid }}">{{ collection.title|e }}</a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+    <h3>Edit Author Information</h3>
+    <form method="post">{{ anti_csrf() }}
+        <div class="form-group">
+            <label class="bg-dark text-light" for="author-bio">Author Biography:</label>
+            <textarea
+                class="form-control"
+                id="author-bio"
+                name="biography"
+            >{{ post.biography|e('html_attr') }}</textarea>
+            <small>Markdown allowed.</small>
+        </div>
+        <button type="submit" class="btn btn-verydark form-control">Update Author</button>
+    </form>
+{% endblock %}

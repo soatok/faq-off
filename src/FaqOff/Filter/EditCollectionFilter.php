@@ -6,16 +6,14 @@ use ParagonIE\Ionizer\Filter\StringFilter;
 use ParagonIE\Ionizer\InputFilterContainer;
 
 /**
- * Class LoginFilter
+ * Class EditCollectionFilter
  * @package Soatok\FaqOff\Filter
  */
-class LoginFilter extends InputFilterContainer
+class EditCollectionFilter extends InputFilterContainer
 {
     public function __construct()
     {
         $this
-            ->addFilter('username', new StringFilter())
-            ->addFilter('passphrase', new StringFilter())
-            ->addFilter('mfa', (new StringFilter()));
+            ->addFilter('title', new StringFilter());
     }
 }

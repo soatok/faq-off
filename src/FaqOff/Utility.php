@@ -10,6 +10,7 @@ use Psr\Http\Message\RequestInterface;
 use Slim\Container;
 use Slim\Http\Headers;
 use Slim\Http\Response;
+use Slim\Http\Stream;
 use Twig\Environment;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -83,6 +84,14 @@ abstract class Utility
          * @twig-filter cachebust
          * Usage: {{ "/static/main.css"|cachebust }}
          */
+        $env->addFunction(
+            new TwigFunction(
+                'authorized',
+                function () {
+                    return !empty($_SESSION['account_id']);
+                }
+            )
+        );
         $env->addFilter(
             new TwigFilter(
                 'cachebust',
@@ -115,12 +124,34 @@ abstract class Utility
                 'csp_nonce',
                 function (string $directive = 'script-src') use ($container) {
                     /** @var CSPBuilder $csp */
-                    $csp = $container->get('csp');
+                    $csp = Utility::$container['csp'];
                     return $csp->nonce($directive);
                 }
             )
         );
 
+        $env->addFunction(
+            new TwigFunction(
+                'clear_message_once',
+                function () {
+                    $_SESSION['message_once'] = [];
+                }
+            )
+        );
+
+        $env->addGlobal('session', $_SESSION);
+
         return $env;
+    }
+
+    /**
+     * @param string $body
+     * @return Stream
+     */
+    public static function stringToStream(string $body): Stream
+    {
+        $resource = \fopen('php://temp', 'wb');
+        \fwrite($resource, $body);
+        return new Stream($resource);
     }
 }

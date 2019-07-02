@@ -1,0 +1,19 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h2>Control Panel &rsaquo; Authors</h2>
+
+    <a href="/manage/author/create">Create New Author Profile</a>
+
+    {% if authors %}
+    <h3>My Authors</h3>
+    <ul>
+        {% for author in authors %}
+            <li>
+                <a href="/manage/author/{{ author.authorid }}">{{ author.screenname|e }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+{% endblock %}

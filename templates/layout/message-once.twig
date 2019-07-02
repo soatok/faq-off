@@ -1,0 +1,4 @@
+{% for k, msg in session['message_once'] %}
+    <p class="message-once">{{ msg|raw }}</p>
+{% endfor %}
+{{ clear_message_once() }}

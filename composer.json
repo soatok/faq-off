@@ -13,16 +13,17 @@
     ],
     "require": {
         "php": "^7.2",
+        "ext-json": "*",
+        "ext-pdo": "*",
+        "ezyang/htmlpurifier": "^4",
         "kelunik/two-factor": "^1",
+        "league/commonmark": "^0|^1",
         "monolog/monolog": "^1.17",
         "paragonie/anti-csrf": "^2",
         "paragonie/constant_time_encoding": "^2",
-        "paragonie/easydb": "^2",
         "paragonie/hidden-string": "^1",
-        "paragonie/ionizer": "^0",
-        "paragonie/sodium_compat": "^1.8",
-        "soatok/anthrokit": "^0|^1",
-        "soatok/anthrokit-auth": "^0|^1",
+        "soatok/anthrokit": "^0.4|^1",
+        "soatok/anthrokit-auth": "^0.5|^1",
         "slim/slim": "^3.1",
         "twig/twig": "^2"
     },
@@ -37,13 +38,16 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Soatok\\FaqOff\\Tests\\": "tests/"
+            "Soatok\\FaqOff\\Tests\\": "tests/unit/"
         }
     },
     "config": {
         "process-timeout" : 0
     },
     "scripts": {
+        "post-update-cmd": [
+            "chmod 0777 vendor/ezyang/htmlpurifier/library/HTMLPurifier/DefinitionCache/Serializer"
+        ],
         "start": "php -S localhost:8080 -t public",
         "static-analysis": "psalm",
         "test": "phpunit"

@@ -16,7 +16,7 @@ use Twig\Error\{
 
 /**
  * Class StaticPage
- * @package Soatok\FaqOff\Handler
+ * @package Soatok\FaqOff\Endpoints
  */
 class StaticPage extends Endpoint
 {

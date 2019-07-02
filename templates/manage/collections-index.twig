@@ -1,0 +1,25 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h2>Control Panel &rsaquo; Collections</h2>
+    <ul>
+        {% for collection in collections %}
+            <li>
+                <a href="/manage/collection/{{ collection.collectionid }}">{#
+                    #}{{ collection.title|e }} {#
+                    #}(<strong>@{{ collection['author_screenname']|e }}</strong>){#
+                #}</a>
+                <ul>
+                    <li>
+                        <a href="/manage/collection/{{ collection.collectionid }}/entry/create">
+                            Create Entry
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+    <p>
+        To create a new collection, please first <a href="/manage/authors">select an author</a>.
+    </p>
+{% endblock %}

@@ -6,4 +6,5 @@ CREATE TABLE faqoff_invites (
     invite_code TEXT,
     claimed BOOLEAN DEFAULT FALSE,
     CREATED TIMESTAMP DEFAULT NOW(),
+    newaccountid BIGINT NULL REFERENCES faqoff_accounts (accountid)
 );

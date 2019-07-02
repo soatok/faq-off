@@ -6,15 +6,14 @@ use ParagonIE\Ionizer\Filter\StringFilter;
 use ParagonIE\Ionizer\InputFilterContainer;
 
 /**
- * Class RegisterFilter
+ * Class CreateEntryFilter
  * @package Soatok\FaqOff\Filter
  */
-class RegisterFilter extends InputFilterContainer
+class CreateEntryFilter extends InputFilterContainer
 {
     public function __construct()
     {
         $this
-            ->addFilter('username', new StringFilter())
-            ->addFilter('passphrase', new StringFilter());
+            ->addFilter('title', new StringFilter());
     }
 }

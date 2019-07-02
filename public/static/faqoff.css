@@ -1,0 +1,69 @@
+.btn-verydark {
+    background-color: #23272b;
+    border-color: #23272b;
+    color: #fff;
+}
+.btn-verydark:hover {
+    background-color: #111314;
+    border-color: #111314;
+    color: #fff;
+}
+
+#invite-codes {
+    padding-left: 0;
+}
+.invite-code {
+    background-color: #23272b;
+    border: 1px solid #111314;
+    border-radius: 0.33rem;
+    font-family: monospace;
+    list-style: none;
+    padding: 0.33rem;
+}
+.invite-code + .invite-code {
+    margin-top: 1rem;
+}
+
+.message-once {
+    background-color: #23272b;
+    border: 1px solid #111314;
+    border-radius: 0.33rem;
+    list-style: none;
+    padding: 0.33rem;
+}
+.message-once .error {
+    color: #F66;
+}
+.message-once .error:before {
+    color: #F33;
+    content: "ERROR: ";
+    font-weight: bold;
+}
+.message-once .success {
+    color: #6C6;
+}
+.message-once .success:before {
+    color: #393;
+    content: "Success: ";
+    font-weight: bold;
+}
+.entry-preview {
+    background: #eee;
+    border: 1px solid #000;
+    color: #000;
+    margin: 0.33rem;
+    padding: 0 0.33rem;
+}
+.entry-preview *:first-child {
+    margin-top: 0.33rem;
+}
+.entry-preview *:last-child {
+    margin-bottom: 0.33rem;
+}
+.full-width {
+    width: 100%;
+}
+.scrollbox {
+    max-height: 15rem;
+    overflow-y: auto;
+}

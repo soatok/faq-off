@@ -1,0 +1,28 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h2>Control Panel &rsaquo; New Author</h2>
+    <form method="post">{{ anti_csrf() }}
+        <div class="form-group">
+            <label class="bg-dark text-light" for="author-name">Author Name:</label>
+            <input
+                class="form-control"
+                id="author-name"
+                name="name"
+                required="required"
+                type="text"
+                value="{{ post.name|e('html_attr') }}"
+            />
+        </div>
+        <div class="form-group">
+            <label class="bg-dark text-light" for="author-bio">Author Biography:</label>
+            <textarea
+                class="form-control"
+                id="author-bio"
+                name="biography"
+            >{{ post.biography|e('html_attr') }}</textarea>
+            <small>Markdown allowed.</small>
+        </div>
+        <button type="submit" class="btn btn-verydark form-control">Create New Author</button>
+    </form>
+{% endblock %}
