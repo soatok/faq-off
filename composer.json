@@ -1,6 +1,7 @@
 {
     "name": "soatok/faq-off",
     "description": "Challenge-Response Automation",
+    "type": "project",
     "keywords": ["faq", "Slim Framework", "microservice"],
     "homepage": "http://github.com/soatok/faq-off",
     "license": "ISC",
