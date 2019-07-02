@@ -67,8 +67,14 @@
     </form>
 {% endblock %}
 
+{% block css %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" integrity="sha256-MeSf8Rmg3b5qLFlijnpxk6l+IJkiR91//YGPCrCmogU=" crossorigin="anonymous" />
+{% endblock %}
+
 {% block javascript %}
     {{ parent() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.full.min.js" integrity="sha256-/IUDRcglIrROpUfaxqKxg4kthVduVKB0mvd7PwtlmAk=" crossorigin="anonymous"></script>
     <script src="/static/manage-entry.js" nonce="{{ csp_nonce() }}"></script>
     <script src="/static/manage-entry-create.js" nonce="{{ csp_nonce() }}"></script>
 {% endblock %}

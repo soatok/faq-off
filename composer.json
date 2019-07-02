@@ -23,7 +23,7 @@
         "paragonie/constant_time_encoding": "^2",
         "paragonie/hidden-string": "^1",
         "soatok/anthrokit": "^0.4|^1",
-        "soatok/anthrokit-auth": "^0.4|^1",
+        "soatok/anthrokit-auth": "^0.5|^1",
         "slim/slim": "^3.1",
         "twig/twig": "^2"
     },
@@ -38,7 +38,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Soatok\\FaqOff\\Tests\\": "tests/"
+            "Soatok\\FaqOff\\Tests\\": "tests/unit/"
         }
     },
     "config": {

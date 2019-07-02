@@ -10,6 +10,7 @@ use Psr\Http\Message\RequestInterface;
 use Slim\Container;
 use Slim\Http\Headers;
 use Slim\Http\Response;
+use Slim\Http\Stream;
 use Twig\Environment;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -141,5 +142,16 @@ abstract class Utility
         $env->addGlobal('session', $_SESSION);
 
         return $env;
+    }
+
+    /**
+     * @param string $body
+     * @return Stream
+     */
+    public static function stringToStream(string $body): Stream
+    {
+        $resource = \fopen('php://temp', 'wb');
+        \fwrite($resource, $body);
+        return new Stream($resource);
     }
 }

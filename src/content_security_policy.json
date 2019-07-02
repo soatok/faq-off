@@ -9,7 +9,8 @@
   },
   "style-src": {
     "allow": [
-      "https://stackpath.bootstrapcdn.com"
+      "https://stackpath.bootstrapcdn.com",
+      "https://cdnjs.cloudflare.com"
     ],
     "self": true
   }

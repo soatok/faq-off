@@ -56,7 +56,6 @@ class Author extends Endpoint
 
     /**
      * @param RequestInterface $request
-     * @param array $routerParams
      * @return ResponseInterface
      *
      * @throws ContainerException
