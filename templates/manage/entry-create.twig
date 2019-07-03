@@ -51,16 +51,7 @@
 
         <div class="form-group full-width">
             <label class="bg-dark text-light" for="entry-attach-to">Attach to:</label>
-            <ol id="entry-attach-to"></ol>
-            <hr />
-            <div class="form-group row full-width">
-                <div class="col-sm-10">
-                    <input class="form-control full-width" type="text" id="entry-attach-to-search" value="" name="dummy" />
-                </div>
-                <div class="col-sm-2">
-                    <button class="btn btn-verydark">Attach Another</button>
-                </div>
-            </div>
+            <select id="entry-attach-to" multiple="multiple" class="full-width darktext" name="attach-to[]"></select>
         </div>
 
         <button type="submit" class="btn btn-verydark">Create New Entry</button>

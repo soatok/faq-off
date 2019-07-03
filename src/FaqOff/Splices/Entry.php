@@ -2,6 +2,8 @@
 declare(strict_types=1);
 namespace Soatok\FaqOff\Splices;
 
+use ParagonIE\EasyDB\EasyStatement;
+use SebastianBergmann\Diff\Differ;
 use Soatok\AnthroKit\Splice;
 
 /**
@@ -92,9 +94,48 @@ class Entry extends Splice
 
         // Attach question as follow-up to previously-existing question
         foreach ($attachTo as $attach) {
-            $this->attachTo($attach, $newEntryId, $collectionId, $authorId);
+            $this->attachTo((int) $attach, $newEntryId, $collectionId, $authorId);
         }
         return $newEntryId;
+    }
+
+    /**
+     * @param string $query
+     * @return array
+     */
+    public function entrySearch(string $query): array
+    {
+        $results = $this->db->run(
+            "SELECT entryid AS id, title AS text FROM faqoff_entry 
+            WHERE to_tsvector('english', title) @@ to_tsquery('english', ?)",
+            $query
+        );
+        if (!$results) {
+            return [];
+        }
+        return $results;
+    }
+
+    /**
+     * @param array $followUps
+     * @return array
+     */
+    public function getFollowUps(array $followUps = []): array
+    {
+        if (empty($followUps)) {
+            return [];
+        }
+        $place = array_fill(0, count($followUps), '?');
+        $statement = implode(', ', $place);
+        $followUps = $this->db->run(
+            'SELECT entryid, title FROM faqoff_entry
+            WHERE entryid IN (' . $statement . ')',
+            ...$followUps
+        );
+        if (!$followUps) {
+            return [];
+        }
+        return $followUps;
     }
 
     /**
@@ -110,6 +151,7 @@ class Entry extends Splice
         if (!$entry) {
             return [];
         }
+        $entry['options'] = json_decode($entry['options'] ?? '[]', true);
         return $entry;
     }
 
@@ -120,7 +162,7 @@ class Entry extends Splice
      */
     public function getByCollectionAndUrl(int $collectionId, string $url): array
     {
-        $collection = $this->db->row(
+        $entry = $this->db->row(
             "SELECT
                 *
             FROM
@@ -130,10 +172,11 @@ class Entry extends Splice
             $collectionId,
             $url
         );
-        if (!$collection) {
+        if (!$entry) {
             return [];
         }
-        return $collection;
+        $entry['options'] = json_decode($entry['options'] ?? '[]', true);
+        return $entry;
     }
 
     /**
@@ -152,5 +195,46 @@ class Entry extends Splice
             return [];
         }
         return $collections;
+    }
+
+    /**
+     * @param int $entryId
+     * @param array $post
+     * @return bool
+     */
+    public function update(int $entryId, array $post): bool
+    {
+        $this->db->beginTransaction();
+        $old = $this->getById($entryId);
+
+        // Insert a change
+        $this->db->insert(
+            'faqoff_entry_changelog',
+            [
+                'entryid' => $entryId,
+                'accountid' => $_SESSION['accountid'],
+                'diff' => (new Differ())->diff(
+                    $old['contents'],
+                    $post['contents']
+                )
+            ]
+        );
+
+        // Coerce to integers
+        $options = $old['options'];
+        $options['follow-up'] = $post['follow-up'];
+        array_walk($options['follow-up'], 'intval');
+
+        // Update the record
+        $this->db->update(
+            'faqoff_entry',
+            [
+                'title' => $post['title'],
+                'contents' => $post['contents'],
+                'options' => json_encode($options)
+            ],
+            ['entryid' => $entryId]
+        );
+        return $this->db->commit();
     }
 }

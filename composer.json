@@ -23,6 +23,7 @@
         "paragonie/anti-csrf": "^2",
         "paragonie/constant_time_encoding": "^2",
         "paragonie/hidden-string": "^1",
+        "sebastian/diff": "^1",
         "soatok/anthrokit": "^0.4|^1",
         "soatok/anthrokit-auth": "^0.5|^1",
         "soatok/anthrokit-session": "^0|^1",

@@ -63,6 +63,7 @@ class Entries extends Endpoint
         int $authorId,
         RequestInterface $request
     ): ResponseInterface {
+        $this->cspBuilder->setSelfAllowed('style-src', true);
         $filter = new CreateEntryFilter();
         $errors = [];
         $post = $this->post($request, self::TYPE_FORM, $filter);
@@ -108,8 +109,20 @@ class Entries extends Endpoint
         RequestInterface $request
     ): ResponseInterface {
         $errors = [];
+        $this->cspBuilder->setSelfAllowed('style-src', true);
         $post = $this->post($request);
+        if ($post) {
+            if ($this->entries->update($entryId, $post)) {
+                $this->messageOnce('Update sucessful', 'success');
+                return $this->redirect(
+                    '/manage/collection/' . $collectionId . '/entry/' . $entryId
+                );
+            }
+        }
         $entry = $this->entries->getById($entryId);
+        $entry['options']['follow-up'] = $this->entries->getFollowUps(
+            $entry['options']['follow-up'] ?? []
+        );
         return $this->view(
             'manage/entry-edit.twig',
             [

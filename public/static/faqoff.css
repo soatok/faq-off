@@ -67,3 +67,10 @@
     max-height: 15rem;
     overflow-y: auto;
 }
+.darktext {
+    color: #000;
+}
+.select2-results,
+.select2-selection__rendered {
+    color: #000;
+}

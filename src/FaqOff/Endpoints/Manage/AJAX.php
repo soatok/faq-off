@@ -2,12 +2,14 @@
 declare(strict_types=1);
 namespace Soatok\FaqOff\Endpoints\Manage;
 
-use Interop\Container\Exception\ContainerException;
 use League\CommonMark\CommonMarkConverter;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\StatusCode;
 use Soatok\AnthroKit\Endpoint;
+use Soatok\FaqOff\Exceptions\CollectionNotFoundException;
+use Soatok\FaqOff\Splices\Entry;
+use Soatok\FaqOff\Splices\EntryCollection;
 
 /**
  * Class AJAX
@@ -15,9 +17,46 @@ use Soatok\AnthroKit\Endpoint;
  */
 class AJAX extends Endpoint
 {
+    /**
+     * @param RequestInterface $request
+     * @return ResponseInterface
+     */
     protected function entrySearch(RequestInterface $request): ResponseInterface
     {
-        return $this->json([]);
+        $getData = $this->get($request);
+
+        /*
+        if (empty($getData['collection-id'])) {
+            return $this->json(
+                ['error' => 'Collection not found'],
+                StatusCode::HTTP_NOT_FOUND
+            );
+        }
+        */
+        if (empty($getData['q'])) {
+            return $this->json([]);
+        }
+        // $collectionId = (int) $getData['collection-id'];
+
+        /** @var EntryCollection $collection */
+        // $collection = $this->splice('EntryCollection');
+
+        /** @var Entry $entries */
+        $entries = $this->splice('Entry');
+
+        /*
+        try {
+            $collection->getById($collectionId);
+        } catch(CollectionNotFoundException $ex) {
+            return $this->json(
+                ['error' => 'Collection not found'],
+                StatusCode::HTTP_NOT_FOUND
+            );
+        }
+        */
+        return $this->json([
+            'results' => $entries->entrySearch($getData['q'])
+        ]);
     }
 
     /**
