@@ -30,8 +30,6 @@ if (is_readable(APP_ROOT . '/local/phpunit.php')) {
 }
 $app = new \Slim\App($settings);
 
-var_dump($settings);
-
 // Set up dependencies
 require APP_ROOT . '/src/dependencies.php';
 

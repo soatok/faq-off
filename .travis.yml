@@ -1,6 +1,9 @@
 language: php
 sudo: false
 
+addons:
+  postgresql: "9.6"
+
 services:
   - postgresql
 
@@ -8,11 +11,6 @@ matrix:
   fast_finish: true
   include:
     - php: "7.3"
-    - php: "nightly"
-    - php: "master"
-  allow_failures:
-    - php: "nightly"
-    - php: "master"
 
 before_install:
   - mkdir local
