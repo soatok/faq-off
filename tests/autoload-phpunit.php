@@ -26,8 +26,11 @@ $settings = require APP_ROOT. '/src/settings.php';
 if (is_readable(APP_ROOT . '/local/phpunit.php')) {
     $localPhpunit = include APP_ROOT . '/local/phpunit.php';
     $settings['settings'] = $localPhpunit + $settings['settings'];
+    $settings['database'] = $localPhpunit['database'] + $settings['settings']['database'];
 }
 $app = new \Slim\App($settings);
+
+var_dump($settings);
 
 // Set up dependencies
 require APP_ROOT . '/src/dependencies.php';
