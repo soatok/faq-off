@@ -43,4 +43,72 @@ class AccessControlsTest extends TestCase
         );
         unset($_SESSION['account_id']);
     }
+
+    public function testAuthorAccess()
+    {
+        $db = TestHelper::getContainer()['db'];
+        $db->beginTransaction();
+        $first = $db->insertGet(
+            'faqoff_accounts',
+            ['login' => 'phpunit-' . bin2hex(random_bytes(16))],
+            'accountid'
+        );
+        $second = $db->insertGet(
+            'faqoff_accounts',
+            ['login' => 'phpunit-' . bin2hex(random_bytes(16))],
+            'accountid'
+        );
+        $third = $db->insertGet(
+            'faqoff_accounts',
+            ['login' => 'phpunit-' . bin2hex(random_bytes(16))],
+            'accountid'
+        );
+        $authorId = $db->insertGet(
+            'faqoff_author',
+            [
+                'ownerid' => $second,
+                'screenname' => 'phpunit_' . bin2hex(random_bytes(16)),
+                'biography' => 'phpunit'
+            ],
+            'authorid'
+        );
+        $db->insert(
+            'faqoff_author_contributor',
+            [
+                'authorid' => $authorId,
+                'accountid' => $third
+            ]
+        );
+
+        // Non-owner, non-contributor
+        $_SESSION['account_id'] = $first;
+        TestHelper::fakeRequest('GET', '/manage/author/' . $authorId);
+        $response = TestHelper::getResponse();
+        $this->assertSame(
+            StatusCode::HTTP_FOUND,
+            $response->getStatusCode(),
+            'Not being redirected from author profile (but should be)'
+        );
+
+        // Owner
+        $_SESSION['account_id'] = $second;
+        TestHelper::fakeRequest('GET', '/manage/author/' . $authorId);
+        $response = TestHelper::getResponse();
+        $this->assertSame(
+            StatusCode::HTTP_OK,
+            $response->getStatusCode(),
+            'Redirected from author profile (owner)'
+        );
+
+        // Non-owner, but a contributor
+        $_SESSION['account_id'] = $third;
+        TestHelper::fakeRequest('GET', '/manage/author/' . $authorId);
+        $response = TestHelper::getResponse();
+        $this->assertSame(
+            StatusCode::HTTP_OK,
+            $response->getStatusCode(),
+            'Redirected from author profile (contributor)'
+        );
+        $db->rollBack();
+    }
 }
