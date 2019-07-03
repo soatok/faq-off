@@ -21,10 +21,12 @@ use Twig\TwigFunction;
  */
 abstract class Utility
 {
+    /** @var Container $container */
     private static $container;
 
     /**
      * @param Container $container
+     * @return void
      */
     public static function setContainer(Container $container)
     {
@@ -96,7 +98,7 @@ abstract class Utility
             new TwigFilter(
                 'cachebust',
                 function (string $filePath): string {
-                    $realpath = realpath(CANIS_PUBLIC . '/' . trim($filePath, '/'));
+                    $realpath = realpath(FAQOFF_PUBLIC . '/' . trim($filePath, '/'));
                     if (!is_string($realpath)) {
                         return $filePath . '?__404notfound';
                     }

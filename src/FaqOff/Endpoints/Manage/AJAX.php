@@ -17,7 +17,7 @@ class AJAX extends Endpoint
 {
     protected function entrySearch(RequestInterface $request): ResponseInterface
     {
-
+        return $this->json([]);
     }
 
     /**

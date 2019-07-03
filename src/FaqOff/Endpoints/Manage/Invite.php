@@ -35,6 +35,9 @@ class Invite extends Endpoint
         $config = $container->get(Fursona::CONTAINER_KEY) ?? [];
         $this->config = Fursona::autoConfig($config);
         $this->accounts = $this->splice('Accounts');
+        if (!($this->accounts instanceof Accounts)) {
+            throw new \TypeError('Invalid splice');
+        }
         $this->accounts->setConfig($this->config);
     }
 

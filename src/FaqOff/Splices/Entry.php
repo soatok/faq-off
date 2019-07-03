@@ -98,6 +98,22 @@ class Entry extends Splice
     }
 
     /**
+     * @param int $entryId
+     * @return array
+     */
+    public function getById(int $entryId): array
+    {
+        $entry = $this->db->row(
+            "SELECT * FROM faqoff_entry WHERE entryid = ?",
+            $entryId
+        );
+        if (!$entry) {
+            return [];
+        }
+        return $entry;
+    }
+
+    /**
      * @param int $collectionId
      * @param string $url
      * @return array

@@ -3,6 +3,7 @@ namespace Soatok\FaqOff;
 
 use Psr\Container\ContainerInterface;
 use Slim\App;
+use Slim\Container;
 use Slim\Http\Headers;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -39,11 +40,15 @@ abstract class TestHelper
     }
 
     /**
-     * @return ContainerInterface
+     * @return Container
      */
-    public static function getContainer(): ContainerInterface
+    public static function getContainer(): Container
     {
-        return self::$app->getContainer();
+        $c = self::$app->getContainer();
+        if (!($c instanceof Container)) {
+            throw new \TypeError('Not an instance of Slim Container');
+        }
+        return $c;
     }
 
     /**
@@ -71,7 +76,7 @@ abstract class TestHelper
             $server,
             Utility::stringToStream($body)
         );
-        self::$app->getContainer()['request'] = $request;
+        self::getContainer()['request'] = $request;
     }
 
     /**
@@ -81,8 +86,12 @@ abstract class TestHelper
      */
     public static function getResponse(): Response
     {
-        $request = self::$app->getContainer()['request'];
-        $response = self::$app->getContainer()['response'];
-        return self::$app->process($request, $response);
+        $request = self::getContainer()['request'];
+        $response = self::getContainer()['response'];
+        $response = self::$app->process($request, $response);
+        if (!($response instanceof Response)) {
+            throw new \TypeError('Object not a Slim response');
+        }
+        return $response;
     }
 }
