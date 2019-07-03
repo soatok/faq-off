@@ -1,0 +1,16 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h1>{{ author.screenname }}</h1>
+    <div id="biography">{{ author.biography|raw }}</div>
+
+    <h2>Collections</h2>
+    <ol id="author-collections">
+        {% for coll in collections %}
+        <li>
+            <a href="/@{{ coll['author_screenname']|e('url') }}/{{ coll.url|e('url') }}">{{ coll.title|e('html') }}</a>
+        </li>
+        {% endfor %}
+    </ol>
+
+{% endblock %}
