@@ -1,6 +1,7 @@
 <?php
 
-require_once 'autoload-phpunit.php';
+define('APP_ROOT', dirname(__DIR__));
+require_once APP_ROOT . '/vendor/autoload.php';
 
 if (!is_dir(APP_ROOT . '/local')) {
     mkdir(APP_ROOT . '/local', 0777);
