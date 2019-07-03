@@ -18,8 +18,8 @@ before_install:
   - chmod +x tests/travis-install.sh
 
 install:
-  - tests/travis-install.sh
   - composer update
+  - tests/travis-install.sh
 
 script:
   - vendor/bin/phpunit
