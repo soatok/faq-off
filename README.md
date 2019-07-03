@@ -33,7 +33,11 @@ Next, run `composer install` inside the destination directory.
 
 ### Database Setup
 
-TODO
+Run `bin/create-config.php` to create a local configuration file.
+You should have valid PostgreSQL database credentials onhand at
+this stage.
+
+Next, run `bin/install` to finish installing the database tables. 
 
 ### Webserver Configuration
 

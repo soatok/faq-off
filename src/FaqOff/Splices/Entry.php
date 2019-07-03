@@ -2,7 +2,6 @@
 declare(strict_types=1);
 namespace Soatok\FaqOff\Splices;
 
-use ParagonIE\EasyDB\EasyStatement;
 use SebastianBergmann\Diff\Differ;
 use Soatok\AnthroKit\Splice;
 
