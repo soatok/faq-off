@@ -17,12 +17,12 @@ function getDB(array $settings)
         $settings['options'] ?? []
     );
 }
-$db = getDB($settings['database']);
 if (empty($settings['database']['phpunit-safe'])) {
     echo 'Database is not safe for unit testing!', PHP_EOL,
         'Please ensure you\'re not overwriting your real database.', PHP_EOL;
     exit(255);
 }
+$db = getDB($settings['database']);
 
 $sqlScripts = glob(APP_ROOT . '/sql/*.sql');
 sort($sqlScripts, SORT_STRING | SORT_ASC);

@@ -25,6 +25,7 @@
         "paragonie/hidden-string": "^1",
         "soatok/anthrokit": "^0.4|^1",
         "soatok/anthrokit-auth": "^0.5|^1",
+        "soatok/anthrokit-session": "^0|^1",
         "slim/slim": "^3.1",
         "twig/twig": "^2"
     },

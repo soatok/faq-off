@@ -14,6 +14,10 @@ class AccessControlsTest extends TestCase
 {
     public function testAuthenticated()
     {
+        if (isset($_SESSION['account_id'])) {
+            unset($_SESSION['account_id']);
+        }
+
         TestHelper::fakeRequest('GET', '/');
         $response = TestHelper::getResponse();
         $this->assertSame(
@@ -29,5 +33,14 @@ class AccessControlsTest extends TestCase
             $response->getStatusCode(),
             'Not being redirected from control panel'
         );
+
+        $_SESSION['account_id'] = random_int(1, PHP_INT_MAX - 1);
+        $response = TestHelper::getResponse();
+        $this->assertSame(
+            StatusCode::HTTP_OK,
+            $response->getStatusCode(),
+            'Being redirected from control panel'
+        );
+        unset($_SESSION['account_id']);
     }
 }

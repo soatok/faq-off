@@ -12,6 +12,12 @@ if (PHP_SAPI == 'cli-server') {
 
 require APP_ROOT. '/vendor/autoload.php';
 
+$GLOBALS['session_store'] = [];
+$volatile = new \Soatok\AnthroKit\Session\VolatileSaveHandler(
+    $GLOBALS['session_store']
+);
+session_set_save_handler($volatile);
+
 session_start();
 
 // Instantiate the app
