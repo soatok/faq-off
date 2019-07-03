@@ -222,7 +222,7 @@ class Entry extends Splice
 
         // Coerce to integers
         $options = $old['options'];
-        $options['follow-up'] = $post['follow-up'];
+        $options['follow-up'] = $post['follow-up'] ?? [];
         array_walk($options['follow-up'], 'intval');
 
         // Update the record
