@@ -312,9 +312,7 @@ class Entry extends Splice
                 'diff' => (new Differ())->diff(
                     $old['contents'],
                     $post['contents']
-                ),
-                'modified' => (new \DateTime())
-                    ->format(\DateTime::ISO8601)
+                )
             ]
         );
 
@@ -352,7 +350,9 @@ class Entry extends Splice
             [
                 'title' => $post['title'],
                 'contents' => $post['contents'],
-                'options' => json_encode($options)
+                'options' => json_encode($options),
+                'modified' => (new \DateTime())
+                    ->format(\DateTime::ISO8601)
             ],
             ['entryid' => $entryId]
         );
