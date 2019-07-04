@@ -31,7 +31,7 @@ First, clone the git repository.
 git clone https://github.com/soatok/faq-off target-dir-name
 ```
 
-Next, run `composer install` inside the destination directory.
+Next, run `composer install --no-dev` inside the destination directory.
 
 ### Database Setup
 
@@ -43,5 +43,72 @@ Next, run `bin/install` to finish installing the database tables.
 
 ### Webserver Configuration
 
-TODO
+Make sure you configure your virtual host to use the `public` directory
+as its document root.
 
+* BAD: `/var/www/faq-off` 
+* Good: `/var/www/faq-off/public`
+
+General rule: If your users can read this `README.md` file, you've configured your
+server incorrectly and need to go another layer down. 
+
+It's highly recommended that you use HTTPS (TLSv1.3, TLSv1.2). If you cannot
+afford a TLS certificate, [Let's Encrypt](https://letsencrypt.org) offers free
+certificates with automatic renewal (via `certbot`).
+
+For example, an nginx configuration might look like this:
+
+```nginx
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+
+    ssl_certificate /etc/letsencrypt/live/faq.example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/faq.example.com/privkey.pem;
+
+    include snippets/ssl-params.conf;
+
+    root /var/www/faq-off/public;
+
+    server_name faq.example.com;
+
+    index index.php index.html index.htm;
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php7.3-fpm.sock;
+    }
+    location / {
+        # First attempt to serve request as file, then
+        # as directory, then fall back to displaying a 404.
+        try_files $uri $uri/ /index.php?$args;
+    }
+
+    location ~ /.well-known {
+        allow all;
+    }
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+
+    root /var/www/faq-off/public;
+    index index.html index.htm;
+
+    server_name faq.example.com;
+
+    location ~ /.well-known {
+        allow all;
+    }
+
+    location / {
+        # First attempt to serve request as file, then
+        # as directory, then fall back to displaying a 404.
+        try_files $uri $uri/ =404;
+    }
+
+    # Redirect to HTTPS
+    return 301 https://faq.example.com$request_uri;
+}
+```
