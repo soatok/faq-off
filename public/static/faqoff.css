@@ -134,3 +134,19 @@
     padding-right: 1rem;
     width: 1px;
 }
+#manage-collections-table a {
+    text-shadow: #000 1px 1px 1px;
+}
+#manage-collections-table,
+#manage-collections-table tbody {
+    width: 100%;
+}
+.text-center {
+    text-align: center;
+}
+.min-width {
+    width: 1px;
+}
+#manage-collections-table .manage-collections-entries a {
+    font-weight: bold;
+}

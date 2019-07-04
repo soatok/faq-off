@@ -2,23 +2,37 @@
 
 {% block main %}
     <h2>Control Panel &rsaquo; Collections</h2>
-    <ul>
-        {% for collection in collections %}
-            <li>
-                <a href="/manage/collection/{{ collection.collectionid }}">{#
-                    #}{{ collection.title|e }} {#
-                    #}(<strong>@{{ collection['author_screenname']|e }}</strong>){#
-                #}</a>
-                <ul>
-                    <li>
-                        <a href="/manage/collection/{{ collection.collectionid }}/entry/create">
-                            Create Entry
-                        </a>
-                    </li>
-                </ul>
-            </li>
-        {% endfor %}
-    </ul>
+    <table id="manage-collections-table" class="table table-striped full-width">
+        <thead>
+        <tr>
+            <th>Author</th>
+            <th>Collection</th>
+            <th colspan="2" class="text-center">Actions</th>
+        </tr>
+        </thead>
+    {% for collection in collections %}
+        <tr>
+            <td class="min-width">
+                <a href="/manage/author/{{ collection.authorid }}">
+                    @{{ collection['author_screenname']|e }}
+                </a>
+            </td>
+            <td class="manage-collections-entries">
+                <a href="/manage/collection/{{ collection.collectionid }}/entries">
+                    {{ collection.title|e }}
+                </a>
+            </td>
+            <td>
+                <a href="/manage/collection/{{ collection.collectionid }}">Edit Collection</a>
+            </td>
+            <td>
+                <a href="/manage/collection/{{ collection.collectionid }}/entry/create">
+                    Create Entry
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
     <p>
         To create a new collection, please first <a href="/manage/authors">select an author</a>.
     </p>

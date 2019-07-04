@@ -295,6 +295,7 @@ class Entry extends Splice
      * @param int $entryId
      * @param array $post
      * @return bool
+     * @throws \Exception
      */
     public function update(int $entryId, array $post): bool
     {
@@ -310,7 +311,9 @@ class Entry extends Splice
                 'diff' => (new Differ())->diff(
                     $old['contents'],
                     $post['contents']
-                )
+                ),
+                'modified' => (new \DateTime())
+                    ->format(\DateTime::ISO8601)
             ]
         );
 
