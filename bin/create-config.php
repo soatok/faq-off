@@ -101,4 +101,5 @@ return [
 EODUMP;
 
 file_put_contents(APP_ROOT . '/local/settings.php', $dump);
+copy(APP_ROOT . '/src/content_security_policy.json', APP_ROOT . '/local/content_security_policy.json');
 exit(0); // OK

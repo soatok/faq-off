@@ -17,6 +17,9 @@ use Zend\Mail\Transport\TransportInterface;
 $container = $app->getContainer();
 
 $container['csp'] = function (Container $c): CSPBuilder {
+    if (file_exists(APP_ROOT . '/local/content_security_policy.json')) {
+        return CSPBuilder::fromFile(APP_ROOT . '/local/content_security_policy.json');
+    }
     return CSPBuilder::fromFile(__DIR__ . '/content_security_policy.json');
 };
 
