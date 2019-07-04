@@ -19,6 +19,8 @@ FAQ Off is a self-hostable microservice based on Slim Framework 3 and
 > Invite links are given to Patreon supporters at the 
 > **Brilliant** tier and higher.
 
+To learn more, please see [the Patreon post that introduced FAQ Off](https://www.patreon.com/posts/tell-sea-lions-24475473).
+
 ## Installation
 
 ### Getting the Code and Dependencies
