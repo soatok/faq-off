@@ -76,7 +76,7 @@
 }
 #biography {
     background-color: #eee;
-    box-shadow: #000 0 0.25rem 1rem;
+    box-shadow: rgba(0, 0, 0, 0.75) 0 0.25rem 1rem;
     color: #000;
     margin: 0 2rem 1rem 2rem;
     padding: 0.33rem 0.83rem;
@@ -89,4 +89,48 @@
 }
 #biography img {
     max-width: 100%;
+}
+
+#front-entry-wrapper {
+    background-color: rgba(255, 255, 255, 0.83);
+    box-shadow: rgba(0, 0, 0, 0.75) 0 0.25rem 1rem;
+    color: #000;
+    padding-bottom: 1rem;
+}
+#front-entry-contents {
+    background-color: #eee;
+    box-shadow: rgba(0, 0, 0, 0.75) 0 0 0.25rem;
+    margin: 0 2rem 1rem 2rem;
+    padding: 0.33rem 0.83rem;
+}
+#front-entry-contents *:first-child {
+    margin-top: 0.33rem;
+}
+#front-entry-contents *:last-child {
+    margin-bottom: 0.33rem;
+}
+#front-entry-contents img {
+    max-width: 100%;
+}
+#entry-follow-ups {
+    font-size: 115%;
+    margin-left: 2rem;
+}
+#entry-follow-ups li a {
+    font-weight: bold;
+}
+#entry-metadata-header {
+    display: none;
+}
+#entry-metadata {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    text-shadow: #000 1px 1px 1px;
+    width: 100%;
+}
+#entry-metadata th {
+    text-align: right;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    width: 1px;
 }

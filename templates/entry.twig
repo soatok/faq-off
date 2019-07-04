@@ -1,21 +1,53 @@
 {% extends "base.twig" %}
 
 {% block main %}
-    <div id="entry-wrapper">
+    <div id="front-entry-wrapper">
         <h1 id="entry-title">{{ entry.title }}</h1>
-        <article id="entry-contents">{{ entry.contents|raw }}</article>
-        <ul id="entry-follow-ups">
-            {% for ref in entry['follow-ups'] %}
-                <li class="follow-up" id="follow-up-entry-{{ ref.entryid }}">
-                    <a href="/@{{
-                        ref['author_screenname']|e('url') ~
-                            "/" ~
-                        ref['collection_url']|e('url') ~
-                            "/" ~
-                        ref['url']|e('url')
-                    }}">{{ ref['title']|e('html') }}</a>
-                </li>
-            {% endfor %}
-        </ul>
+        <article id="front-entry-contents">{{ entry.contents|raw }}</article>
+        {% if entry['follow-ups'] %}
+            <h3 id="entry-follow-up-header">Follow-Up Questions</h3>
+            <ul id="entry-follow-ups">
+                {% for ref in entry['follow-ups'] %}
+                    <li class="follow-up" id="follow-up-entry-{{ ref.entryid }}">
+                        <a href="/@{{
+                            ref['author_screenname']|e('url') ~
+                                "/" ~
+                            ref['collection_url']|e('url') ~
+                                "/" ~
+                            ref['url']|e('url')
+                        }}">{{ ref['title']|e('html') }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
     </div>
+    <h4 id="entry-metadata-header">Metadata</h4>
+    <table id="entry-metadata">
+        <tr>
+            <th>Author:</th>
+            <td>
+                <a href="/@{{ author['screenname']|e('url') }}">@{{
+                    author['screenname']|e('html')
+                    }}</a>
+            </td>
+        </tr>
+        <tr>
+            <th>Collection:</th>
+            <td>
+                <a href="/@{{
+                author['screenname']|e('url') ~
+                "/" ~
+                collection['url']|e('url')
+                }}">{{ collection.title|e('html') }}</a>
+            </td>
+        </tr>
+        <tr>
+            <th>Created:</th>
+            <td><time datetime="{{ entry.created }}">{{ entry.created|date('Y-m-d g:i A') }}</time></td>
+        </tr>
+        <tr>
+            <th>Modified:</th>
+            <td><time datetime="{{ entry.modified }}">{{ entry.modified|date('Y-m-d g:i A') }}</time></td>
+        </tr>
+    </table>
 {% endblock %}
