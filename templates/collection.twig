@@ -2,4 +2,25 @@
 
 {% block main %}
     <h1>{{ collection.title|e('html') }}</h1>
+
+    <p>Created by: <a href="/@{{ collection.author_screenname|e('url') }}">@{{ collection.author_screenname|e('html') }}</a></p>
+
+    {% if entries %}
+        <ol id="collection-entries">
+        {% for entry in entries %}
+            <li class="collection-entry" id="entry-{{ entry.entryid }}">
+                <a href="/@{{
+                    entry.author_screenname|e('url') ~
+                        "/" ~
+                    entry.collection_url|e('url') ~
+                        "/" ~
+                    entry.url|e('url')
+                }}">{{ entry.title }}</a>
+            </li>
+            {#<li><pre>{{ entry|json_encode(128) }}</pre></li>#}
+        {% endfor %}
+        </ol>
+    {% else %}
+        <p>Sorry, there are no indexed entries in this collection.</p>
+    {% endif %}
 {% endblock %}

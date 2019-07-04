@@ -1,0 +1,21 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <div id="entry-wrapper">
+        <h1 id="entry-title">{{ entry.title }}</h1>
+        <article id="entry-contents">{{ entry.contents|raw }}</article>
+        <ul id="entry-follow-ups">
+            {% for ref in entry['follow-ups'] %}
+                <li class="follow-up" id="follow-up-entry-{{ ref.entryid }}">
+                    <a href="/@{{
+                        ref['author_screenname']|e('url') ~
+                            "/" ~
+                        ref['collection_url']|e('url') ~
+                            "/" ~
+                        ref['url']|e('url')
+                    }}">{{ ref['title']|e('html') }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

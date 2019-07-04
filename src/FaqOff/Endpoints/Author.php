@@ -72,7 +72,9 @@ class Author extends Endpoint
         /** @var \HTMLPurifier $purifier */
         $purifier = $this->container['purifier'];
         $author['biography'] = $purifier->purify(
-            $converter->convertToHtml($author['biography'])
+            $converter->convertToHtml(
+                $author['biography'] ?? '*No biography specified*'
+            )
         );
 
         return $this->view('author.twig', [

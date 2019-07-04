@@ -1,14 +1,15 @@
 {% extends "base.twig" %}
 
 {% block main %}
-    <h2>Control Panel &rsaquo; Collections &rsaquo; {{ collection.title|e('html_attr') }} &rsaquo; New Entry</h2>
+    <h2>Control Panel &rsaquo; Collections &rsaquo; {{ collection.title|e('html_attr') }}</h2>
 
     <h3>Actions</h3>
     <ul>
         <li><a href="/manage/collection/{{ collection.collectionid }}/entries">View/Manage Entries</a></li>
+        <li><a href="/manage/collection/{{ collection.collectionid }}/entry/create">Create New Entry</a></li>
     </ul>
 
-    <h3>Create New Entry</h3>
+    <h3>Update Entry</h3>
     {% if errors %}
         {% for i, error in errors %}
             <p class="error" id="error-{{ i|e('html_attr') }}">{{ error }}</p>
@@ -55,6 +56,18 @@
                 <option value="{{ row.entryid }}" selected="selected">{{ row.title|e('html') }}</option>
             {% endfor %}
             </select>
+        </div>
+        <div class="form-group">
+            <input{% if entry['index-me'] %}
+                checked="checked"{% endif %}
+                id="entry-index-checkbox"
+                name="index-me"
+                type="checkbox"
+                value="1"
+            />
+            <label class="bg-dark text-light" for="entry-index-checkbox">
+                Include this Entry in the Collection Index?
+            </label>
         </div>
 
         <button type="submit" class="btn btn-verydark">Update Entry</button>

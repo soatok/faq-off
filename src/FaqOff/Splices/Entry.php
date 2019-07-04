@@ -70,6 +70,7 @@ class Entry extends Splice
      * @param string $title
      * @param string $contents
      * @param array<int, int> $attachTo
+     * @param bool $indexMe
      * @return int|null
      * @throws \Exception
      */
@@ -78,7 +79,8 @@ class Entry extends Splice
         int $authorId,
         string $title,
         string $contents,
-        array $attachTo
+        array $attachTo,
+        bool $indexMe = false
     ): ?int {
         $newEntryId = $this->db->insertGet(
             'faqoff_entry',
@@ -86,10 +88,21 @@ class Entry extends Splice
                 'collectionid' => $collectionId,
                 'authorid' => $authorId,
                 'title' => $title,
+                'url' => $this->getDataUrl($title, $collectionId),
                 'contents' => $contents,
             ],
             'entryid'
         );
+
+        if ($indexMe) {
+            $this->db->insert(
+                'faqoff_collection_index',
+                [
+                    'collectionid' => $collectionId,
+                    'entryid' => $newEntryId
+                ]
+            );
+        }
 
         // Attach question as follow-up to previously-existing question
         foreach ($attachTo as $attach) {
@@ -117,20 +130,38 @@ class Entry extends Splice
 
     /**
      * @param array $followUps
+     * @param bool $getURLs
      * @return array
      */
-    public function getFollowUps(array $followUps = []): array
+    public function getFollowUps(array $followUps = [], bool $getURLs = false): array
     {
         if (empty($followUps)) {
             return [];
         }
         $place = array_fill(0, count($followUps), '?');
         $statement = implode(', ', $place);
-        $followUps = $this->db->run(
-            'SELECT entryid, title FROM faqoff_entry
-            WHERE entryid IN (' . $statement . ')',
-            ...$followUps
-        );
+        if ($getURLs) {
+            $followUps = $this->db->run(
+                "SELECT
+                    faqoff_entry.entryid,
+                    faqoff_entry.url,
+                    faqoff_entry.title,
+                    fa.screenname AS author_screenname,
+                    fc.url AS collection_url
+                FROM faqoff_entry
+                JOIN faqoff_collection fc on faqoff_entry.collectionid = fc.collectionid
+                JOIN faqoff_author fa on faqoff_entry.authorid = fa.authorid
+                WHERE faqoff_entry.entryid IN ({$statement})
+                ORDER BY faqoff_entry.modified DESC, faqoff_entry.created DESC",
+                ...$followUps
+            );
+        } else {
+            $followUps = $this->db->run(
+                'SELECT entryid, title FROM faqoff_entry
+                WHERE entryid IN (' . $statement . ')',
+                ...$followUps
+            );
+        }
         if (!$followUps) {
             return [];
         }
@@ -151,6 +182,12 @@ class Entry extends Splice
             return [];
         }
         $entry['options'] = json_decode($entry['options'] ?? '[]', true);
+        $entry['index-me'] = $this->db->exists(
+            "SELECT count(*) FROM faqoff_collection_index
+            WHERE collectionid = ? AND entryid = ?",
+            $entry['collectionid'],
+            $entry['entryid']
+        );
         return $entry;
     }
 
@@ -174,8 +211,57 @@ class Entry extends Splice
         if (!$entry) {
             return [];
         }
+        $entry['index-me'] = $this->db->exists(
+            "SELECT count(*) FROM faqoff_collection_index
+            WHERE collectionid = ? AND entryid = ?",
+            $collectionId,
+            $entry['entryid']
+        );
         $entry['options'] = json_decode($entry['options'] ?? '[]', true);
+        if (!empty($entry['options']['follow-up'])) {
+            $entry['follow-ups'] = $this->getFollowUps(
+                $entry['options']['follow-up'],
+                true
+            );
+        } else {
+            $entry['follow-ups'] = [];
+        }
         return $entry;
+    }
+    /**
+     * @param int $collectionId
+     * @return array
+     */
+    public function listIndexedByCollectionId(int $collectionId): array
+    {
+        $entries = $this->db->run(
+            "SELECT
+                faqoff_entry.entryid,
+                faqoff_entry.authorid,
+                faqoff_entry.collectionid,
+                faqoff_entry.url,
+                faqoff_entry.title,
+                faqoff_entry.options,
+                fa.screenname AS author_screenname,
+                fc.url AS collection_url
+            FROM faqoff_entry
+            JOIN faqoff_collection_index 
+                ON faqoff_entry.entryid = faqoff_collection_index.entryid
+            JOIN faqoff_collection fc on faqoff_entry.collectionid = fc.collectionid
+            JOIN faqoff_author fa on faqoff_entry.authorid = fa.authorid
+            WHERE faqoff_entry.collectionid = ? AND faqoff_collection_index.collectionid = ?
+            ORDER BY faqoff_entry.modified DESC, faqoff_entry.created DESC",
+            $collectionId,
+            $collectionId
+        );
+        if (!$entries) {
+            return [];
+        }
+        foreach ($entries as $index => $entry) {
+            $entries[$index]['index-me'] = true;
+            $entries[$index]['options'] = json_decode($entry['options'] ?? '[]', true);
+        }
+        return $entries;
     }
 
     /**
@@ -184,16 +270,25 @@ class Entry extends Splice
      */
     public function listByCollectionId(int $collectionId): array
     {
-        $collections = $this->db->run(
+        $entries = $this->db->run(
             "SELECT * FROM faqoff_entry
             WHERE collectionid = ? 
             ORDER BY modified DESC, created DESC",
             $collectionId
         );
-        if (!$collections) {
+        if (!$entries) {
             return [];
         }
-        return $collections;
+        foreach ($entries as $index => $entry) {
+            $entries[$index]['index-me'] = $this->db->exists(
+                "SELECT count(*) FROM faqoff_collection_index
+                WHERE collectionid = ? AND entryid = ?",
+                $collectionId,
+                $entry['entryid']
+            );
+            $entries[$index]['options'] = json_decode($entry['options'] ?? '[]', true);
+        }
+        return $entries;
     }
 
     /**
@@ -219,6 +314,29 @@ class Entry extends Splice
             ]
         );
 
+        $indexed = $this->db->exists(
+            "SELECT count(*) FROM faqoff_collection_index
+                WHERE collectionid = ? AND entryid = ?",
+            $old['collectionid'],
+            $entryId
+        );
+        if (!$post['index-me'] && $indexed) {
+            $this->db->delete(
+                'faqoff_collection_index',
+                [
+                    'entryid' => $entryId
+                ]
+            );
+        } elseif ($post['index-me'] && !$indexed) {
+            $this->db->insert(
+                'faqoff_collection_index',
+                [
+                    'collectionid' => $old['collectionid'],
+                    'entryid' => $entryId
+                ]
+            );
+        }
+
         // Coerce to integers
         $options = $old['options'];
         $options['follow-up'] = $post['follow-up'] ?? [];
@@ -235,5 +353,31 @@ class Entry extends Splice
             ['entryid' => $entryId]
         );
         return $this->db->commit();
+    }
+
+
+    /**
+     * Get a unique URL even if a collection/URL collision occurs.
+     *
+     * @param string $title
+     * @param int|null $collectionId
+     * @return string
+     */
+    public function getDataUrl(string $title, int $collectionId = null): string
+    {
+        $base = preg_replace('#[^a-z0-9\-]#', '-', strtolower($title));
+        $base = trim($base, '-');
+        $url = $base;
+        $i = 1;
+        while (
+            $this->db->exists(
+                "SELECT count(*) FROM faqoff_entry WHERE collectionid = ? AND url = ?",
+                $collectionId,
+                $url
+            )
+        ) {
+            $url = $base . '-' . (++$i);
+        }
+        return $url;
     }
 }

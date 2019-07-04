@@ -73,7 +73,8 @@ class Entries extends Endpoint
                 $authorId,
                 $post['title'] ?? '',
                 $post['contents'] ?? '',
-                $post['attach-to'] ?? []
+                $post['attach-to'] ?? [],
+                $post['index-me']
             );
             if ($newEntryId) {
                 $this->messageOnce('Entry created successfully', 'success');

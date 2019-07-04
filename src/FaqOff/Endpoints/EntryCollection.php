@@ -31,11 +31,15 @@ class EntryCollection extends Endpoint
     /** @var \Soatok\FaqOff\Splices\EntryCollection $collections */
     private $collections;
 
+    /** @var \Soatok\FaqOff\Splices\Entry $entries */
+    private $entries;
+
     public function __construct(Container $container)
     {
         parent::__construct($container);
         $this->authors = $this->splice('Authors');
         $this->collections = $this->splice('EntryCollection');
+        $this->entries = $this->splice('Entry');
     }
 
     /**
@@ -77,7 +81,10 @@ class EntryCollection extends Endpoint
         }
 
         return $this->view('collection.twig', [
-            'collection' => $collection
+            'collection' => $collection,
+            'entries' => $this->entries->listIndexedByCollectionId(
+                $collection['collectionid']
+            )
         ]);
     }
 }

@@ -2,6 +2,8 @@
 declare(strict_types=1);
 namespace Soatok\FaqOff\Filter;
 
+use ParagonIE\Ionizer\Filter\BoolFilter;
+use ParagonIE\Ionizer\Filter\IntArrayFilter;
 use ParagonIE\Ionizer\Filter\StringFilter;
 use ParagonIE\Ionizer\InputFilterContainer;
 
@@ -14,6 +16,9 @@ class CreateEntryFilter extends InputFilterContainer
     public function __construct()
     {
         $this
-            ->addFilter('title', new StringFilter());
+            ->addFilter('title', new StringFilter())
+            ->addFilter('contents', new StringFilter())
+            ->addFilter('attach-to', new IntArrayFilter())
+            ->addFilter('index-me', new BoolFilter());
     }
 }
