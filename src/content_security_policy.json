@@ -1,5 +1,10 @@
 {
   "report-only": false,
+  "img-src": {
+    "allow": [
+      "*"
+    ]
+  },
   "script-src": {
     "allow": [
       "https://code.jquery.com",
