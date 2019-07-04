@@ -150,3 +150,8 @@
 #manage-collections-table .manage-collections-entries a {
     font-weight: bold;
 }
+
+#author-bio,
+#entry-contents {
+    height: 15rem;
+}
