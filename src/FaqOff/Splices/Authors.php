@@ -194,6 +194,16 @@ class Authors extends Splice
     }
 
     /**
+     * @return array
+     */
+    public function listAllScreenNames(): array
+    {
+        return $this->db->col(
+            "SELECT screenname FROM faqoff_author ORDER BY screenname ASC"
+        );
+    }
+
+    /**
      * @param string $screenName
      * @return bool
      */

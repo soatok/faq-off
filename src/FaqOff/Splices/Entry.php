@@ -228,6 +228,7 @@ class Entry extends Splice
         }
         return $entry;
     }
+
     /**
      * @param int $collectionId
      * @return array

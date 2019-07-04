@@ -8,6 +8,7 @@ use Psr\Http\Message\{
     ResponseInterface
 };
 use Soatok\AnthroKit\Endpoint;
+use Soatok\FaqOff\Splices\Authors;
 use Twig\Error\{
     LoaderError,
     RuntimeError,
@@ -31,7 +32,11 @@ class StaticPage extends Endpoint
      */
     protected function index(RequestInterface $request): ResponseInterface
     {
-        return $this->view('index.twig');
+        /** @var Authors $authors */
+        $authors = $this->splice('Authors');
+        return $this->view('index.twig', [
+            'authors' => $authors->listAllScreenNames()
+        ]);
     }
 
     /**

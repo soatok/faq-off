@@ -1,5 +1,17 @@
 {% extends "base.twig" %}
 
 {% block main %}
-<h1>Hello, world!</h1>
+<h1>FAQ Off</h1>
+<p>
+    Telling sealions and mob harassers to "Go FAQ yourselves" since 2019!
+</p>
+
+<h2>Authors on this FAQ Off Instance</h2>
+<ul>
+{% for author in authors %}
+    <li>
+        <a href="/@{{ author|e('url') }}">{{ author|e('html') }}</a>
+    </li>
+{% endfor %}
+</ul>
 {% endblock %}
