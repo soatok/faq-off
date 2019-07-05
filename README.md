@@ -5,7 +5,6 @@
 [![Latest Stable Version](https://poser.pugx.org/soatok/faq-off/v/stable)](https://packagist.org/packages/soatok/faq-off)
 [![Latest Unstable Version](https://poser.pugx.org/soatok/faq-off/v/unstable)](https://packagist.org/packages/soatok/faq-off)
 [![License](https://poser.pugx.org/soatok/faq-off/license)](https://packagist.org/packages/soatok/faq-off)
-[![Downloads](https://img.shields.io/packagist/dt/soatok/faq-off.svg)](https://packagist.org/packages/soatok/faq-off)
 
 **FAQ Off** lets you build gamebook-style FAQ websites to counteract
 [sealioning](https://en.wikipedia.org/wiki/Sealioning) and mob harassment
