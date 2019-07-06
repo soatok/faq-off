@@ -14,6 +14,45 @@
         </ul>
     {% endif %}
 
+    <h3>Contributors</h3>
+    <ul id="manage-author-contributors">
+        {% for contributor in contributors %}
+            <li id="contributor-{{ contributor }}">
+                {% if is_owner %}<button
+                    class="btn btn-verydark delete-contributor"
+                    data-id="{{ contributor }}"
+                >Remove</button>{% endif %}
+                {{ contributor }}
+            </li>
+        {% endfor %}
+    </ul>
+    {% if is_owner %}
+    <form id="contributors-form" data-id="{{ author.authorid }}">
+        <div class="form-group">
+            <label
+                {% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %}
+                for="add-contributor-text"
+            >Add a user (by their Public ID) as a contributor to this Author:</label>
+            <div class="row">
+                <div class="col-sm-9">
+                    <input
+                        id="add-contributor-text"
+                        class="form-control"
+                        placeholder="User's Public ID"
+                    />
+                </div>
+                <div class="col-sm-3">
+                    <button
+                        class="btn btn-verydark form-control"
+                        id="add-contributor-button"
+                        type="button"
+                    >Add Contributor</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    {% endif %}
+
     <h3>Edit Author Information</h3>
     <form method="post">{{ anti_csrf() }}
         <div class="form-group">

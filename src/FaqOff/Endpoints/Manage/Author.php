@@ -173,6 +173,8 @@ class Author extends Endpoint
         return $this->view(
             'manage/author-edit.twig',
             [
+                'is_owner' => $author['ownerid'] === $_SESSION['account_id'],
+                'contributors' => $this->authors->listContributors($authorId),
                 'author' => $author,
                 'collections' => $this->collections->getAllByAuthor($authorId),
                 'errors' => $errors,

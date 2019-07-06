@@ -9,10 +9,7 @@ use Psr\Http\Message\{
 };
 use Slim\Container;
 use Soatok\AnthroKit\Endpoint;
-use Soatok\FaqOff\Splices\{
-    Authors,
-    EntryCollection
-};
+use Soatok\FaqOff\Splices\{Accounts, Authors, EntryCollection};
 use Twig\Error\{
     LoaderError,
     RuntimeError,
@@ -28,12 +25,16 @@ class ControlPanel extends Endpoint
     /** @var Authors $authors */
     private $authors;
 
+    /** @var Accounts $accounts */
+    private $accounts;
+
     /** @var EntryCollection $collections */
     private $collections;
 
     public function __construct(Container $container)
     {
         parent::__construct($container);
+        $this->accounts = $this->splice('Accounts');
         $this->authors = $this->splice('Authors');
         $this->collections = $this->splice('EntryCollection');
     }
@@ -56,6 +57,8 @@ class ControlPanel extends Endpoint
         return $this->view(
             'manage/index.twig',
             [
+                'public_id' =>
+                    $this->accounts->getPublicId($_SESSION['account_id']),
                 'authors' =>
                     $this->authors->getByAccount($_SESSION['account_id']),
                 'collections' =>

@@ -170,6 +170,28 @@ class Authors extends Splice
     }
 
     /**
+     * @param int $authorId
+     * @return array
+     */
+    public function listContributors(int $authorId): array
+    {
+        $contributors = $this->db->col(
+            "SELECT
+                acc.public_id
+            FROM faqoff_author_contributor fac
+            JOIN faqoff_accounts acc ON fac.accountid = acc.accountid
+            WHERE fac.authorid = ?
+            ",
+            0,
+            $authorId
+        );
+        if (empty($contributors)) {
+            return [];
+        }
+        return $contributors;
+    }
+
+    /**
      * Revoke a user's access to this author profile
      *
      * @param int $authorId
