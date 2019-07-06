@@ -22,12 +22,12 @@ if (!is_readable(APP_ROOT . '/local/settings.php')) {
 }
 
 $local = require APP_ROOT . '/local/settings.php';
-$settings = $local = $settings;
+$settings = $local + $settings;
 
 $db = Factory::create(
     $settings['settings']['database']['dsn'],
-    $settings['settings']['database']['user'],
-    $settings['settings']['database']['pass'],
+    $settings['settings']['database']['username'],
+    $settings['settings']['database']['password'],
     $settings['settings']['database']['options']
 );
 
