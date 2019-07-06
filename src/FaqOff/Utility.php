@@ -96,6 +96,10 @@ abstract class Utility
         $env->addFunction(
             new TwigFunction(
                 'faqoff_theme_css',
+                /**
+                 * @param string|int|null $themeId
+                 * @return array
+                 */
                 function($themeId = null) {
                     return Utility::getThemeData('css', $themeId);
                 }
@@ -104,6 +108,10 @@ abstract class Utility
         $env->addFunction(
             new TwigFunction(
                 'faqoff_theme_js',
+                /**
+                 * @param string|int|null $themeId
+                 * @return array
+                 */
                 function($themeId = null) {
                     return Utility::getThemeData('js', $themeId);
                 }
@@ -112,6 +120,10 @@ abstract class Utility
         $env->addFunction(
             new TwigFunction(
                 'faqoff_theme_vars',
+                /**
+                 * @param string|int|null $themeId
+                 * @return array
+                 */
                 function($themeId = null) {
                     return Utility::getThemeData('twig', $themeId);
                 }
@@ -188,7 +200,7 @@ abstract class Utility
 
     /**
      * @param string $type
-     * @param null $themeId
+     * @param string|int|null $themeId
      * @return array
      * @throws \Interop\Container\Exception\ContainerException
      */
