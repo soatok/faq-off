@@ -18,7 +18,7 @@ before_install:
   - chmod +x tests/travis-install.sh
 
 install:
-  - composer update
+  - composer install
   - tests/travis-install.sh
 
 script:
