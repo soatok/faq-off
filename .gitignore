@@ -3,4 +3,6 @@
 /vendor
 /local
 !/local/.gitkeep
+/public/local
+!/public/local/.gitkeep
 

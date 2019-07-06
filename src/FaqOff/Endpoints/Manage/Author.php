@@ -15,6 +15,7 @@ use Soatok\FaqOff\Filter\EditAuthorFilter;
 use Soatok\FaqOff\MessageOnceTrait;
 use Soatok\FaqOff\Splices\Authors;
 use Soatok\FaqOff\Splices\EntryCollection;
+use Soatok\FaqOff\Splices\Themes;
 use Twig\Error\{
     LoaderError,
     RuntimeError,
@@ -35,11 +36,15 @@ class Author extends Endpoint
     /** @var EntryCollection $collections */
     private $collections;
 
+    /** @var Themes $themes */
+    private $themes;
+
     public function __construct(Container $container)
     {
         parent::__construct($container);
         $this->authors = $this->splice('Authors');
         $this->collections = $this->splice('EntryCollection');
+        $this->themes = $this->splice('Themes');
     }
 
     /**
@@ -127,6 +132,7 @@ class Author extends Endpoint
         return $this->view(
             'manage/collection-create.twig',
             [
+                'themes' => $this->themes->getAllThemes(),
                 'author' => $this->authors->getById($authorId),
                 'errors' => $errors,
                 'post' => $post

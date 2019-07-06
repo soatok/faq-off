@@ -4,6 +4,7 @@ namespace Soatok\FaqOff;
 
 use ParagonIE\ConstantTime\Base64UrlSafe;
 use ParagonIE\CSPBuilder\CSPBuilder;
+use ParagonIE\EasyDB\EasyDB;
 use ParagonIE\Ionizer\InputFilterContainer;
 use ParagonIE\Ionizer\InvalidDataException;
 use Psr\Http\Message\RequestInterface;
@@ -31,6 +32,15 @@ abstract class Utility
     public static function setContainer(Container $container)
     {
         self::$container = $container;
+    }
+
+    /**
+     * @return EasyDB
+     * @throws \Interop\Container\Exception\ContainerException
+     */
+    public static function getDatabase(): EasyDB
+    {
+        return self::$container->get('database');
     }
 
     /**
@@ -77,10 +87,36 @@ abstract class Utility
      *
      * @param Environment $env
      * @return Environment
+     * @throws \Interop\Container\Exception\ContainerException
      */
     public static function terraform(Environment $env): Environment
     {
         $container = self::$container;
+
+        $env->addFunction(
+            new TwigFunction(
+                'faqoff_theme_css',
+                function($themeId = null) {
+                    return Utility::getThemeData('css', $themeId);
+                }
+            )
+        );
+        $env->addFunction(
+            new TwigFunction(
+                'faqoff_theme_js',
+                function($themeId = null) {
+                    return Utility::getThemeData('js', $themeId);
+                }
+            )
+        );
+        $env->addFunction(
+            new TwigFunction(
+                'faqoff_theme_vars',
+                function($themeId = null) {
+                    return Utility::getThemeData('twig', $themeId);
+                }
+            )
+        );
 
         /**
          * @twig-filter cachebust
@@ -141,9 +177,49 @@ abstract class Utility
             )
         );
 
+        $settings = $container->get('settings')['twig-custom'] ?? '';
+        $env->addGlobal('faqoff_custom', $settings);
+        $env->addGlobal('theme_id', null);
+
         $env->addGlobal('session', $_SESSION);
 
         return $env;
+    }
+
+    /**
+     * @param string $type
+     * @param null $themeId
+     * @return array
+     * @throws \Interop\Container\Exception\ContainerException
+     */
+    public static function getThemeData($type, $themeId = null): array
+    {
+        if (!$themeId) {
+            return [];
+        }
+        switch ($type) {
+            case 'css':
+                $column = 'css_files';
+                break;
+            case 'js':
+                $column = 'js_files';
+                break;
+            case 'twig':
+                $column = 'twig_vars';
+                break;
+            default:
+                return [];
+        }
+        $db = self::getDatabase();
+        $body = $db->cell(
+            "SELECT {$column} FROM faqoff_themes WHERE themeid = ?",
+            $themeId
+        );
+        if (empty($body)) {
+            return [];
+        }
+        $decoded = json_decode($body, true);
+        return $decoded;
     }
 
     /**

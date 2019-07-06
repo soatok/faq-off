@@ -4,7 +4,7 @@
     <h2>Control Panel &rsaquo; New Author</h2>
     <form method="post">{{ anti_csrf() }}
         <div class="form-group">
-            <label class="bg-dark text-light" for="author-name">Author Name:</label>
+            <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="author-name">Author Name:</label>
             <input
                 class="form-control"
                 id="author-name"
@@ -15,7 +15,7 @@
             />
         </div>
         <div class="form-group">
-            <label class="bg-dark text-light" for="author-bio">Author Biography:</label>
+            <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="author-bio">Author Biography:</label>
             <textarea
                 class="form-control"
                 id="author-bio"
@@ -24,7 +24,7 @@
             <small>Markdown allowed.</small>
         </div>
         <div class="form-group">
-            <label class="bg-dark text-light" for="contents-preview">Preview:</label>
+            <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="contents-preview">Preview:</label>
             <div class="scrollbox entry-preview" id="contents-preview"></div>
         </div>
         <button type="submit" class="btn btn-verydark form-control">Create New Author</button>

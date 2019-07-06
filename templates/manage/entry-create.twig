@@ -24,7 +24,7 @@
             Collection: <a href="/manage/collection/{{ collection.collectionid }}">{{ collection.title|e('html_attr') }}</a>
         </div>
         <div class="form-group">
-            <label class="bg-dark text-light" for="entry-title">Entry Title:</label>
+            <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="entry-title">Entry Title:</label>
             <input
                 class="form-control"
                 id="entry-title"
@@ -35,7 +35,7 @@
             />
         </div>
         <div class="form-group">
-            <label class="bg-dark text-light" for="entry-contents">Contents:</label>
+            <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="entry-contents">Contents:</label>
             <textarea
                 class="form-control"
                 data-collectionid="{{ collection.collectionid }}"
@@ -45,12 +45,12 @@
             <small>Markdown allowed.</small>
         </div>
         <div class="form-group">
-            <label class="bg-dark text-light" for="contents-preview">Preview:</label>
+            <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="contents-preview">Preview:</label>
             <div class="scrollbox entry-preview" id="contents-preview"></div>
         </div>
 
         <div class="form-group full-width">
-            <label class="bg-dark text-light" for="entry-attach-to">Attach to:</label>
+            <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="entry-attach-to">Attach to:</label>
             <select id="entry-attach-to" multiple="multiple" class="full-width darktext" name="attach-to[]"></select>
         </div>
 
@@ -62,7 +62,7 @@
                     type="checkbox"
                     value="1"
             />
-            <label class="bg-dark text-light" for="entry-index-checkbox">
+            <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="entry-index-checkbox">
                 Include this Entry in the Collection Index?
             </label>
         </div>

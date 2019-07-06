@@ -16,7 +16,7 @@
 
         </div>
         <div class="form-group">
-        <label class="bg-dark text-light" for="collection-title">Collection Title:</label>
+        <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="collection-title">Collection Title:</label>
         <input
             class="form-control"
             id="collection-title"
@@ -27,7 +27,7 @@
         />
         </div>
         <div class="form-group">
-            <label class="bg-dark text-light" for="collection-url">Collection URL:</label>
+            <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="collection-url">Collection URL:</label>
             <input
                 class="form-control"
                 id="collection-url"
@@ -36,6 +36,19 @@
                 value="{{ post.url|e('html_attr') }}"
             />
             <small>Optional. Will be automatically generated if not provided.</small>
+        </div>
+        <div class="form-group">
+            <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="collection-theme">Theme:</label>
+            <select class="form-control" id="collection-theme" name="theme">
+                <option value="">Default Theme</option>
+                {% if themes %}
+                <optgroup label="Custom Themes">
+                {% for theme in themes %}
+                    <option value="{{ theme.themeid }}">{{ theme.name|e('html_attr') }}</option>
+                {% endfor %}
+                </optgroup>
+                {% endif %}
+            </select>
         </div>
         <button type="submit" class="btn btn-verydark">Create New Collection</button>
     </form>

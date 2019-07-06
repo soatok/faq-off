@@ -79,6 +79,7 @@ class EntryCollection extends Endpoint
             $this->messageOnce('Collection does not exist.', 'error');
             return $this->redirect('/@' . $author['screenname']);
         }
+        $this->setTwigVar('theme_id', $collection['theme'] ?? null);
 
         return $this->view('collection.twig', [
             'collection' => $collection,

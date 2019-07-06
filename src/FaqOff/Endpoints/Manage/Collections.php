@@ -12,7 +12,7 @@ use Soatok\AnthroKit\Endpoint;
 use Soatok\FaqOff\Exceptions\CollectionNotFoundException;
 use Soatok\FaqOff\Filter\EditCollectionFilter;
 use Soatok\FaqOff\MessageOnceTrait;
-use Soatok\FaqOff\Splices\{Authors, Entry, EntryCollection};
+use Soatok\FaqOff\Splices\{Authors, Entry, EntryCollection, Themes};
 use Twig\Error\{
     LoaderError,
     RuntimeError,
@@ -36,12 +36,16 @@ class Collections extends Endpoint
     /** @var Entry $entries */
     private $entries;
 
+    /** @var Themes $themes */
+    private $themes;
+
     public function __construct(Container $container)
     {
         parent::__construct($container);
         $this->authors = $this->splice('Authors');
         $this->collections = $this->splice('EntryCollection');
         $this->entries = $this->splice('Entry');
+        $this->themes = $this->splice('Themes');
     }
 
     /**
@@ -85,6 +89,7 @@ class Collections extends Endpoint
         return $this->view(
             'manage/collection-edit.twig',
             [
+                'themes' => $this->themes->getAllThemes(),
                 'collection' => $collection,
                 'post' => $post + $collection
             ]

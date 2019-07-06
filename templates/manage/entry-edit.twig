@@ -25,7 +25,7 @@
             Collection: <a href="/manage/collection/{{ collection.collectionid }}">{{ collection.title|e('html_attr') }}</a>
         </div>
         <div class="form-group">
-            <label class="bg-dark text-light" for="entry-title">Entry Title:</label>
+            <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="entry-title">Entry Title:</label>
             <input
                 class="form-control"
                 id="entry-title"
@@ -36,7 +36,7 @@
             />
         </div>
         <div class="form-group">
-            <label class="bg-dark text-light" for="entry-contents">Contents:</label>
+            <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="entry-contents">Contents:</label>
             <textarea
                 class="form-control"
                 data-collectionid="{{ collection.collectionid }}"
@@ -46,11 +46,11 @@
             <small>Markdown allowed.</small>
         </div>
         <div class="form-group">
-            <label class="bg-dark text-light" for="contents-preview">Preview:</label>
+            <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="contents-preview">Preview:</label>
             <div class="scrollbox entry-preview" id="contents-preview"></div>
         </div>
         <div class="form-group full-width">
-            <label class="bg-dark text-light" for="entry-follow-ups">Follow-Up Entries:</label>
+            <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="entry-follow-ups">Follow-Up Entries:</label>
             <select id="entry-follow-ups" multiple="multiple" class="full-width darktext" name="follow-up[]">
             {% for row in entry.options['follow-up'] %}
                 <option value="{{ row.entryid }}" selected="selected">{{ row.title|e('html') }}</option>
@@ -65,7 +65,7 @@
                 type="checkbox"
                 value="1"
             />
-            <label class="bg-dark text-light" for="entry-index-checkbox">
+            <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="entry-index-checkbox">
                 Include this Entry in the Collection Index?
             </label>
         </div>
