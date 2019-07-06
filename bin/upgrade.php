@@ -22,7 +22,8 @@ if (!is_readable(APP_ROOT . '/local/settings.php')) {
         echo 'Local settings not defined! Please run create-config.php first.', PHP_EOL;
         echo 'To proceed with the default settings, you must pass the -f or --force ',
         'flag to install-database.php.', PHP_EOL;
-        exit(255);
+        // Silent exit.
+        exit(0);
     }
 }
 
