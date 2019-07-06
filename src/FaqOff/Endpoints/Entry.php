@@ -108,6 +108,7 @@ class Entry extends Endpoint
                 $entry['contents'] ?? ''
             )
         );
+        $this->setTwigVar('theme_id', $collection['theme'] ?? null);
 
         return $this->view(
             'entry.twig',

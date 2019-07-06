@@ -16,7 +16,7 @@
 
         </div>
         <div class="form-group">
-        <label class="bg-dark text-light" for="collection-title">Collection Title:</label>
+        <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="collection-title">Collection Title:</label>
         <input
             class="form-control"
             id="collection-title"
@@ -27,7 +27,7 @@
         />
         </div>
         <div class="form-group">
-            <label class="bg-dark text-light" for="collection-url">Collection URL:</label>
+            <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="collection-url">Collection URL:</label>
             <input
                 class="form-control"
                 id="collection-url"
