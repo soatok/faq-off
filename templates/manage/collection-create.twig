@@ -37,6 +37,19 @@
             />
             <small>Optional. Will be automatically generated if not provided.</small>
         </div>
+        <div class="form-group">
+            <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="collection-theme">Theme:</label>
+            <select class="form-control" id="collection-theme" name="theme">
+                <option value="">Default Theme</option>
+                {% if themes %}
+                <optgroup label="Custom Themes">
+                {% for theme in themes %}
+                    <option value="{{ theme.themeid }}">{{ theme.name|e('html_attr') }}</option>
+                {% endfor %}
+                </optgroup>
+                {% endif %}
+            </select>
+        </div>
         <button type="submit" class="btn btn-verydark">Create New Collection</button>
     </form>
 

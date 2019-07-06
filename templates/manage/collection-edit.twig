@@ -32,6 +32,21 @@
                 value="{{ post.title|e('html_attr') }}"
             />
         </div>
+        <div class="form-group">
+            <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="collection-theme">Theme:</label>
+            <select class="form-control" id="collection-theme" name="theme">
+                <option value="">Default Theme</option>
+                {% if themes %}
+                <optgroup label="Custom Themes">
+                {% for theme in themes %}
+                    <option{#
+                        #} {% if post.theme == theme.themeid %} selected="selected"{% endif %}{#
+                        #} value="{{ theme.themeid }}"{#
+                    #}>{{ theme.name|e('html_attr') }}</option>
+                {% endfor %}
+                {% endif %}
+            </select>
+        </div>
         <button type="submit" class="btn btn-verydark">Update Collection</button>
     </form>
 {% endblock %}

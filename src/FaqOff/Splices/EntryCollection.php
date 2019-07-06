@@ -41,6 +41,7 @@ class EntryCollection extends Splice
             'faqoff_collection',
             [
                 'authorid' => $authorId,
+                'theme' => $data['theme'] < 1 ? null : $data['theme'],
                 'title' => $data['title'],
                 'url' => $url
             ],
@@ -195,6 +196,7 @@ class EntryCollection extends Splice
         $this->db->update(
             'faqoff_collection',
             [
+                'theme' => $postData['theme'] < 1 ? null : $postData['theme'],
                 'title' => $postData['title']
             ],
             [
