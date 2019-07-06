@@ -33,6 +33,7 @@ $anthrokit = [
         'allow-password-auth' => false,
         'allow-twitter-auth' => true,
         'redirect' => [
+            'account-banned' => '/generic-error/account-banned',
             'auth-success' => '/',
             'auth-failure' => '/generic-error/auth-failure',
             'activate-success' => '/',
@@ -44,6 +45,7 @@ $anthrokit = [
             'logout-success' => '/',
             'register' => '/auth/register',
             'twitter' => '/auth/twitter',
+            'twitter-error' => '/generic-error/twitter-error',
         ],
         'require-invite-register' => false,
         'sql' => [

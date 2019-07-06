@@ -2,14 +2,11 @@
 declare(strict_types=1);
 namespace Soatok\FaqOff\Endpoints;
 
-use Interop\Container\Exception\ContainerException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Slim\Http\Request;
 use Soatok\AnthroKit\Endpoint;
 use Soatok\FaqOff\MessageOnceTrait;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
 
 /**
  * Class GenericError
@@ -30,8 +27,12 @@ class GenericError extends Endpoint
         ?ResponseInterface $response = null,
         array $routerParams = []
     ): ResponseInterface {
+        /** @var Request $request */
         $error = $routerParams['error'] ?? '';
         switch ($error) {
+            case 'account-banned':
+                $this->messageOnce('Authentication failed: Account is not active.', 'error');
+                break;
             case 'auth-failure':
                 $this->messageOnce('Authentication failed.', 'error');
                 break;
@@ -46,6 +47,13 @@ class GenericError extends Endpoint
                 break;
             case 'logout-fail':
                 $this->messageOnce('Logout unsuccessful.', 'error');
+                break;
+            case 'twitter-error':
+                $this->messageOnce('Twitter failed.', 'error');
+                $error = $request->getQueryParam('error', '');
+                if ($error) {
+                    $this->messageOnce($error, 'error');
+                }
                 break;
         }
         return $this->redirect('/');
