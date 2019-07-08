@@ -25,7 +25,8 @@ $default = [
         'css' => [],
         'js' => [],
         'vars' => [
-            'dark-theme' => true
+            'dark-theme' => true,
+            'site-name' => 'FAQ Off'
         ]
     ],
 

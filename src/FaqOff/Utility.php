@@ -189,7 +189,7 @@ abstract class Utility
             )
         );
 
-        $settings = $container->get('settings')['twig-custom'] ?? '';
+        $settings = $container->get('settings')['twig-custom'] ?? [];
         $env->addGlobal('faqoff_custom', $settings);
         $env->addGlobal('theme_id', null);
 

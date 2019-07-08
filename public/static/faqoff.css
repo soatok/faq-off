@@ -155,3 +155,32 @@
 #entry-contents {
     height: 15rem;
 }
+.dark-navbar {
+    background-color: rgba(21, 24, 26, 0.66);
+}
+.nav-item a {
+    color: #3396ff;
+    transition: background-color 0.2s;
+}
+.nav-item a:hover {
+    color: #007bff;
+    background-color: #1f2326;
+}
+.dark-dropdown {
+    background-color: #1f2326;
+}
+.dark-dropdown a {
+    transition: background-color 0.2s;
+}
+.dark-dropdown a:hover {
+    background-color: #0f1112;
+}
+.dark-body a {
+    color: #3396ff;
+}
+.dark-body a:hover {
+    color: #007bff;
+}
+.dark-dropdown .dropdown-divider {
+    border-top: 1px solid #111;
+}
