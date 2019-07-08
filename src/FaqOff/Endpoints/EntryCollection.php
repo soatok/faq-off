@@ -85,7 +85,8 @@ class EntryCollection extends Endpoint
             'collection' => $collection,
             'entries' => $this->entries->listIndexedByCollectionId(
                 $collection['collectionid']
-            )
+            ),
+            'pageTitle' => 'Collection ' . $collection['title'] . ' by @' . $author['screenname']
         ]);
     }
 }

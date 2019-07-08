@@ -115,7 +115,8 @@ class Entry extends Endpoint
             [
                 'author' => $author,
                 'collection' => $collection,
-                'entry' => $entry
+                'entry' => $entry,
+                'pageTitle' => $entry['title']
             ]
         );
     }
