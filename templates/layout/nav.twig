@@ -23,6 +23,20 @@
                     <a class="dropdown-item" href="/manage/invite">Invite Users</a>
                 </div>
             </li>
+            {% if is_admin() %}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Administrators
+                </a>
+                <div class="dropdown-menu{% if faqoff_custom.vars['dark-theme'] %} dark-dropdown{% endif %}" aria-labelledby="adminDropdown">
+                    <a class="dropdown-item" href="/admin">Home</a>
+                    <a class="dropdown-item" href="/admin/collections">Collections</a>
+                    <a class="dropdown-item" href="/admin/custom">Custom Settings</a>
+                    <a class="dropdown-item" href="/admin/authors">Authors</a>
+                    <a class="dropdown-item" href="/admin/invitetree">Invite Tree</a>
+                </div>
+            </li>
+            {% endif %}
             <li class="nav-item">
                 <a class="nav-link" href="/auth/logout/{{ session.logout_token }}">Log Out</a>
             </li>

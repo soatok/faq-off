@@ -17,6 +17,16 @@ $guestsOnly = new GuestsOnly($container);
 $authOnly = new AuthorizedUsersOnly($container);
 
 $app->group('/admin', function () use ($app, $container) {
+    $app->any('/account/{action:(?:edit|view)}/{id:[0-9]+}', 'admin.accounts');
+    $app->any('/accounts', 'admin.accounts');
+    $app->any('/author/{action:(?:edit|view)}/{id:[0-9]+}', 'admin.authors');
+    $app->any('/authors', 'admin.authors');
+    $app->any('/collection/{collection:[^/]+}/{action:[^/]+}/{entry:[^/]+}', 'admin.entries');
+    $app->any('/collection/{collection:[^/]+}/entries', 'admin.entries');
+    $app->any('/collection/{collection:[^/]+}', 'admin.collections');
+    $app->any('/collections', 'admin.collections');
+    $app->get('/custom[/{action:[^/]+}]', 'admin.custom');
+    $app->get('/invite-tree', 'admin.invitetree');
     $app->get('/', 'admin.home');
     $app->get('', 'admin.home');
 })->add(new AdminsOnly($container));
@@ -58,8 +68,26 @@ $app->get('/', 'staticpage');
 $app->get('', 'staticpage');
 
 
+$container['admin.accounts'] = function (Container $c) {
+    return new Admin\Accounts($c);
+};
+$container['admin.authors'] = function (Container $c) {
+    return new Admin\Authors($c);
+};
+$container['admin.collections'] = function (Container $c) {
+    return new Admin\Collections($c);
+};
+$container['admin.custom'] = function (Container $c) {
+    return new Admin\CustomContent($c);
+};
+$container['admin.entries'] = function (Container $c) {
+    return new Admin\Entries($c);
+};
 $container['admin.home'] = function (Container $c) {
     return new Admin\HomePage($c);
+};
+$container['admin.invitetree'] = function (Container $c) {
+    return new Admin\InviteTree($c);
 };
 $container['manage'] = function (Container $c) {
     return new Manage\ControlPanel($c);

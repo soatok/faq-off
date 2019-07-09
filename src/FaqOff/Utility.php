@@ -59,6 +59,26 @@ abstract class Utility
     }
 
     /**
+     * @return int[]
+     * @throws \Interop\Container\Exception\ContainerException
+     */
+    public static function getAdminAccountIDs(): array
+    {
+        if (is_readable(APP_ROOT . '/local/admins.json')) {
+            $data = json_decode(
+                file_get_contents(APP_ROOT . '/local/admins.json'),
+                true
+            );
+            if (is_array($data) && !empty($data)) {
+                return $data;
+            }
+        }
+
+        $settings = self::$container->get('settings')['settings'];
+        return $settings['admin-accounts'] ?? [];
+    }
+
+    /**
      * @param RequestInterface $request
      * @param InputFilterContainer|null $filter
      * @return array
@@ -185,6 +205,20 @@ abstract class Utility
                 'clear_message_once',
                 function () {
                     $_SESSION['message_once'] = [];
+                }
+            )
+        );
+
+        $env->addFunction(
+            new TwigFunction(
+                'is_admin',
+                /** @return bool */
+                function () {
+                    return in_array(
+                        $_SESSION['account_id'],
+                        Utility::getAdminAccountIDs(),
+                        true
+                    );
                 }
             )
         );

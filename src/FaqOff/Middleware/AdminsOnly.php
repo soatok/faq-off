@@ -16,6 +16,7 @@ use Soatok\AnthroKit\Auth\Fursona;
 use Soatok\AnthroKit\Middleware;
 use Soatok\FaqOff\AdminTrait;
 use Soatok\FaqOff\MessageOnceTrait;
+use Soatok\FaqOff\Utility;
 
 /**
  * Class AdminsOnly
@@ -24,7 +25,6 @@ use Soatok\FaqOff\MessageOnceTrait;
 class AdminsOnly extends Middleware
 {
     use MessageOnceTrait;
-    use AdminTrait;
 
     /**
      * @param RequestInterface $request
@@ -51,7 +51,7 @@ class AdminsOnly extends Middleware
             );
         }
         // Get the admins
-        $adminAccounts = $this->getAdminAccountIDs();
+        $adminAccounts = Utility::getAdminAccountIDs();
         if (!in_array($_SESSION[$key], $adminAccounts, true)) {
             $this->messageOnce('This feature is only enabled for administrators.', 'error');
             return new Response(
