@@ -32,7 +32,6 @@
         {% endblock %}
         </div>
     {% endblock %}
-    </body>
     {% block javascript %}
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
@@ -44,5 +43,6 @@
         <script nonce="{{ csp_nonce('script-src') }}" src="{{ js_file|e('html_attr') }}"></script>
     {% endfor %}
     {% endblock %}
+    </body>
 {% endblock %}
 </html>

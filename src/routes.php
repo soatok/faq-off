@@ -27,6 +27,9 @@ $app->group('/admin', function () use ($app, $container) {
     $app->any('/collections', 'admin.collections');
     $app->get('/custom[/{action:[^/]+}]', 'admin.custom');
     $app->get('/invite-tree', 'admin.invitetree');
+    $app->get('/theme/{action:[^/]+}/[{id:[0-9]+}]', 'admin.themes');
+    $app->get('/theme[/{action:[^/]+}]', 'admin.themes');
+    $app->get('/themes', 'admin.themes');
     $app->get('/', 'admin.home');
     $app->get('', 'admin.home');
 })->add(new AdminsOnly($container));
@@ -89,6 +92,11 @@ $container['admin.home'] = function (Container $c) {
 $container['admin.invitetree'] = function (Container $c) {
     return new Admin\InviteTree($c);
 };
+$container['admin.themes'] = function (Container $c) {
+    return new Admin\Themes($c);
+};
+
+
 $container['manage'] = function (Container $c) {
     return new Manage\ControlPanel($c);
 };
