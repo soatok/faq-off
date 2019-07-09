@@ -44,9 +44,47 @@ class AccessControlsTest extends TestCase
         unset($_SESSION['account_id']);
     }
 
+    public function testAdminAccessControls()
+    {
+        $container = TestHelper::getContainer();
+        /** @var \ParagonIE\EasyDB\EasyDB $db */
+        $db = $container['db'];
+        if ($db->inTransaction()) {
+            $db->rollBack();
+        }
+        $db->beginTransaction();
+        $falseAccount = $db->insertGet(
+            'faqoff_accounts',
+            ['login' => 'phpunit-' . bin2hex(random_bytes(16))],
+            'accountid'
+        );
+
+        $_SESSION['account_id'] = 1;
+        TestHelper::fakeRequest('GET', '/admin');
+        $response = TestHelper::getResponse();
+        $this->assertSame(
+            StatusCode::HTTP_OK,
+            $response->getStatusCode(),
+            'Error loading admin index page'
+        );
+
+        $_SESSION['account_id'] = $falseAccount;
+        TestHelper::fakeRequest('GET', '/admin');
+        $response = TestHelper::getResponse();
+        $this->assertSame(
+            StatusCode::HTTP_FOUND,
+            $response->getStatusCode(),
+            'Failed to redirect'
+        );
+        $db->rollBack();
+    }
+
     public function testAuthorAccess()
     {
         $db = TestHelper::getContainer()['db'];
+        if ($db->inTransaction()) {
+            $db->rollBack();
+        }
         $db->beginTransaction();
         $first = $db->insertGet(
             'faqoff_accounts',

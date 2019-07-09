@@ -5,6 +5,8 @@ $default = [
     'displayErrorDetails' => true, // set to false in production
     'addContentLengthHeader' => false, // Allow the web server to send the content-length header
 
+    'admin-accounts' => [],
+
     'encryption-key' => include __DIR__ . '/encryption-key.php',
 
     'database' => [

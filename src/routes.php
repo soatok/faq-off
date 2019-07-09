@@ -8,12 +8,18 @@ use Soatok\AnthroKit\Auth\Middleware\{
     AuthorizedUsersOnly,
     GuestsOnly
 };
+use Soatok\FaqOff\Middleware\AdminsOnly;
 
 /** @var App $app */
 /** @var Container $container */
 $container = $app->getContainer();
 $guestsOnly = new GuestsOnly($container);
 $authOnly = new AuthorizedUsersOnly($container);
+
+$app->group('/admin', function () use ($app, $container) {
+    $app->get('/', 'admin.home');
+    $app->get('', 'admin.home');
+})->add(new AdminsOnly($container));
 
 $app->group('/manage', function () use ($app, $container) {
     // Authenticated users only...
@@ -52,6 +58,9 @@ $app->get('/', 'staticpage');
 $app->get('', 'staticpage');
 
 
+$container['admin.home'] = function (Container $c) {
+    return new Admin\HomePage($c);
+};
 $container['manage'] = function (Container $c) {
     return new Manage\ControlPanel($c);
 };
