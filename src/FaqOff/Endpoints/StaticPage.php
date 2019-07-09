@@ -32,11 +32,7 @@ class StaticPage extends Endpoint
      */
     protected function index(RequestInterface $request): ResponseInterface
     {
-        /** @var Authors $authors */
-        $authors = $this->splice('Authors');
-        return $this->view('index.twig', [
-            'authors' => $authors->listAllScreenNames()
-        ]);
+        return $this->view('index.twig');
     }
 
     /**

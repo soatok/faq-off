@@ -1,0 +1,12 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h1>Authors</h1>
+    <ul>
+        {% for author in authors %}
+            <li>
+                <a href="/@{{ author|e('url') }}">{{ author|e('html') }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

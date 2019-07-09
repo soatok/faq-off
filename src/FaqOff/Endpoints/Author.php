@@ -9,6 +9,7 @@ use Psr\Http\Message\{
     ResponseInterface
 };
 use Slim\Container;
+use Slim\Http\Response;
 use Soatok\AnthroKit\Endpoint;
 use Soatok\FaqOff\MessageOnceTrait;
 use Soatok\FaqOff\Splices\Authors;
@@ -42,6 +43,23 @@ class Author extends Endpoint
 
     /**
      * @param RequestInterface $request
+     * @return Response
+     * @throws ContainerException
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
+    protected function listing(RequestInterface $request): Response
+    {
+        /** @var Authors $authors */
+        $authors = $this->splice('Authors');
+        return $this->view('author-listing.twig', [
+            'authors' => $authors->listAllScreenNames()
+        ]);
+    }
+
+    /**
+     * @param RequestInterface $request
      * @param ResponseInterface|null $response
      * @param array $routerParams
      * @return ResponseInterface
@@ -51,15 +69,11 @@ class Author extends Endpoint
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function __invoke(
+    public function authorPage(
         RequestInterface $request,
         ?ResponseInterface $response = null,
         array $routerParams = []
     ): ResponseInterface {
-        if (empty($routerParams['author'])) {
-            return $this->redirect('/');
-        }
-
         $author = $this->authors->getByScreenName($routerParams['author']);
         if (empty($author)) {
             $this->messageOnce('Author does not exist', 'error');
@@ -81,5 +95,27 @@ class Author extends Endpoint
             'author' => $author,
             'collections' => $this->collections->getAllByAuthor((int) $author['authorid'])
         ]);
+    }
+
+    /**
+     * @param RequestInterface $request
+     * @param ResponseInterface|null $response
+     * @param array $routerParams
+     * @return ResponseInterface
+     *
+     * @throws ContainerException
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
+    public function __invoke(
+        RequestInterface $request,
+        ?ResponseInterface $response = null,
+        array $routerParams = []
+    ): ResponseInterface {
+        if (empty($routerParams['author'])) {
+            return $this->listing($request);
+        }
+        return $this->authorPage($request, $response, $routerParams);
     }
 }

@@ -47,6 +47,7 @@ $app->any('/auth/{action:register|invite|login|twitter|verify}[/{extra:[^/]+}]',
 // No middleware on activation:
 $app->any('/auth/{action:activate}[/{extra:[^/]+}]', 'authorize');
 $app->any('/generic-error[/{error:[^/]+}]', 'error');
+$app->get('/authors', 'author');
 $app->get('/', 'staticpage');
 $app->get('', 'staticpage');
 
