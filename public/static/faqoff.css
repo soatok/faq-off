@@ -160,7 +160,7 @@
 }
 .nav-item a {
     color: #3396ff;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, color 0.2s;
 }
 .nav-item a:hover {
     color: #007bff;
@@ -170,7 +170,7 @@
     background-color: #1f2326;
 }
 .dark-dropdown a {
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, color 0.2s;
 }
 .dark-dropdown a:hover {
     background-color: #0f1112;
@@ -183,4 +183,32 @@
 }
 .dark-dropdown .dropdown-divider {
     border-top: 1px solid #111;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+}
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    line-height: 60px; /* Vertically center the text there */
+}
+.dark-footer {
+    background-color: rgba(21, 24, 26, 0.66);
+}
+.footer-icon {
+    float: right;
+    font-size: 200%;
+    margin-left: 0.5ex;
+    transition: background-color 0.2s, color 0.2s;
 }
