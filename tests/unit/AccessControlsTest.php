@@ -69,6 +69,7 @@ class AccessControlsTest extends TestCase
             'Error loading admin index page'
         );
 
+        var_dump($container['settings']['admin-accounts'], $falseAccount);
         $_SESSION['account_id'] = $falseAccount;
         TestHelper::fakeRequest('GET', '/admin');
         $response = TestHelper::getResponse();
