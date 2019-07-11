@@ -212,3 +212,42 @@ footer {
     margin-left: 0.5ex;
     transition: background-color 0.2s, color 0.2s;
 }
+
+.helptext-icon-small {
+    font-size: 1rem;
+}
+.helptext-icon-medium {
+    font-size: 3rem;
+}
+.helptext-icon-large {
+    font-size: 5rem;
+}
+.helptext-icon-xl {
+    font-size: 7rem;
+}
+.helptext-icon-2xl {
+    font-size: 9rem;
+}
+.helptext-icon {
+    color: rgba(25, 25, 25, 0.5);
+    padding-right: 1rem;
+}
+.dark-body .helptext-icon {
+    color: rgba(255, 255, 255, 0.5);
+}
+.float-left {
+    float: left;
+}
+.helptext {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 0.66rem;
+    padding: 0.33rem;
+    margin-bottom: 1rem;
+}
+.helptext p:last-child {
+    margin-bottom: 0;
+}
+.dark-body .helptext {
+    background-color: rgba(21, 24, 26, 0.66);
+    border: 1px solid #000;
+}

@@ -2,7 +2,10 @@
 declare(strict_types=1);
 namespace Soatok\FaqOff\Tests;
 
+use ParagonIE\EasyDB\EasyDB;
 use PHPUnit\Framework\TestCase;
+use Slim\Exception\MethodNotAllowedException;
+use Slim\Exception\NotFoundException;
 use Slim\Http\StatusCode;
 use Soatok\FaqOff\TestHelper;
 
@@ -12,6 +15,10 @@ use Soatok\FaqOff\TestHelper;
  */
 class AccessControlsTest extends TestCase
 {
+    /**
+     * @throws MethodNotAllowedException
+     * @throws NotFoundException
+     */
     public function testAuthenticated()
     {
         if (isset($_SESSION['account_id'])) {
@@ -44,10 +51,14 @@ class AccessControlsTest extends TestCase
         unset($_SESSION['account_id']);
     }
 
+    /**
+     * @throws MethodNotAllowedException
+     * @throws NotFoundException
+     */
     public function testAdminAccessControls()
     {
         $container = TestHelper::getContainer();
-        /** @var \ParagonIE\EasyDB\EasyDB $db */
+        /** @var EasyDB $db */
         $db = $container['db'];
         if ($db->inTransaction()) {
             $db->rollBack();
@@ -85,6 +96,14 @@ class AccessControlsTest extends TestCase
         $db->rollBack();
     }
 
+    /**
+     * Author ACLs are based on more than "do you own it or not?"
+     *
+     * You can be a contributor, as well.
+     *
+     * @throws MethodNotAllowedException
+     * @throws NotFoundException
+     */
     public function testAuthorAccess()
     {
         $db = TestHelper::getContainer()['db'];

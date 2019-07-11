@@ -3,7 +3,25 @@
 {% block main %}
     <h2>Control Panel &rsaquo; Authors</h2>
 
-    <a href="/manage/author/create">Create New Author Profile</a>
+    <div class="helptext" id="author-index-helptext">
+        <div class="helptext-icon helptext-icon-large float-left">{#
+            #}<i class="fas fa-question-circle"></i>{#
+        #}</div>
+        <p>
+            <strong>Authors</strong> are public-facing identities which can own collections
+            of FAQ entries.
+        </p>
+        <p>
+            Each user may have access to many authors.
+        </p>
+        <p>
+            Each author may have many contributors (but only one owner).
+        </p>
+    </div>
+
+    <p>
+        <a class="btn btn-verydark" href="/manage/author/create">Create New Author Profile</a>
+    </p>
 
     {% if authors %}
     <h3>My Authors</h3>
@@ -11,9 +29,13 @@
         {% for author in authors %}
             <li>
                 <a href="/manage/author/{{ author.authorid }}">{{ author.screenname|e }}</a>
+                {% if author.is_owner %} (Owner) {% else %} (Contributor) {% endif %}
             </li>
         {% endfor %}
     </ul>
+    <p>
+        <a class="btn btn-verydark" href="/manage/author/create">Create New Author Profile</a>
+    </p>
     {% endif %}
 
 {% endblock %}

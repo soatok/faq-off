@@ -95,11 +95,11 @@ class Authors extends Splice
     {
         if ($ownedOnly) {
             return $this->db->run(
-                "SELECT * FROM faqoff_author WHERE ownerid = ? ORDER BY screenname ASC",
+                "SELECT *, TRUE as \"is_owner\" FROM faqoff_author WHERE ownerid = ? ORDER BY screenname ASC",
                 $accountId
             );
         }
-        return $this->db->run(
+        $rows = $this->db->run(
             "SELECT * FROM faqoff_author
                WHERE ownerid = ? OR authorid IN (
                    SELECT authorid FROM faqoff_author_contributor WHERE accountid = ?
@@ -109,6 +109,10 @@ class Authors extends Splice
             $accountId,
             $accountId
         );
+        foreach ($rows as $i => $row) {
+            $rows[$i]['is_owner'] = ($row['ownerid'] === $accountId);
+        }
+        return $rows;
     }
 
     /**
