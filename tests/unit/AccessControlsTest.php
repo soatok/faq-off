@@ -53,6 +53,11 @@ class AccessControlsTest extends TestCase
             $db->rollBack();
         }
         $db->beginTransaction();
+        $firstAccount = $db->insertGet(
+            'faqoff_accounts',
+            ['login' => 'phpunit-' . bin2hex(random_bytes(16))],
+            'accountid'
+        );
         $falseAccount = $db->insertGet(
             'faqoff_accounts',
             ['login' => 'phpunit-' . bin2hex(random_bytes(16))],
@@ -69,7 +74,6 @@ class AccessControlsTest extends TestCase
             'Error loading admin index page'
         );
 
-        var_dump($container['settings']['admin-accounts'], $falseAccount);
         $_SESSION['account_id'] = $falseAccount;
         TestHelper::fakeRequest('GET', '/admin');
         $response = TestHelper::getResponse();
