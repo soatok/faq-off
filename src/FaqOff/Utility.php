@@ -64,18 +64,18 @@ abstract class Utility
      */
     public static function getAdminAccountIDs(): array
     {
-        if (is_readable(APP_ROOT . '/local/admins.json')) {
-            $data = json_decode(
-                file_get_contents(APP_ROOT . '/local/admins.json'),
-                true
-            );
-            if (is_array($data) && !empty($data)) {
-                return $data;
+        if (empty(self::$container['settings']['admin-accounts'])) {
+            if (is_readable(APP_ROOT . '/local/admins.json')) {
+                $data = json_decode(
+                    file_get_contents(APP_ROOT . '/local/admins.json'),
+                    true
+                );
+                if (is_array($data) && !empty($data)) {
+                    self::$container['settings']['admin-accounts'] = $data;
+                }
             }
         }
-
-        $settings = self::$container->get('settings')['settings'];
-        return $settings['admin-accounts'] ?? [];
+        return self::$container['settings']['admin-accounts'] ?? [];
     }
 
     /**

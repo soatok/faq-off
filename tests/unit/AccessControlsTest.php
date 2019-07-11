@@ -60,6 +60,7 @@ class AccessControlsTest extends TestCase
         );
 
         $_SESSION['account_id'] = 1;
+        $container['settings']['admin-accounts'] = [1];
         TestHelper::fakeRequest('GET', '/admin');
         $response = TestHelper::getResponse();
         $this->assertSame(
