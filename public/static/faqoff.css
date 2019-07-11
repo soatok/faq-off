@@ -184,6 +184,12 @@
 .dark-dropdown .dropdown-divider {
     border-top: 1px solid #111;
 }
+#entry-follow-ups a {
+    color: #0a68cc;
+}
+#entry-follow-ups a:hover {
+    color: #0f5499;
+}
 
 /* Sticky footer styles
 -------------------------------------------------- */
