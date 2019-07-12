@@ -6,10 +6,10 @@ if (!defined('UPGRADE_SCRIPT')) {
 require_once dirname(__DIR__) . '/upgrade.php';
 
 $files = [
-    APP_ROOT . '/sql/' . $driver . '/07-themes.sql',
-    APP_ROOT . '/sql/' . $driver . '/08-accounts-extra.sql'
+    APP_ROOT . '/sql/07-themes.sql',
+    APP_ROOT . '/sql/08-accounts-extra.sql'
 ];
 foreach ($files as $file) {
     $sql = \file_get_contents($file);
-    $db->query($sql);
+    $db->exec($sql);
 }

@@ -35,5 +35,5 @@ $db = Factory::create(
 $driver = \strtolower($db->getDriver());
 foreach (\glob(APP_ROOT . '/sql/' . $driver . '/*.sql') as $file) {
     $sql = \file_get_contents($file);
-    $db->query($sql);
+    $db->exec($sql);
 }
