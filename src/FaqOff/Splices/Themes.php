@@ -94,9 +94,7 @@ class Themes extends Splice
      * @param string $name
      * @param string $description
      * @param array $custom
-     * @param string|null $url
-     * @return int|null
-     * @throws \Exception
+     * @return bool
      */
     public function updateTheme(
         int $themeId,

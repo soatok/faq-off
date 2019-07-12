@@ -283,7 +283,7 @@ abstract class Utility
      * @param string $input
      * @return string
      */
-    public function validateJson(string $input): string
+    public static function validateJson(string $input): string
     {
         $decoded = json_decode($input, true);
         if (is_array($decoded)) {
