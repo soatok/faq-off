@@ -1,16 +1,43 @@
 {% extends "base.twig" %}
 
 {% block main %}
+    <h2>Create an Acccount</h2>
+    <p>
+        Already have an account? <a href="/auth/login">Log in</a>.
+    </p>
+
+    {% if anthrokit['allow-twitter-auth'] %}
+        <p>
+            <a href="/auth/twitter" class="btn btn-verydark">
+                <i class="fab fa-twitter"></i>
+                Register with Twitter
+            </a>
+        </p>
+    {% endif %}
     <form method="post">
         {{ anti_csrf() }}
-        <label for="username">Username</label>
-        <input id="username" name="username" type="text" />
-        <hr />
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input class="form-control" id="username" name="username" type="text" />
+        </div>
 
-        <label for="passphrase">Passphrase</label>:
-        <input id="passphrase" name="passphrase" type="password" />
+        <div class="form-group">
+            <label for="passphrase">Passphrase</label>:
+            <input class="form-control" id="passphrase" name="passphrase" type="password" />
+            <small id="password-hint">&nbsp;</small>
+        </div>
 
-        <hr />
-        <button type="submit">Create Account</button>
+        <div class="form-group">
+            <label for="email">Email address</label>
+            <input class="form-control" id="email" name="email" type="email" />
+        </div>
+
+        <button class="btn btn-verydark" type="submit">Create Account</button>
     </form>
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js" integrity="sha256-Znf8FdJF85f1LV0JmPOob5qudSrns8pLPZ6qkd/+F0o=" crossorigin="anonymous"></script>
+    <script src="/static/register.js" nonce="{{ csp_nonce() }}"></script>
 {% endblock %}

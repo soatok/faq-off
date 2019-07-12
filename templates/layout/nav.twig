@@ -44,7 +44,7 @@
             </li>
         {% else %}
             <li class="nav-item">
-            <a class="nav-link" href="/auth/twitter">Log In {#
+            <a class="nav-link" href="{{ anthrokit['allow-password-auth'] ? '/auth/login' : '/auth/twitter' }}">Log In {#
                 #}{% if navbar == "authorize" %}<span class="sr-only">(current)</span>{% endif %}{#
             #}</a>
             </li>

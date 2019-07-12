@@ -110,6 +110,7 @@ if (is_readable(APP_ROOT . '/local/anthrokit.php')) {
     $local = require_once APP_ROOT . '/local/anthrokit.php';
     $anthrokit = $local + $anthrokit;
 }
+$anthrokit = Fursona::autoConfig($anthrokit);
 
 if (is_readable(APP_ROOT . '/local/settings.php')) {
     $local = require_once APP_ROOT . '/local/settings.php';

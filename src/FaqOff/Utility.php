@@ -12,6 +12,7 @@ use Slim\Container;
 use Slim\Http\Headers;
 use Slim\Http\Response;
 use Slim\Http\Stream;
+use Soatok\AnthroKit\Auth\Fursona;
 use Twig\Environment;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -235,6 +236,8 @@ abstract class Utility
         $settings = $container->get('settings')['twig-custom'] ?? [];
         $env->addGlobal('faqoff_custom', $settings);
         $env->addGlobal('theme_id', null);
+        $env->addGlobal('anthrokit', $container->get(Fursona::CONTAINER_KEY));
+        $env->addGlobal('faqoff_settings', $container->get('settings'));
 
         $env->addGlobal('session', $_SESSION);
 

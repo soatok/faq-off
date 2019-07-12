@@ -1,16 +1,32 @@
 {% extends "base.twig" %}
 
 {% block main %}
+    <h2>Log In</h2>
+    <p>
+        Don't have an account? <a href="/auth/register">Create one</a>.
+    </p>
+
+    {% if anthrokit['allow-twitter-auth'] %}
+    <p>
+        <a href="/auth/twitter" class="btn btn-verydark">
+            <i class="fab fa-twitter"></i>
+            Login with Twitter
+        </a>
+    </p>
+    {% endif %}
+
     <form method="post">
         {{ anti_csrf() }}
+        <div class="form-group">
         <label for="username">Username</label>
-        <input id="username" name="username" type="text" />
-        <hr />
+        <input class="form-control" id="username" name="username" type="text" />
+        </div>
 
+        <div class="form-group">
         <label for="passphrase">Passphrase</label>:
-        <input id="passphrase" name="passphrase" type="password" />
+        <input class="form-control" id="passphrase" name="passphrase" type="password" />
+        </div>
 
-        <hr />
-        <button type="submit">Authenticate</button>
+        <button class="btn btn-verydark" type="submit">Authenticate</button>
     </form>
 {% endblock %}
