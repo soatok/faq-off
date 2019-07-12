@@ -10,6 +10,7 @@
             }}{% endblock %}</title>
         {% block css %}
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" integrity="sha256-UzFD2WYH2U1dQpKDjjZK72VtPeWP50NoJjd26rnAdUI=" crossorigin="anonymous" />
         <link rel="stylesheet" href="/static/faqoff.css" />
         {% for css_file in faqoff_custom.css %}
             <link rel="stylesheet" nonce="{{ csp_nonce('style-src') }}" href="{{ css_file|e('html_attr') }}" />
@@ -31,8 +32,23 @@
             </p>
         {% endblock %}
         </div>
+        <footer{% if faqoff_custom.vars['dark-theme'] %} class="dark-footer"{% endif %}>
+            <div class="container">
+                {% block footer %}
+                    {% if faqoff_custom.vars['footer-html'] %}
+                        {{ faqoff_custom.vars['footer-html']|raw }}
+                    {% else %}
+                    <a class="footer-icon" href="https://twitch.tv/soatok"><i class="fab fa-twitch"></i></a>
+                    <a class="footer-icon" href="https://www.patreon.com/soatok"><i class="fab fa-patreon"></i></a>
+                    <a class="footer-icon" href="https://github.com/soatok"><i class="fab fa-github"></i></a>
+                    <span class="text-muted">
+                        This website is powered by <a href="https://github.com/soatok/faq-off">open source software</a>.
+                    </span>
+                    {% endif %}
+                {% endblock %}
+            </div>
+        </footer>
     {% endblock %}
-    </body>
     {% block javascript %}
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
@@ -44,5 +60,6 @@
         <script nonce="{{ csp_nonce('script-src') }}" src="{{ js_file|e('html_attr') }}"></script>
     {% endfor %}
     {% endblock %}
+    </body>
 {% endblock %}
 </html>

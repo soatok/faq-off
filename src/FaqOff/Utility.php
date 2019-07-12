@@ -59,6 +59,26 @@ abstract class Utility
     }
 
     /**
+     * @return int[]
+     * @throws \Interop\Container\Exception\ContainerException
+     */
+    public static function getAdminAccountIDs(): array
+    {
+        if (empty(self::$container['settings']['admin-accounts'])) {
+            if (is_readable(APP_ROOT . '/local/admins.json')) {
+                $data = json_decode(
+                    file_get_contents(APP_ROOT . '/local/admins.json'),
+                    true
+                );
+                if (is_array($data) && !empty($data)) {
+                    self::$container['settings']['admin-accounts'] = $data;
+                }
+            }
+        }
+        return self::$container['settings']['admin-accounts'] ?? [];
+    }
+
+    /**
      * @param RequestInterface $request
      * @param InputFilterContainer|null $filter
      * @return array
@@ -189,6 +209,20 @@ abstract class Utility
             )
         );
 
+        $env->addFunction(
+            new TwigFunction(
+                'is_admin',
+                /** @return bool */
+                function () {
+                    return in_array(
+                        $_SESSION['account_id'],
+                        Utility::getAdminAccountIDs(),
+                        true
+                    );
+                }
+            )
+        );
+
         $settings = $container->get('settings')['twig-custom'] ?? [];
         $env->addGlobal('faqoff_custom', $settings);
         $env->addGlobal('theme_id', null);
@@ -243,5 +277,18 @@ abstract class Utility
         $resource = \fopen('php://temp', 'wb');
         \fwrite($resource, $body);
         return new Stream($resource);
+    }
+
+    /**
+     * @param string $input
+     * @return string
+     */
+    public static function validateJson(string $input): string
+    {
+        $decoded = json_decode($input, true);
+        if (is_array($decoded)) {
+            return $input;
+        }
+        return '[]';
     }
 }

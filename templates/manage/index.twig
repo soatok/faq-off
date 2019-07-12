@@ -24,17 +24,10 @@
             {% if collections %}<ul>
                 {% for collection in collections %}
                     <li>
-                        <a href="/manage/collection/{{ collection.collectionid }}">{#
+                        <a href="/manage/collection/{{ collection.collectionid }}/entries">{#
                             #}{{ collection.title|e }} {#
                             #}(<strong>@{{ collection['author_screenname']|e }}</strong>){#
                         #}</a>
-                        <ul>
-                            <li>
-                                <a href="/manage/collection/{{ collection.collectionid }}/entry/create">
-                                    Create Entry
-                                </a>
-                            </li>
-                        </ul>
                     </li>
                 {% endfor %}
                 </ul>{% endif %}
