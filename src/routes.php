@@ -26,6 +26,7 @@ $app->group('/admin', function () use ($app, $container) {
     $app->any('/collection/{collection:[^/]+}/entries', 'admin.entries');
     $app->any('/collection/{collection:[^/]+}', 'admin.collections');
     $app->any('/collections', 'admin.collections');
+
     $app->any('/custom[/{action:[^/]+}]', 'admin.custom');
     $app->get('/invite-tree', 'admin.invitetree');
     $app->any('/theme/{action:[^/]+}/[{id:[0-9]+}]', 'admin.themes');

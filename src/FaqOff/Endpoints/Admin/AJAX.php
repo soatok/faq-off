@@ -161,6 +161,7 @@ class AJAX extends Endpoint
      * @param ResponseInterface|null $response
      * @param array $routerParams
      * @return ResponseInterface
+     * @throws \Exception
      */
     public function __invoke(
         RequestInterface $request,

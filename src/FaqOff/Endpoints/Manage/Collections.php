@@ -69,6 +69,7 @@ class Collections extends Endpoint
             $this->messageOnce('This collection does not exist.', 'error');
             return $this->redirect('/manage/collections');
         }
+
         if (!$this->authors->accountHasAccess($authorId, $_SESSION['account_id'])) {
             $this->messageOnce('You do not have access to collections belonging to this author.', 'error');
             return $this->redirect('/manage/authors');

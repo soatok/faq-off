@@ -70,7 +70,7 @@ class EntryCollection extends Splice
             $collectionId
         );
         if (!$collection) {
-            throw new CollectionNotFoundException();
+            throw new CollectionNotFoundException('Collection not found!');
         }
         return $collection;
     }
@@ -114,6 +114,24 @@ class EntryCollection extends Splice
             $accountId,
             $accountId
         );
+    }
+
+    /**
+     * @return array
+     */
+    public function getAll(): array
+    {
+        $collections = $this->db->run(
+            "SELECT
+                faqoff_collection.*,
+                faqoff_author.screenname AS author_screenname
+            FROM faqoff_collection
+            JOIN faqoff_author ON faqoff_collection.authorid = faqoff_author.authorid",
+        );
+        if (!$collections) {
+            return [];
+        }
+        return $collections;
     }
 
     /**
@@ -165,14 +183,28 @@ class EntryCollection extends Splice
      *
      * @param string $title
      * @param int|null $authorId
+     * @param int|null $existingId
      * @return string
      */
-    public function getDataUrl(string $title, int $authorId = null): string
+    public function getDataUrl(string $title, int $authorId = null, ?int $existingId = null): string
     {
         $base = preg_replace('#[^a-z0-9\-]#', '-', strtolower($title));
         $base = trim($base, '-');
         $url = $base;
         $i = 1;
+        if ($existingId) {
+            while (
+                $this->db->exists(
+                    "SELECT count(*) FROM faqoff_collection WHERE authorid = ? AND url = ? AND collectionid != ?",
+                    $authorId,
+                    $url,
+                    $existingId
+                )
+            ) {
+                $url = $base . '-' . (++$i);
+            }
+            return $url;
+        }
         while (
             $this->db->exists(
                 "SELECT count(*) FROM faqoff_collection WHERE authorid = ? AND url = ?",
@@ -183,6 +215,44 @@ class EntryCollection extends Splice
             $url = $base . '-' . (++$i);
         }
         return $url;
+    }
+
+    /**
+     * @param int $collectionId
+     * @param array $postData
+     * @return bool
+     */
+    public function updateAsAdmin(int $collectionId, array $postData = []): bool
+    {
+        $this->db->beginTransaction();
+        $this->db->update(
+            'faqoff_collection',
+            [
+                'authorid' => $postData['author'],
+                'theme' => $postData['theme'] < 1 ? null : $postData['theme'],
+                'title' => $postData['title']
+            ],
+            [
+                'collectionid' => $collectionId
+            ]
+        );
+        if (empty($postData['url'])) {
+            $postData['url'] = $this->getDataUrl(
+                $postData['title'],
+                (int) $postData['author'],
+                $collectionId
+            );
+        }
+        $this->db->update(
+            'faqoff_collection',
+            [
+                'url' => $postData['url']
+            ],
+            [
+                'collectionid' => $collectionId
+            ]
+        );
+        return $this->db->commit();
     }
 
     /**

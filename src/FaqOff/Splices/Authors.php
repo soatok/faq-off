@@ -148,6 +148,15 @@ class Authors extends Splice
         }
         return $author;
     }
+    /**
+     * @return array
+     */
+    public function listAll(): array
+    {
+        return $this->db->run(
+            "SELECT authorid, screenname FROM faqoff_author ORDER BY screenname ASC"
+        );
+    }
 
     /**
      * Allow another user account access to this author profile

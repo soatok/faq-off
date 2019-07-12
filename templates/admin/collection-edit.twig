@@ -1,0 +1,60 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h2>Edit Collection</h2>
+    {% if errors %}
+        {% for i, error in errors %}
+            <p class="error" id="error-{{ i|e('html_attr') }}">{{ error }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        {{ anti_csrf() }}
+        <div class="form-group">
+            <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="collection-title">Collection Title:</label>
+            <input
+                class="form-control"
+                id="collection-title"
+                name="title"
+                required="required"
+                type="text"
+                value="{{ collection.title|e('html_attr') }}"
+            />
+        </div>
+        <div class="form-group">
+            <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="collection-url">Collection URL:</label>
+            <input
+                class="form-control"
+                id="collection-url"
+                name="url"
+                type="text"
+                value="{{ collection.url|e('html_attr') }}"
+            />
+        </div>
+        <div class="form-group">
+            <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="collection-author">Collection Author:</label>
+            <select id="collection-author" class="form-control" name="author">{% for auth in authors %}
+                    <option
+                        {% if auth.authorid == collection.authorid %} selected="selected"{% endif %}
+                        value="{{ auth.authorid|e('html_attr') }}"
+                    >{{ auth.screenname|e('html_attr') }}</option>
+                {% endfor %}</select>
+        </div>
+        <div class="form-group">
+            <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="collection-theme">Theme:</label>
+            <select class="form-control" id="collection-theme" name="theme">
+                <option value="">Default Theme</option>
+                {% if themes %}
+                <optgroup label="Custom Themes">
+                    {% for theme in themes %}
+                        <option{#
+                        #} {% if collection.theme == theme.themeid %} selected="selected"{% endif %}{#
+                        #} value="{{ theme.themeid }}"{#
+                    #}>{{ theme.name|e('html_attr') }}</option>
+                    {% endfor %}
+                    {% endif %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-verydark">Update Collection</button>
+    </form>
+{% endblock %}

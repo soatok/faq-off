@@ -1,0 +1,32 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h2>Control Panel &rsaquo; Collections</h2>
+
+    <table id="admin-collections-table" class="table table-striped full-width">
+        <thead>
+        <tr>
+            <th>Author</th>
+            <th>Collection</th>
+            <th colspan="2" class="text-center">Actions</th>
+        </tr>
+        </thead>
+        {% for collection in collections %}
+            <tr>
+                <td class="min-width">
+                    <a href="/admin/author/edit/{{ collection.authorid }}">
+                        @{{ collection['author_screenname']|e }}
+                    </a>
+                </td>
+                <td class="admin-collections-entries">
+                    <a href="/admin/collection/{{ collection.collectionid }}/entries">
+                        {{ collection.title|e }}
+                    </a>
+                </td>
+                <td>
+                    <a href="/admin/collection/{{ collection.collectionid }}">Edit Collection</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
