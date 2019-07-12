@@ -188,6 +188,15 @@ abstract class Utility
                 ['is_safe' => ['html']]
             )
         );
+        $env->addFunction(
+            new TwigFunction(
+                'anti_csrf_ajax',
+                function () {
+                    return Base64UrlSafe::encode($_SESSION['anti-csrf']);
+                },
+                ['is_safe' => ['html', 'html_attr']]
+            )
+        );
 
         $env->addFunction(
             new TwigFunction(

@@ -261,6 +261,7 @@ footer {
     background-color: rgba(21, 24, 26, 0.66);
     border: 1px solid #000;
 }
+#edit-file-contents,
 #theme-twig-vars {
     font-family: monospace;
     min-height: 10rem;

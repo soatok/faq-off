@@ -17,6 +17,7 @@ $guestsOnly = new GuestsOnly($container);
 $authOnly = new AuthorizedUsersOnly($container);
 
 $app->group('/admin', function () use ($app, $container) {
+    $app->any('/ajax/{action:[A-Za-z0-9\-_]+}', 'admin.ajax');
     $app->any('/account/{action:(?:edit|view)}/{id:[0-9]+}', 'admin.accounts');
     $app->any('/accounts', 'admin.accounts');
     $app->any('/author/{action:(?:edit|view)}/{id:[0-9]+}', 'admin.authors');
@@ -71,6 +72,9 @@ $app->get('/', 'staticpage');
 $app->get('', 'staticpage');
 
 
+$container['admin.ajax'] = function (Container $c) {
+    return new Admin\AJAX($c);
+};
 $container['admin.accounts'] = function (Container $c) {
     return new Admin\Accounts($c);
 };

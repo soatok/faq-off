@@ -1,0 +1,44 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h1>Custom File Manager &rsaquo; Create File</h1>
+
+    <form method="post">
+        {{ anti_csrf() }}
+        <div class="form-group">
+            <label for="edit-file-directoy">Directory:</label>
+
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">/local/</div>
+                </div>
+                <input
+                    class="form-control"
+                    id="edit-file-directoy"
+                    name="path"
+                    value="{{ dir|e('html_attr') }}"
+                />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="edit-file-name">File name:</label>
+            <input
+                class="form-control"
+                id="edit-file-name"
+                name="file"
+                required="required"
+            />
+        </div>
+        <div class="form-group">
+            <label for="edit-file-contents">File contents:</label>
+            <textarea
+                class="form-control"
+                id="edit-file-contents"
+                name="contents"
+            ></textarea>
+        </div>
+        <button type="submit" class="btn btn-verydark">Save File</button>
+        <a href="/admin/custom" class="btn btn-default">Back</a>
+    </form>
+
+{% endblock %}

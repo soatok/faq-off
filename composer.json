@@ -51,6 +51,8 @@
     "scripts": {
         "post-update-cmd": [
             "php bin/upgrade.php auto",
+            "chmod 0777 public/local",
+            "chmod -R ugo+w public/local",
             "chmod 0777 vendor/ezyang/htmlpurifier/library/HTMLPurifier/DefinitionCache/Serializer"
         ],
         "start": "php -S localhost:8080 -t public",
