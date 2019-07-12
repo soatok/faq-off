@@ -1,0 +1,13 @@
+{% macro inviteTree(tree, depth = 0) %}
+<ul>
+    {% for row in tree %}
+        <li>
+            {% if not row.active %}<strong>Banned</strong>:{% endif %}
+            <a href="/manage/account/edit/{{ row.accountid }}">{{ row.public_id }}</a>
+            {% if row.children %}
+                {{ _self.inviteTree(row.children, depth + 1) }}
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+{% endmacro %}

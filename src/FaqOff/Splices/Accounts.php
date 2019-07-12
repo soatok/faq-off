@@ -73,6 +73,52 @@ class Accounts extends BaseClass
     }
 
     /**
+     * @return array
+     */
+    public function getInviteTree(): array
+    {
+        $uninvited = $this->db->run(
+            "SELECT a.accountid, a.public_id, a.active
+             FROM faqoff_accounts a
+             WHERE NOT EXISTS (
+                 SELECT 1
+                 FROM faqoff_invites b
+                 WHERE b.newaccountid = a.accountid
+             )
+             ORDER BY accountid ASC"
+        );
+        foreach ($uninvited as $i => $row) {
+            $children = $this->getInviteSubTree((int) $row['accountid']);
+            if ($children) {
+                $uninvited[$i]['children'] = $children;
+            }
+        }
+        return $uninvited;
+    }
+
+    /**
+     * @param int $accountId
+     * @return array
+     */
+    protected function getInviteSubTree(int $accountId): array
+    {
+        $current = $this->db->run(
+            "SELECT acc.accountid, acc.public_id, acc.active
+             FROM faqoff_accounts acc
+             JOIN faqoff_invites fi on acc.accountid = fi.newaccountid
+             WHERE fi.invitefrom = ?",
+            $accountId
+        );
+        foreach ($current as $i => $row) {
+            $children = $this->getInviteSubTree((int) $row['accountid']);
+            if ($children) {
+                $current[$i]['children'] = $children;
+            }
+        }
+        return $current;
+    }
+
+    /**
      * @param int $accountId
      * @return array
      */

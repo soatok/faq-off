@@ -1,0 +1,7 @@
+{% extends "base.twig" %}
+{% import "macros/invitetree.twig" as treemacro %}
+
+{% block main %}
+    <h1>Invites</h1>
+    {{ treemacro.inviteTree(tree) }}
+{% endblock %}
