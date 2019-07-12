@@ -1,0 +1,41 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h1>Themes</h1>
+
+
+    <div class="helptext" id="author-index-helptext">
+        <div class="helptext-icon helptext-icon-large float-left">{#
+            #}<i class="fas fa-question-circle"></i>{#
+        #}</div>
+        <p>
+            <strong>Themes</strong> allow authors to customize their collections
+            and entries.
+        </p>
+        <p>
+            As an administrator, you can add arbitrary JavaScript and CSS files
+            to be loaded when a specific theme is selected, as well as set some
+            variables used in the template engine.
+        </p>
+        <p>
+            To manage CSS/JS files for use in themes, you want
+            <a href="/admin/custom">Custom Files</a>.
+        </p>
+    </div>
+
+    <p>
+        <a class="btn btn-verydark" href="/admin/theme/create">Create New Theme</a>
+    </p>
+    <table class="table table-striped">
+        <tr>
+            <th>Name</th>
+            <th>Created</th>
+        </tr>
+        {% for theme in themes %}
+        <tr>
+            <td><a href="/admin/theme/edit/{{ theme.themeid }}">{{ theme.name }}</a></td>
+            <td>{{ theme.created }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

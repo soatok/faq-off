@@ -6,7 +6,6 @@ use Interop\Container\Exception\ContainerException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Soatok\AnthroKit\Endpoint;
-use Soatok\FaqOff\TestHelper;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;

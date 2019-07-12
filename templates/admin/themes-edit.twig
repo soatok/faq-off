@@ -1,0 +1,94 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h1>Edit Theme</h1>
+    <form method="post">{{ anti_csrf() }}
+
+        <div class="form-group">
+            <label for="theme-name">Theme Name:</label>
+            <input
+                class="form-control"
+                id="theme-name"
+                name="name"
+                required="required"
+                value="{{ theme.name|e('html_attr') }}"
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="theme-description">Theme Description:</label>
+            <textarea
+                class="form-control"
+                id="theme-description"
+                name="description"
+                required="required"
+            >{{ theme.description|e('html_attr') }}</textarea>
+            <small>Markdown allowed.</small>
+        </div>
+
+        <div class="form-group">
+            <fieldset>
+                <legend>CSS Files:</legend>
+                <ol id="theme-css-files-list" data-count="{{ theme.css_files|length }}">
+                    {% set css_iterator = 0 %}
+                    {% for file in theme.css_files %}
+                        <li id="theme-css-{{ css_iterator }}">
+                            <input
+                                    class="form-control"
+                                    name="css_files[]"
+                                    type="text"
+                                    value="{{ file|e('html_attr') }}"
+                            />
+                        </li>
+                        {% set css_iterator = css_iterator + 1 %}
+                    {% endfor %}
+                </ol>
+                <button type="button" class="btn btn-verydark" id="theme-add-css-file">
+                    Add CSS File
+                </button>
+            </fieldset>
+        </div>
+        <div class="form-group">
+            <fieldset>
+                <legend>JavaScript Files:</legend>
+                <ol id="theme-js-files-list" data-count="{{ theme.js_files|length }}">
+                    {% set js_iterator = 0 %}
+                    {% for file in theme.js_files %}
+                        <li id="theme-js-{{ js_iterator }}">
+                            <input
+                                class="form-control"
+                                name="js_files[]"
+                                type="text"
+                                value="{{ file|e('html_attr') }}"
+                            />
+                        </li>
+                        {% set js_iterator = js_iterator + 1 %}
+                    {% endfor %}
+                </ol>
+                <button type="button" class="btn btn-verydark" id="theme-add-js-file">
+                    Add JavaScript File
+                </button>
+            </fieldset>
+        </div>
+
+        <div class="form-group">
+            <label for="theme-twig-vars">Template Variables:</label>
+            <textarea
+                class="form-control"
+                id="theme-twig-vars"
+                name="twig_vars"
+            >{{ theme.twig_vars|json_encode(128)|e('html_attr') }}</textarea>
+            <small>Must be a valid JSON document.</small>
+        </div>
+
+        <button type="submit" class="btn btn-verydark form-control">
+            Update Theme
+        </button>
+    </form>
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script src="/static/admin-themes.js" nonce="{{ csp_nonce() }}"></script>
+    <script src="/static/admin-themes-create.js" nonce="{{ csp_nonce() }}"></script>
+{% endblock %}

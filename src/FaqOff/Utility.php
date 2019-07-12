@@ -278,4 +278,17 @@ abstract class Utility
         \fwrite($resource, $body);
         return new Stream($resource);
     }
+
+    /**
+     * @param string $input
+     * @return string
+     */
+    public function validateJson(string $input): string
+    {
+        $decoded = json_decode($input, true);
+        if (is_array($decoded)) {
+            return $input;
+        }
+        return '[]';
+    }
 }

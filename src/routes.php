@@ -25,10 +25,10 @@ $app->group('/admin', function () use ($app, $container) {
     $app->any('/collection/{collection:[^/]+}/entries', 'admin.entries');
     $app->any('/collection/{collection:[^/]+}', 'admin.collections');
     $app->any('/collections', 'admin.collections');
-    $app->get('/custom[/{action:[^/]+}]', 'admin.custom');
+    $app->any('/custom[/{action:[^/]+}]', 'admin.custom');
     $app->get('/invite-tree', 'admin.invitetree');
-    $app->get('/theme/{action:[^/]+}/[{id:[0-9]+}]', 'admin.themes');
-    $app->get('/theme[/{action:[^/]+}]', 'admin.themes');
+    $app->any('/theme/{action:[^/]+}/[{id:[0-9]+}]', 'admin.themes');
+    $app->any('/theme[/{action:[^/]+}]', 'admin.themes');
     $app->get('/themes', 'admin.themes');
     $app->get('/', 'admin.home');
     $app->get('', 'admin.home');
