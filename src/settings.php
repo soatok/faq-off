@@ -5,9 +5,8 @@ $default = [
     'displayErrorDetails' => true, // set to false in production
     'addContentLengthHeader' => false, // Allow the web server to send the content-length header
 
-    // Default to the first user account registered.
-    // You can override this in local/anthrokit.php
-    'admin-accounts' => [1],
+    // You can override this in local/admins.json
+    'admin-accounts' => [],
 
     'encryption-key' => include __DIR__ . '/encryption-key.php',
 
@@ -21,7 +20,7 @@ $default = [
     'twig' => [
         'autoescape' => 'html',
         'template_paths' => [
-            __DIR__ . '/../templates/'
+            APP_ROOT . '/templates/'
         ],
     ],
 
@@ -37,7 +36,7 @@ $default = [
     // Monolog settings
     'logger' => [
         'name' => 'slim-app',
-        'path' => isset($_ENV['docker']) ? 'php://stdout' : __DIR__ . '/../logs/app.log',
+        'path' => isset($_ENV['docker']) ? 'php://stdout' : APP_ROOT . '/logs/app.log',
         'level' => \Monolog\Logger::DEBUG,
     ],
 ];
