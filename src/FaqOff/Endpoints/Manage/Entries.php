@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace Soatok\FaqOff\Endpoints\Manage;
 
 use Interop\Container\Exception\ContainerException;
+use ParagonIE\Ionizer\InvalidDataException;
 use Psr\Http\Message\{
     RequestInterface,
     ResponseInterface
@@ -54,6 +55,7 @@ class Entries extends Endpoint
      * @return ResponseInterface
      * @throws CollectionNotFoundException
      * @throws ContainerException
+     * @throws InvalidDataException
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
@@ -65,7 +67,6 @@ class Entries extends Endpoint
     ): ResponseInterface {
         $this->cspBuilder->setSelfAllowed('style-src', true);
         $filter = new CreateEntryFilter();
-        $errors = [];
         $post = $this->post($request, self::TYPE_FORM, $filter);
         if ($post) {
             $newEntryId = $this->entries->create(
@@ -100,6 +101,7 @@ class Entries extends Endpoint
      * @return ResponseInterface
      * @throws CollectionNotFoundException
      * @throws ContainerException
+     * @throws InvalidDataException
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
@@ -109,7 +111,6 @@ class Entries extends Endpoint
         int $entryId,
         RequestInterface $request
     ): ResponseInterface {
-        $errors = [];
         $this->cspBuilder->setSelfAllowed('style-src', true);
         $post = $this->post($request);
         if ($post) {
@@ -143,6 +144,7 @@ class Entries extends Endpoint
      *
      * @throws CollectionNotFoundException
      * @throws ContainerException
+     * @throws InvalidDataException
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError

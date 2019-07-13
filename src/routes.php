@@ -24,9 +24,9 @@ $app->group('/admin', function () use ($app, $container) {
     $app->any('/author/{action:(?:edit|view)}/{id:[0-9]+}', 'admin.authors');
     $app->any('/authors', 'admin.authors');
     $app->any('/collection/{collection:[^/]+}/{action:[^/]+}/{entry:[^/]+}[/{extra:[^/]+}]', 'admin.entries');
-    $app->any('/collection/{collection:[^/]+}/entries', 'admin.entries');
-    $app->any('/collection/{collection:[^/]+}', 'admin.collections');
-    $app->any('/collections', 'admin.collections');
+    $app->get('/collection/{collection:[^/]+}/entries', 'admin.entries');
+    $app->get('/collection/{collection:[^/]+}', 'admin.collections');
+    $app->get('/collections', 'admin.collections');
     $app->any('/custom[/{action:[^/]+}]', 'admin.custom');
     $app->get('/invite-tree', 'admin.invitetree');
     $app->get('/settings[/{which:[^/]+}]', 'admin.settings');

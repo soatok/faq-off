@@ -3,11 +3,13 @@ declare(strict_types=1);
 namespace Soatok\FaqOff\Endpoints\Admin;
 
 use Interop\Container\Exception\ContainerException;
+use ParagonIE\Ionizer\InvalidDataException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Container;
 use Soatok\AnthroKit\Endpoint;
 use Soatok\FaqOff\Exceptions\CollectionNotFoundException;
+use Soatok\FaqOff\Filter\AdminEditEntryFilter;
 use Soatok\FaqOff\MessageOnceTrait;
 use Soatok\FaqOff\Splices\Authors;
 use Soatok\FaqOff\Splices\Entry;
@@ -51,13 +53,34 @@ class Entries extends Endpoint
      * @param int $collection
      * @param int $entry
      * @return ResponseInterface
+     * @throws CollectionNotFoundException
+     * @throws ContainerException
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws InvalidDataException
      */
     protected function editEntry(
         RequestInterface $request,
         int $collection,
         int $entry
     ): ResponseInterface {
-        return $this->json([]);
+        $filter = new AdminEditEntryFilter();
+        $post = $this->post($request, self::TYPE_FORM, $filter);
+        if ($post) {
+            $options = json_decode($post['options'] ?? '[]', true);
+            $post['follow-up'] = $options['follow-up'] ?? [];
+            if ($this->entries->update($entry, $post)) {
+                $this->messageOnce('Update sucessful', 'success');
+                return $this->redirect(
+                    '/admin/collection/' . $collection . '/edit/' . $entry
+                );
+            }
+        }
+        return $this->view('admin/entries-edit.twig', [
+            'collection' => $this->collections->getById($collection),
+            'entry' => $this->entries->getById($entry)
+        ]);
     }
 
     /**
@@ -113,7 +136,6 @@ class Entries extends Endpoint
     }
 
     /**
-     * @param RequestInterface $request
      * @param int $collection
      * @param int $entryId
      * @param int $changeId
@@ -125,7 +147,6 @@ class Entries extends Endpoint
      * @throws SyntaxError
      */
     protected function viewChangelog(
-        RequestInterface $request,
         int $collection,
         int $entryId,
         int $changeId
@@ -150,6 +171,7 @@ class Entries extends Endpoint
      * @return ResponseInterface
      * @throws CollectionNotFoundException
      * @throws ContainerException
+     * @throws InvalidDataException
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
@@ -169,7 +191,7 @@ class Entries extends Endpoint
                 }
                 $extra = $routerParams['extra'] ?? null;
                 if ($extra) {
-                    return $this->viewChangelog($request, $collection, $entry, (int) $extra);
+                    return $this->viewChangelog($collection, $entry, (int) $extra);
                 } else {
                     return $this->listRecentChanges($collection, $entry);
                 }

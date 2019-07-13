@@ -283,3 +283,7 @@ footer {
 .dark-body .table-striped tbody tr:nth-of-type(2n+1) {
     background-color: rgba(0, 0, 0, 0.15);
 }
+#admin-entry-options {
+    font-family: monospace;
+    min-height: 10rem;
+}
