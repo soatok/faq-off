@@ -27,6 +27,9 @@ class Themes extends Splice
         $css = $custom['css_files'] ?? [];
         $js = $custom['js_files'] ?? [];
         $twig = $custom['twig_vars'] ?? [];
+        $this->deleteEmpty($css);
+        $this->deleteEmpty($js);
+        $this->deleteEmpty($twig);
         $this->db->beginTransaction();
         if (!$url) {
             // No URL given, generate one.
@@ -105,6 +108,9 @@ class Themes extends Splice
         $css = $custom['css_files'] ?? [];
         $js = $custom['js_files'] ?? [];
         $twig = $custom['twig_vars'] ?? [];
+        $this->deleteEmpty($css);
+        $this->deleteEmpty($js);
+        $this->deleteEmpty($twig);
         $this->db->beginTransaction();
         $this->db->update(
             'faqoff_themes',
@@ -173,5 +179,21 @@ class Themes extends Splice
             $url = $base . '-' . (++$i);
         }
         return $url;
+    }
+
+    /**
+     * @param array<int|string, string> $array
+     */
+    protected function deleteEmpty(array &$array): void
+    {
+        foreach ($array as $i => $v) {
+            if (is_null($v)) {
+                unset($array[$i]);
+            } elseif (is_string($v)) {
+                if (trim($v) === '') {
+                    unset($array[$i]);
+                }
+            }
+        }
     }
 }
