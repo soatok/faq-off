@@ -17,19 +17,51 @@
     <form method="post">
         {{ anti_csrf() }}
         <div class="form-group">
-            <label for="username">Username</label>
-            <input class="form-control" id="username" name="username" type="text" />
+            <label for="email">Email address:</label>
+            <input
+                class="form-control"
+                id="email"
+                name="email"
+                placeholder="username@example.com"
+                type="email"
+            />
         </div>
 
         <div class="form-group">
-            <label for="passphrase">Passphrase</label>:
-            <input class="form-control" id="passphrase" name="passphrase" type="password" />
+            <label for="username">Username:</label>
+            <input
+                class="form-control"
+                id="username"
+                name="login"
+                placeholder="jsmith2"
+                type="text"
+            />
+        </div>
+
+
+        <div class="form-group">
+            <label for="passphrase">Passphrase:</label>
+            <input
+                class="form-control"
+                id="passphrase"
+                name="password"
+                placeholder="No short passwords; use a password manager."
+                type="password"
+            />
             <small id="password-hint">&nbsp;</small>
         </div>
 
         <div class="form-group">
-            <label for="email">Email address</label>
-            <input class="form-control" id="email" name="email" type="email" />
+            <div class="text-center two-factor-wrapper">
+                <div id="two-factor-qr" data-secret="{{ two_factor }}"></div>
+                <code id="two-factor-uri"></code>
+            </div>
+            <label for="two-factor">Two-factor authentication:</label>
+            <input class="form-control" id="two-factor" name="two-factor-challenge" type="text" placeholder="000000" autocomplete="false" />
+            <small>
+                Enter a 6-digit code from your two-factor authentication app after scanning the QR code.
+                If you don't have one, get <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2">Google Authenticator</a>.
+            </small>
         </div>
 
         <button class="btn btn-verydark" type="submit">Create Account</button>
@@ -39,5 +71,6 @@
 {% block javascript %}
     {{ parent() }}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js" integrity="sha256-Znf8FdJF85f1LV0JmPOob5qudSrns8pLPZ6qkd/+F0o=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js" integrity="sha256-9MzwK2kJKBmsJFdccXoIDDtsbWFh8bjYK/C7UjB1Ay0=" crossorigin="anonymous"></script>
     <script src="/static/register.js" nonce="{{ csp_nonce() }}"></script>
 {% endblock %}

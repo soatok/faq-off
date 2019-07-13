@@ -25,6 +25,24 @@ function checkPassword() {
     return result;
 }
 
+function updateTwoFactorQR() {
+    let obj = $("#two-factor-qr");
+    let secret = obj.data('secret');
+    let username = $("#username").val();
+    let uri = 'otpauth://totp/' +
+        encodeURI(window.location.hostname) + ':' + encodeURI(username) + '?' +
+        'algorithm=SHA1' + '&' +
+        'secret=' + secret + '&' +
+        'digits=6' + '&' +
+        'period=30' + '&' +
+        'issuer=' + encodeURI(window.location.hostname);
+    obj.html("");
+    obj.qrcode(uri);
+    $("#two-factor-uri").html(uri);
+}
+
 $(document).ready(function() {
     $("#passphrase").on('change', checkPassword);
+    $("#username").on('change', updateTwoFactorQR);
+    updateTwoFactorQR();
 });
