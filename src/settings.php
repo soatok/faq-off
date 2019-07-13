@@ -5,7 +5,9 @@ $default = [
     'displayErrorDetails' => true, // set to false in production
     'addContentLengthHeader' => false, // Allow the web server to send the content-length header
 
-    'admin-accounts' => [],
+    // Default to the first user account registered.
+    // You can override this in local/anthrokit.php
+    'admin-accounts' => [1],
 
     'encryption-key' => include __DIR__ . '/encryption-key.php',
 
