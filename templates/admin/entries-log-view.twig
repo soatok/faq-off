@@ -1,0 +1,48 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h1>Recent Change</h1>
+
+<ul>
+    <li>Collection: <a href="/admin/collection/{{ entry.collectionid }}/entries">{{ collection.title }}</a></li>
+    <li>Entry: <a href="/admin/collection/{{ entry.collectionid }}/logs/{{ entry.entryid }}">{{ entry.title }}</a></li>
+</ul>
+
+    <div id="admin-view-change">
+        <div id="admin-change-attribution">
+            Change made by:
+            <a href="/admin/account/edit/{{ change.accountid }}">{{ change.public_id }}</a>
+        </div>
+        <pre id="admin-change-diff"><code class="diff">{{ change.diff|e('html_attr') }}</code></pre>
+    </div>
+
+{% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    {% if faqoff_custom.vars['dark-theme'] %}
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/styles/darcula.min.css"
+            integrity="sha256-6LPwXdYTX9fW/QBOmpsdnGBFIIumODzzBSo04uuTBdg="
+            crossorigin="anonymous"
+        />
+    {% else %}
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/styles/default.min.css"
+            integrity="sha256-zcunqSn1llgADaIPFyzrQ8USIjX2VpuxHzUwYisOwo8="
+            crossorigin="anonymous"
+        />
+    {% endif %}
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/highlight.min.js"
+        integrity="sha256-js+I1fdbke/DJrW2qXQlrw7VUEqmdeFeOW37UC0bEiU="
+        crossorigin="anonymous"
+     ></script>
+    <script nonce="{{ csp_nonce('script-src') }}">hljs.initHighlightingOnLoad();</script>
+{% endblock %}

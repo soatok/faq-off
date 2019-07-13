@@ -15,6 +15,7 @@ use Soatok\FaqOff\Middleware\AdminsOnly;
 $container = $app->getContainer();
 $guestsOnly = new GuestsOnly($container);
 $authOnly = new AuthorizedUsersOnly($container);
+$adminsOnly = new AdminsOnly($container);
 
 $app->group('/admin', function () use ($app, $container) {
     $app->any('/ajax/{action:[A-Za-z0-9\-_]+}', 'admin.ajax');
@@ -22,25 +23,25 @@ $app->group('/admin', function () use ($app, $container) {
     $app->any('/accounts', 'admin.accounts');
     $app->any('/author/{action:(?:edit|view)}/{id:[0-9]+}', 'admin.authors');
     $app->any('/authors', 'admin.authors');
-    $app->any('/collection/{collection:[^/]+}/{action:[^/]+}/{entry:[^/]+}', 'admin.entries');
+    $app->any('/collection/{collection:[^/]+}/{action:[^/]+}/{entry:[^/]+}[/{extra:[^/]+}]', 'admin.entries');
     $app->any('/collection/{collection:[^/]+}/entries', 'admin.entries');
     $app->any('/collection/{collection:[^/]+}', 'admin.collections');
     $app->any('/collections', 'admin.collections');
     $app->any('/custom[/{action:[^/]+}]', 'admin.custom');
     $app->get('/invite-tree', 'admin.invitetree');
+    $app->get('/settings[/{which:[^/]+}]', 'admin.settings');
     $app->any('/theme/{action:[^/]+}/[{id:[0-9]+}]', 'admin.themes');
     $app->any('/theme[/{action:[^/]+}]', 'admin.themes');
     $app->get('/themes', 'admin.themes');
     $app->get('/', 'admin.home');
     $app->get('', 'admin.home');
-})->add(new AdminsOnly($container));
+})->add($adminsOnly);
 
 $app->group('/manage', function () use ($app, $container) {
     // Authenticated users only...
     $app->any('/ajax/{action:[A-Za-z0-9\-_]+}', 'manage.ajax');
     $app->any('/collection/{collection:[0-9]+}/entry/{entry:[0-9]+}[/{action:[a-z]+}]', 'manage.entry');
     $app->any('/collection/{collection:[0-9]+}/{action:entry}/{create:create}', 'manage.entry');
-
     $app->any('/collection/{id:[0-9]+}[/{action:[a-z]+}]', 'manage.collections');
     $app->any('/collections', 'manage.collections');
     $app->any('/collection', 'manage.collections');
@@ -95,6 +96,9 @@ $container['admin.home'] = function (Container $c) {
 };
 $container['admin.invitetree'] = function (Container $c) {
     return new Admin\InviteTree($c);
+};
+$container['admin.settings'] = function (Container $c) {
+    return new Admin\Settings($c);
 };
 $container['admin.themes'] = function (Container $c) {
     return new Admin\Themes($c);

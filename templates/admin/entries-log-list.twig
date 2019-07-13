@@ -1,0 +1,46 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h1>Recent Changes</h1>
+
+    <div class="helptext" id="author-index-helptext">
+        <div class="helptext-icon helptext-icon-small float-left">{#
+            #}<i class="fas fa-question-circle"></i>{#
+        #}</div>
+        <p>
+            View recent changes to an entry.
+        </p>
+    </div>
+
+    <ul>
+        <li>Collection: <a href="/admin/collection/{{ entry.collectionid }}/entries">{{ collection.title }}</a></li>
+        <li>Entry: <a href="/admin/collection/{{ entry.collectionid }}/edit/{{ entry.entryid }}">{{ entry.title }}</a></li>
+    </ul>
+
+    {% if changes %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="min-width">ID</th>
+                <th>Date/Time</th>
+                <th>Account</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for row in changes %}
+            <tr>
+                <td>{{ row.changelogid }}</td>
+                <td><a href="{{
+                        "/admin/collection/" ~ entry.collectionid ~
+                        "/logs/" ~ entry.entryid ~
+                        "/" ~ row.changelogid
+                    }}">{{ row.created|date('Y-m-d H:i:s') }}</a></td>
+                <td><a href="/admin/account/edit/{{ row.accountid }}">{{ row.public_id }}</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>No changes logged for this entry.</p>
+    {% endif %}
+{% endblock %}

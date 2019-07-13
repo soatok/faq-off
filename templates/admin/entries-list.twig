@@ -1,0 +1,51 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h1>Entries</h1>
+
+    <p>
+        Collection:
+        <a href="/admin/collection/{{ collection.collectionid }}">{{ collection.title }}</a>
+    </p>
+
+    <p>
+        Author:
+        <a href="/admin/author/edit/{{ collection.authorid }}">@{{ collection.author_screenname }}</a>
+    </p>
+
+    {% if entries %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Actions</th>
+                <th>Entry Title</th>
+                <th>Created</th>
+                <th>Modified</th>
+            </tr>
+        </thead>
+        {% for entry in entries %}
+            <tr>
+                <td class="admin-entries-list-buttons">
+                    <a class="btn btn-verydark" href="/admin/collection/{{ collection.collectionid }}/edit/{{ entry.entryid }}">
+                        <i class="fas fa-pencil-alt"></i> Edit
+                    </a>
+                    <a class="btn btn-verydark" href="/admin/collection/{{ collection.collectionid }}/logs/{{ entry.entryid }}">
+                        <i class="fas fa-scroll"></i> Logs
+                    </a>
+                </td>
+                <td class="full-width">
+                    {% if entry['index-me'] %}<i class="fas fa-database" title="Indexed"></i>{% endif %}
+                    {{ entry.title }}
+                </td>
+                <td>{{ entry.created|date('Y-m-d\\TH:i:s') }}</td>
+                <td>{{ entry.modified|date('Y-m-d\\TH:i:s') }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p>No entries in this collection.</p>
+    {% endif %}
+    <p>
+        <a class="btn btn-default" href="/admin/collections">Return to the Collections List</a>
+    </p>
+{% endblock %}

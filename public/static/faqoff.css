@@ -266,3 +266,20 @@ footer {
     font-family: monospace;
     min-height: 10rem;
 }
+.admin-entries-list-buttons {
+    min-width: 200px;
+}
+.dark-body .table-striped {
+    box-shadow: #222 0 1px 2px;
+}
+.dark-body .table-striped td,
+.dark-body .table-striped th {
+    border-color: #111;
+}
+.dark-body .table-striped tbody tr:nth-of-type(2n) {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.dark-body .table-striped tbody tr:nth-of-type(2n+1) {
+    background-color: rgba(0, 0, 0, 0.15);
+}

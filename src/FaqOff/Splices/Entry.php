@@ -304,17 +304,19 @@ class Entry extends Splice
         $old = $this->getById($entryId);
 
         // Insert a change
-        $this->db->insert(
-            'faqoff_entry_changelog',
-            [
-                'entryid' => $entryId,
-                'accountid' => $_SESSION['accountid'],
-                'diff' => (new Differ())->diff(
-                    $old['contents'],
-                    $post['contents']
-                )
-            ]
-        );
+        if (!hash_equals($old['contents'], $post['contents'])) {
+            $this->db->insert(
+                'faqoff_entry_changelog',
+                [
+                    'entryid' => $entryId,
+                    'accountid' => $_SESSION['account_id'],
+                    'diff' => (new Differ())->diff(
+                        $old['contents'],
+                        $post['contents']
+                    )
+                ]
+            );
+        }
 
         $indexed = $this->db->exists(
             "SELECT count(*) FROM faqoff_collection_index
@@ -359,6 +361,43 @@ class Entry extends Splice
         return $this->db->commit();
     }
 
+    /**
+     * @param int $entryId
+     * @return array
+     */
+    public function listChanges(int $entryId): array
+    {
+        $list = $this->db->run(
+            "SELECT c.*, fa.public_id FROM faqoff_entry_changelog c
+             LEFT JOIN faqoff_accounts fa on c.accountid = fa.accountid
+             WHERE c.entryid = ? ORDER BY c.changelogid DESC",
+            $entryId
+        );
+        if (empty($list)) {
+            return [];
+        }
+        return $list;
+    }
+
+    /**
+     * @param int $entryId
+     * @param int $changeLogId
+     * @return array
+     */
+    public function getEntryChange(int $entryId, int $changeLogId): array
+    {
+        $entry = $this->db->row(
+            "SELECT c.*, fa.public_id FROM faqoff_entry_changelog c
+             LEFT JOIN faqoff_accounts fa on c.accountid = fa.accountid
+             WHERE c.entryid = ? AND c.changelogid = ?",
+            $entryId,
+            $changeLogId
+        );
+        if (!$entry) {
+            return [];
+        }
+        return $entry;
+    }
 
     /**
      * Get a unique URL even if a collection/URL collision occurs.
