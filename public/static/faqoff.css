@@ -300,3 +300,12 @@ i.color-error {
 .dark-body i.color-error {
     color: #c66;
 }
+
+#admin-contributors-list {
+    padding: 0.5rem 2.5rem 0.5rem 2.5rem;
+    list-style: none;
+}
+#admin-contributors-list li {
+    display: inline-block;
+    margin-right: 0.5rem;
+}

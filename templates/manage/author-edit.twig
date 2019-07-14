@@ -72,6 +72,6 @@
     </form>
 {% endblock %}
 {% block javascript %}
-{{ parent() }}
-<script src="/static/manage-author.js" nonce="{{ csp_nonce() }}"></script>
+    {{ parent() }}
+    <script src="/static/manage-author.js" nonce="{{ csp_nonce() }}"></script>
 {% endblock %}

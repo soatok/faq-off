@@ -62,6 +62,30 @@ class Authors extends Splice
     }
 
     /**
+     * @param int $authorId
+     * @return int
+     */
+    public function countCollections(int $authorId): int
+    {
+        return (int) $this->db->cell(
+            "SELECT count(*) FROM faqoff_collection WHERE authorid = ?",
+            $authorId
+        );
+    }
+
+    /**
+     * @param int $authorId
+     * @return int
+     */
+    public function countContributors(int $authorId): int
+    {
+        return (int) $this->db->cell(
+            "SELECT count(*) FROM faqoff_author_contributor WHERE authorid = ?",
+            $authorId
+        );
+    }
+
+    /**
      * @param string $screenName
      * @param int $accountId
      * @param string $bio
@@ -148,11 +172,33 @@ class Authors extends Splice
         }
         return $author;
     }
+
     /**
+     * @param bool $extraData
      * @return array
      */
-    public function listAll(): array
+    public function listAll(bool $extraData = false): array
     {
+        if ($extraData) {
+            $authors = $this->db->run(
+                "SELECT a.*, fa.public_id AS owner_public_id
+                 FROM faqoff_author a
+                 LEFT JOIN faqoff_accounts fa ON a.ownerid = fa.accountid
+                 ORDER BY a.screenname ASC"
+            );
+            if (empty($authors)) {
+                return [];
+            }
+            foreach ($authors as $i => $auth) {
+                $authors[$i]['collections'] = $this->countCollections(
+                    (int) $auth['authorid']
+                );
+                $authors[$i]['contributors'] = $this->countContributors(
+                    (int) $auth['authorid']
+                );
+            }
+            return $authors;
+        }
         return $this->db->run(
             "SELECT authorid, screenname FROM faqoff_author ORDER BY screenname ASC"
         );
@@ -205,6 +251,19 @@ class Authors extends Splice
     }
 
     /**
+     * @param int $authorId
+     * @return array<int, int>
+     */
+    public function getContributorIds(int $authorId): array
+    {
+        return $this->db->col(
+            "SELECT accountid FROM faqoff_author_contributor WHERE authorid = ?",
+            0,
+            $authorId
+        );
+    }
+
+    /**
      * Revoke a user's access to this author profile
      *
      * @param int $authorId
@@ -248,6 +307,54 @@ class Authors extends Splice
             "SELECT count(*) FROM faqoff_author WHERE screenname = ?",
             $screenName
         );
+    }
+
+    /**
+     * @param int $authorId
+     * @param array $post
+     * @return bool
+     */
+    public function updateAuthorByAdmin(int $authorId, array $post): bool
+    {
+        $this->db->beginTransaction();
+        $oldContributors = $this->getContributorIds($authorId);
+        $newContributors = $post['contributors'];
+
+        $deletes = array_diff($oldContributors, $newContributors);
+        $inserts = array_diff($newContributors, $oldContributors);
+
+        if ($deletes) {
+            $placeholders = implode(', ', array_fill(0, count($deletes), '?'));
+            $params = $deletes;
+            array_unshift($params, $authorId);
+            $this->db->safeQuery(
+                "DELETE FROM faqoff_author_contributor 
+                 WHERE authorid = ? AND accountid IN ({$placeholders})",
+                array_values($params)
+            );
+        }
+        foreach ($inserts as $newId) {
+            $this->db->insert(
+                'faqoff_author_contributor',
+                [
+                    'authorid' => $authorId,
+                    'accountid' => $newId
+                ]
+            );
+        }
+
+        $this->db->update(
+            'faqoff_author',
+            [
+                'screenname' => $post['screenname'],
+                'biography' => $post['biography']
+            ],
+            [
+                'authorid' => $authorId
+            ]
+        );
+
+        return $this->db->commit();
     }
 
     /**

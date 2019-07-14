@@ -10,6 +10,7 @@
         <thead>
             <tr>
                 <th></th>
+                <th class="min-width">ID</th>
                 <th>Public ID</th>
                 <th>Username</th>
                 <th>Active?</th>
@@ -35,6 +36,9 @@
                     >
                         <i class="fas fa-pencil-alt"></i> Edit
                     </a>
+                </td>
+                <td>
+                    {{ acc.accountid }}
                 </td>
                 <td>
                     {{ acc.public_id|default("No public ID") }}

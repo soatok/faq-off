@@ -81,6 +81,7 @@ class Accounts extends Endpoint
             ]
         );
     }
+
     /**
      * @param RequestInterface $request
      * @param int $accountId
@@ -90,7 +91,7 @@ class Accounts extends Endpoint
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    protected function viewAccount(RequestInterface $request, int $accountId): ResponseInterface
+    protected function viewAccount(int $accountId): ResponseInterface
     {
         return $this->view(
             'admin/accounts-view.twig',
@@ -122,7 +123,7 @@ class Accounts extends Endpoint
             case 'edit':
                 return $this->editAccount($request, (int) $routerParams['id']);
             case 'view':
-                return $this->viewAccount($request, (int) $routerParams['id']);
+                return $this->viewAccount((int) $routerParams['id']);
             case '':
                 return $this->listAccounts();
             default:

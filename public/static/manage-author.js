@@ -68,7 +68,6 @@ function addDeleteEvent() {
 
 $(document).ready(function() {
     $("#author-bio").on('change', entryPreview);
-    entryPreview();
 
     $("#add-contributor-button").on('click', function (e) {
         let author = $("#contributors-form").data('id');

@@ -1,0 +1,48 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h1>Authors</h1>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Created</th>
+                <th>Owner</th>
+                <th>Collections</th>
+                <th>Contributors</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for author in authors %}
+            <tr>
+                <td>
+                    <a
+                        class="btn btn-verydark"
+                        href="/admin/author/edit/{{ author.authorid }}"
+                        title="Edit"
+                    >
+                        <i class="fas fa-pencil-alt"></i> Edit
+                    </a>
+                </td>
+                <td>
+                    <a href="/@{{ author.screenname }}">@{{ author.screenname }}</a>
+                </td>
+                <td>
+                    <a href="/admin/account/view/{{ author.ownerid }}">{{ author.owner_public_id }}</a>
+                </td>
+                <td>
+                    {{ author.created|date('F j, Y') }}
+                </td>
+                <td>
+                    {{ author.collections }}
+                </td>
+                <td>
+                    {{ author.contributors }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

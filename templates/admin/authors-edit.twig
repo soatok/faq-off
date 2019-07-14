@@ -1,0 +1,61 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h1>Edit Author</h1>
+    <form method="post">
+        {{ anti_csrf() }}
+        <div class="form-group">
+            <label for="admin-author-screenname">Screen Name:</label>
+            <input
+                class="form-control"
+                id="admin-author-screenname"
+                name="screenname"
+                type="text"
+                value="{{ author.screenname|e('html_attr') }}"
+            />
+        </div>
+        <div class="form-group">
+            <label for="author-bio">Author Biography:</label>
+            <textarea
+                class="form-control"
+                id="author-bio"
+                name="biography"
+            >{{ author.biography|e('html_attr') }}</textarea>
+            <small>Markdown allowed.</small>
+        </div>
+        <div class="form-group">
+            <label for="contents-preview">Preview:</label>
+            <div class="scrollbox entry-preview" id="contents-preview"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="add-contributor">Contributors:</label>
+            <button
+                class="btn btn-verydark"
+                id="add-contributor"
+                type="button"
+            >Add Contributor</button>
+            <ul id="admin-contributors-list">{#
+                #}{% for contrib in contributors %}{#
+                    #}<li><input
+                        class="admin-contrib"
+                        name="contributors[]"
+                        type="text"
+                        size="{{ (contrib ~ "")|length + 1 }}"
+                        value="{{ contrib|e('html_attr') }}"
+                    /></li>{#
+                #}{% endfor %}{#
+            #}</ul>
+            <small>Get database IDs from <a href="/admin/accounts">here</a></small>
+        </div>
+
+        <div class="form-group">
+            <button class="btn btn-verydark form-control">Update Author</button>
+        </div>
+    </form>
+    <a class="btn btn-default" href="/admin/authors">Return to Authors List</a>
+{% endblock %}
+{% block javascript %}
+    {{ parent() }}
+    <script src="/static/admin-authors-edit.js" nonce="{{ csp_nonce() }}"></script>
+{% endblock %}
