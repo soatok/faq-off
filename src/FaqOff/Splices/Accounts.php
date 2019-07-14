@@ -3,7 +3,9 @@ declare(strict_types=1);
 namespace Soatok\FaqOff\Splices;
 
 use ParagonIE\ConstantTime\Base32;
+use ParagonIE\HiddenString\HiddenString;
 use Soatok\AnthroKit\Auth\Splices\Accounts as BaseClass;
+use Soatok\DholeCrypto\Password;
 
 /**
  * Class Accounts
@@ -138,6 +140,82 @@ class Accounts extends BaseClass
             return [];
         }
         return $codes;
+    }
+
+    /**
+     * @return array
+     */
+    public function listAllWithPublicId(): array
+    {
+        $accounts = $this->db->run(
+            "SELECT * FROM faqoff_accounts ORDER BY created ASC"
+        );
+        if (empty($accounts)) {
+            return [];
+        }
+        foreach ($accounts as $i => $acc) {
+            if (!empty($acc['external_auth'])) {
+                $accounts[$i]['external_auth'] = json_decode($acc['external_auth'], true);
+            }
+        }
+        return $accounts;
+    }
+
+    /**
+     * @param int $accountId
+     * @return array
+     */
+    public function getInfoByAccountId(int $accountId): array
+    {
+        $acc = $this->db->row(
+            "SELECT * FROM faqoff_accounts WHERE accountid = ?",
+            $accountId
+        );
+        if (!empty($acc['external_auth'])) {
+            $acc['external_auth'] = json_decode($acc['external_auth'], true);
+        }
+        return $acc;
+    }
+
+    /**
+     * @param int $accountId
+     * @param array $post
+     * @return bool
+     * @throws \Exception
+     */
+    public function updateAccountByAdmin(int $accountId, array $post): bool
+    {
+        $updates = [
+            'login' => $post['login'],
+            'active' => $post['active'] ?? false
+        ];
+        if (empty($updates['public_id'])) {
+            $this->generatePublicId($accountId);
+        } else {
+            $updates['public_id'] = $post['public_id'];
+        }
+        if (!empty($post['disable-two-factor'])) {
+            $updates['twofactor'] = null;
+        }
+        if (!empty($post['disable-external-auth'])) {
+            $updates['external_auth'] = null;
+        }
+        if (!empty($post['password']) && !empty($post['password2'])) {
+            if (hash_equals($post['password'], $post['password2'])) {
+                $updates['pwhash'] = (new Password($this->passwordKey))->hash(
+                    new HiddenString($post['password']),
+                    (string) $accountId
+                );
+            }
+        }
+
+        $this->db->beginTransaction();
+        $this->db->update(
+            'faqoff_accounts',
+            $updates,
+            ['accountid' => $accountId]
+        );
+        return $this->db->commit();
     }
 }
 

@@ -233,6 +233,8 @@ abstract class Utility
             )
         );
 
+        $env->addFilter(new TwigFilter('ucfirst', 'ucfirst'));
+
         $settings = $container->get('settings')['twig-custom'] ?? [];
         $env->addGlobal('faqoff_custom', $settings);
         $env->addGlobal('theme_id', null);

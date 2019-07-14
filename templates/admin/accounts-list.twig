@@ -1,0 +1,62 @@
+{% extends "base.twig" %}
+
+{% set YES = "<i class='fas fa-check color-success'></i> Yes" %}
+{% set NO = "<i class='fas fa-times color-error'></i> No" %}
+
+{% block main %}
+    <h1>Accounts</h1>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Public ID</th>
+                <th>Username</th>
+                <th>Active?</th>
+                <th>Created</th>
+                <th>Auth. Type</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for acc in accounts %}
+            <tr>
+                <td>
+                    <a
+                        class="btn btn-verydark"
+                        href="/admin/account/view/{{ acc.accountid }}"
+                        title="View"
+                    >
+                        <i class="fas fa-eye"></i> View
+                    </a>
+                    <a
+                        class="btn btn-verydark"
+                        href="/admin/account/edit/{{ acc.accountid }}"
+                        title="Edit"
+                    >
+                        <i class="fas fa-pencil-alt"></i> Edit
+                    </a>
+                </td>
+                <td>
+                    {{ acc.public_id|default("No public ID") }}
+                </td>
+                <td>
+                    {{ acc.login }}
+                </td>
+                <td>
+                    {{ acc.active ? YES|raw : NO|raw }}
+                </td>
+                <td>
+                    {{ acc.created|date('F j, Y') }}
+                </td>
+                <td>
+                    {% if acc.external_auth.service %}
+                        {{ acc.external_auth.service|ucfirst }}
+                    {% else %}
+                        Password
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

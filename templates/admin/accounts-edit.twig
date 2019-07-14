@@ -1,0 +1,124 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h1>Edit Account</h1>
+
+    <div class="helptext" id="author-index-helptext">
+        <div class="helptext-icon helptext-icon-medium float-left">{#
+            #}<i class="fas fa-question-circle"></i>{#
+        #}</div>
+        <p>
+            This form will make irreversible changes to another user's
+            account. Proceed with caution.
+        </p>
+        <p>
+            Perhaps you instead want to <a href="/admin/account/view/{{ account.accountid }}">view
+            this user's account information</a>?
+        </p>
+    </div>
+
+    <form method="post">
+        {{ anti_csrf() }}
+        <div class="form-group">
+            <label for="admin-account-public-id">Public ID:</label>
+            <input
+                class="form-control"
+                id="admin-account-public-id"
+                name="public_id"
+                pattern="^[A-Za-z2-7]+$"
+                type="text"
+                value="{{ account.public_id|e('html_attr') }}"
+            />
+            {% if not account.public_id %}<small>One will be generated for you.</small>{% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="admin-account-login">Login Username:</label>
+            <input
+                class="form-control"
+                id="admin-account-login"
+                name="login"
+                type="text"
+                value="{{ account.login|e('html_attr') }}"
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="admin-account-email">Email Address:</label>
+            <input
+                class="form-control"
+                id="admin-account-email"
+                name="email"
+                type="email"
+                value="{{ account.email|e('html_attr') }}"
+            />
+        </div>
+
+        <div class="form-group">
+            <input
+                {% if account.active %} checked="checked"{% endif %}
+                id="admin-account-active"
+                name="active"
+                type="checkbox"
+                value="1"
+            />
+            <label for="admin-account-active">Account is active?</label><br />
+            <small>Uncheck to ban the user.</small>
+        </div>
+
+        <fieldset>
+            <legend>Security Settings</legend>
+            <div class="form-group">
+                <label for="admin-account-password">Change Password:</label>
+                <input
+                    class="form-control"
+                    id="admin-account-password"
+                    name="password"
+                    type="password"
+                />
+            </div>
+
+            <div class="form-group">
+                <label for="admin-account-password2">Re-enter Password:</label>
+                <input
+                        class="form-control"
+                        id="admin-account-password2"
+                        name="password2"
+                        type="password"
+                />
+                <small>This will reset the user's password immediately.</small>
+            </div>
+
+            <div class="form-group">
+                <input
+                        id="admin-account-disable-2fa"
+                        name="disable-two-factor"
+                        type="checkbox"
+                        value="1"
+                />
+                <label for="admin-account-disable-2fa">Disable two-factor authentication?</label>
+                <br />
+                <small>
+                    This is dangerous. If the user's password was stolen, this grants an
+                    attacker immediate access to their account.
+                </small>
+            </div>
+
+            <div class="form-group">
+                <input
+                    id="admin-account-disable-external"
+                    name="disable-external"
+                    type="checkbox"
+                    value="1"
+                />
+                <label for="admin-account-disable-external">Disable external authentication?</label>
+                <br />
+                <small>
+                    Prevents login with e.g. Twitter.
+                </small>
+            </div>
+        </fieldset>
+
+        <button class="btn btn-verydark form-control">Update Account</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h1>View Account</h1>
+
+    <table class="table table-striped">
+        <tr>
+            <th>Public ID:</th>
+            <td>{{ account.public_id }}</td>
+        </tr>
+        {% if authors %}
+        <tr>
+            <th>Authors:</th>
+            <td>
+                <ul>
+                {% for auth in authors %}
+                    <li>
+                        <a href="/admin/author/edit/{{ auth.authorid }}">@{{ auth.screenname }}</a>
+                    </li>
+                {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <th colspan="2"><em>Account has access to no authors.</em></th>
+        </tr>
+        {% endif %}
+        {% if account.external_auth %}
+            <tr>
+                <th>Authentication Type:</th>
+                <td>
+                    {% if account.external_auth.service == 'twitter' %}
+                        Twitter (<a href="https://twitter.com/{{ account.external_auth.username|e('url') }}">{#
+                            #}@{{ account.external_auth.username }}{#
+                        #}</a>)
+                    {% else %}
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <th>Authentication Type:</th>
+                <td>Username / Password</td>
+            </tr>
+        {% endif %}
+    </table>
+
+    <a class="btn btn-verydark" href="/admin/account/edit/{{ account.accountid }}">
+        <i class="fas fa-pencil-alt"></i> Edit
+    </a>
+    <a class="btn btn-default" href="/admin/accounts">Return to Accounts List</a>
+{% endblock %}

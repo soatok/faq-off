@@ -287,3 +287,16 @@ footer {
     font-family: monospace;
     min-height: 10rem;
 }
+
+i.color-success {
+    color: #090;
+}
+.dark-body i.color-success {
+    color: #9c9;
+}
+i.color-error {
+    color: #900;
+}
+.dark-body i.color-error {
+    color: #c66;
+}
