@@ -82,6 +82,7 @@ class Entry extends Splice
         array $attachTo,
         bool $indexMe = false
     ): ?int {
+        $now = (new DateTime())->format(\DateTime::ISO8601);
         $newEntryId = $this->db->insertGet(
             'faqoff_entry',
             [
@@ -89,6 +90,8 @@ class Entry extends Splice
                 'authorid' => $authorId,
                 'title' => $title,
                 'url' => $this->getDataUrl($title, $collectionId),
+                'created' => $now,
+                'modified' => $now,
                 'contents' => $contents,
             ],
             'entryid'
