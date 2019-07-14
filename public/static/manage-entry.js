@@ -13,5 +13,7 @@ function entryPreview()
 }
 
 $(document).ready(function() {
-    $("#entry-contents").on('change', entryPreview);
+    let el = $("#entry-contents");
+    el.on('change',  entryPreview);
+    el.on('keydown', entryPreview);
 });
