@@ -1,0 +1,19 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h1>Site Settings</h1>
+    <ul>
+        <li>
+            <a href="/admin/settings/edit?file=admins%2ejson">Administrators</a> &mdash;
+            Add/remove user accounts from the administrator roster.
+        </li>
+        <li>
+            <a href="/admin/settings/edit?file=anthrokit%2ephp">AnthroKit Settings</a> &mdash;
+            Configure AnthroKit (framework plugins used by this software).
+        </li>
+        <li>
+            <a href="/admin/settings/edit?file=settings%2ephp">Global Site Settings</a> &mdash;
+            Edit settings that affect the entire site at the framework level.
+        </li>
+    </ul>
+{% endblock %}

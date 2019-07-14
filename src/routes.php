@@ -29,7 +29,7 @@ $app->group('/admin', function () use ($app, $container) {
     $app->get('/collections', 'admin.collections');
     $app->any('/custom[/{action:[^/]+}]', 'admin.custom');
     $app->get('/invite-tree', 'admin.invitetree');
-    $app->get('/settings[/{which:[^/]+}]', 'admin.settings');
+    $app->any('/settings[/{which:[^/]+}]', 'admin.settings');
     $app->any('/theme/{action:[^/]+}/[{id:[0-9]+}]', 'admin.themes');
     $app->any('/theme[/{action:[^/]+}]', 'admin.themes');
     $app->get('/themes', 'admin.themes');

@@ -309,3 +309,7 @@ i.color-error {
     display: inline-block;
     margin-right: 0.5rem;
 }
+#settings-contents {
+    font-family: monospace;
+    min-height: 30rem;
+}

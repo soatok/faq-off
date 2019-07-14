@@ -1,0 +1,16 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h2>Edit File {{ file }}</h2>
+    <form method="post">
+        {{ anti_csrf() }}
+        <label for="settings-contents">File contents:</label>
+        <textarea class="form-control" id="settings-contents" name="contents">{{
+            contents|e('html_attr')
+        }}</textarea>
+        <button class="btn btn-verydark form-control" type="submit">
+            Update Settings
+        </button>
+        <a class="btn btn-default" href="/admin/settings">Return to Admin Settings</a>
+    </form>
+{% endblock %}
