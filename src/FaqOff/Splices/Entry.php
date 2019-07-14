@@ -82,7 +82,7 @@ class Entry extends Splice
         array $attachTo,
         bool $indexMe = false
     ): ?int {
-        $now = (new DateTime())->format(\DateTime::ISO8601);
+        $now = (new \DateTime())->format(\DateTime::ISO8601);
         $newEntryId = $this->db->insertGet(
             'faqoff_entry',
             [
