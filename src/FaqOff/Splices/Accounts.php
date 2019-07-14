@@ -189,7 +189,7 @@ class Accounts extends BaseClass
             'login' => $post['login'],
             'active' => $post['active'] ?? false
         ];
-        if (empty($updates['public_id'])) {
+        if (empty($post['public_id'])) {
             $this->generatePublicId($accountId);
         } else {
             $updates['public_id'] = $post['public_id'];
