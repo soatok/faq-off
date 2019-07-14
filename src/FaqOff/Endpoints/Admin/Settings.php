@@ -21,6 +21,7 @@ class Settings extends Endpoint
 {
     use MessageOnceTrait;
 
+    /** @var string[] $editable */
     private $editable = [
         'admins.json',
         'anthrokit.php',
