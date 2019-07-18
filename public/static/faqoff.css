@@ -313,3 +313,15 @@ i.color-error {
     font-family: monospace;
     min-height: 30rem;
 }
+blockquote {
+    border-left-width: 3px;
+    border-left-style: solid;
+    border-color: #555;
+    text-shadow: #000 0 1px 1px;
+    padding: 0.5rem 0.5rem 0.5rem 0.6rem;
+    font-size: 14pt;
+}
+.dark-body blockquote {
+    background-color: rgba(32, 32, 32, 0.3);
+    color: #efefef;
+}
