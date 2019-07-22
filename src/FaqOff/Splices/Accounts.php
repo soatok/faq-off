@@ -14,6 +14,27 @@ use Soatok\DholeCrypto\Password;
 class Accounts extends BaseClass
 {
     /**
+     * @param string $login
+     * @param HiddenString $password
+     * @param string $email
+     * @param string|null $inviteCode
+     *
+     * @return int
+     * @throws \Exception
+     * @throws \SodiumException
+     */
+    public function createAccount(
+        string $login,
+        HiddenString $password,
+        string $email,
+        ?string $inviteCode = null
+    ): int {
+        $id = parent::createAccount($login, $password, $email, $inviteCode);
+        $this->generatePublicId($id);
+        return $id;
+    }
+
+    /**
      * @param int $accountId
      * @return string
      * @throws \Exception
