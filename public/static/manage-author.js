@@ -75,4 +75,5 @@ $(document).ready(function() {
         return addContributor(author, id);
     });
     addDeleteEvent();
+    entryPreview();
 });
