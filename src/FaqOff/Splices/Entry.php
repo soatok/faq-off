@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace Soatok\FaqOff\Splices;
 
 use SebastianBergmann\Diff\Differ;
+use Slim\Http\Request;
 use Soatok\AnthroKit\Splice;
 
 /**
@@ -62,6 +63,31 @@ class Entry extends Splice
             $collectionId,
             $entryId
         );
+    }
+
+    /**
+     * @param Request $request
+     * @param int $entryId
+     * @param int $accountId
+     * @return bool
+     */
+    public function countHit(
+        Request $request,
+        int $entryId,
+        int $accountId
+    ): bool {
+        $serverParams = $request->getServerParams();
+        $this->db->beginTransaction();
+        $this->db->insert(
+            'faqoff_entry_accesslog',
+            [
+                'entry' => $entryId,
+                'account' => $accountId,
+                'ipaddr' => $serverParams['REMOTE_ADDR'],
+                'uagent' => $serverParams['HTTP_USER_AGENT']
+            ]
+        );
+        return $this->db->commit();
     }
 
     /**
@@ -169,6 +195,34 @@ class Entry extends Splice
             return [];
         }
         return $followUps;
+    }
+
+    /**
+     * @param int $amount
+     * @param int $offset
+     * @return array
+     */
+    public function getMostPopular(int $amount = 10, int $offset = 0): array
+    {
+        $entries = $this->db->run(
+            "SELECT
+                entry.url,
+                entry.title,
+                stats.count,
+                fa.screenname AS author_screenname,
+                fc.url AS collection_url 
+             FROM faqoff_entry entry
+             JOIN faqoff_view_entry_24h stats ON entry.entryid = stats.entry
+            JOIN faqoff_collection fc on entry.collectionid = fc.collectionid
+            JOIN faqoff_author fa on entry.authorid = fa.authorid
+             ORDER BY stats.count DESC
+             OFFSET {$offset} LIMIT {$amount}
+            "
+        );
+        if (!$entries) {
+            return [];
+        }
+        return $entries;
     }
 
     /**

@@ -9,7 +9,10 @@ use Psr\Http\Message\{
     ResponseInterface
 };
 use Slim\Container;
+use Slim\Http\Request;
 use Soatok\AnthroKit\Endpoint;
+use Soatok\AnthroKit\Privacy;
+use Soatok\DholeCrypto\Exceptions\CryptoException;
 use Soatok\FaqOff\MessageOnceTrait;
 use Soatok\FaqOff\Splices\Authors;
 use Twig\Error\{
@@ -43,7 +46,6 @@ class Entry extends Endpoint
         $this->entries = $this->splice('Entry');
     }
 
-
     /**
      * @param RequestInterface $request
      * @param ResponseInterface|null $response
@@ -53,6 +55,8 @@ class Entry extends Endpoint
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
+     * @throws CryptoException
+     * @throws \SodiumException
      */
     public function __invoke(
         RequestInterface $request,
@@ -109,6 +113,18 @@ class Entry extends Endpoint
             )
         );
         $this->setTwigVar('theme_id', $collection['theme'] ?? null);
+        if (!($request instanceof Request)) {
+            throw new \TypeError();
+        }
+
+        if ($this->container->get('settings')['aggregate-stats']) {
+            $privacy = new Privacy();
+            $this->entries->countHit(
+                $privacy->anonymize($request),
+                $entry['entryid'],
+                $privacy->maskInteger((int)($_SESSION['account_id'] ?? 0))
+            );
+        }
 
         return $this->view(
             'entry.twig',

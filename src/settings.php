@@ -8,6 +8,9 @@ $default = [
     // You can override this in local/admins.json
     'admin-accounts' => [],
 
+    // Enable aggregate statistics
+    'aggregate-stats' => false,
+
     'encryption-key' => include __DIR__ . '/encryption-key.php',
 
     'database' => [

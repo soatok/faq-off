@@ -47,6 +47,9 @@ function upgrade_auto_detect(EasyDB $db)
     if (!table_exists($db, 'faqoff_themes')) {
         $scripts[] = 'v0.1.0-to-v0.2.0.php';
     }
+    if (!table_exists($db, 'faqoff_entry_accesslog')) {
+        $scripts[] = 'v0.2.0-to-v0.3.0.php';
+    }
     return $scripts;
 }
 

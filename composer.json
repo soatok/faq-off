@@ -24,7 +24,7 @@
         "paragonie/constant_time_encoding": "^2",
         "paragonie/hidden-string": "^1",
         "sebastian/diff": "^1|^3",
-        "soatok/anthrokit": "^0.4|^1",
+        "soatok/anthrokit": "^0.7|^1",
         "soatok/anthrokit-auth": ">=0.7.2|^1",
         "soatok/anthrokit-session": "^0|^1",
         "slim/slim": "^3.1",
