@@ -133,6 +133,33 @@ class EntryCollection extends Splice
         }
         return $collections;
     }
+    /**
+     * @param int $amount
+     * @param int $offset
+     * @return array
+     */
+    public function getMostPopular(int $amount = 10, int $offset = 0): array
+    {
+        $entries = $this->db->run(
+            "SELECT
+                collection.*,
+                faqoff_author.screenname AS author_screenname,
+                stats.hits
+             FROM faqoff_collection collection
+             JOIN faqoff_author ON collection.authorid = faqoff_author.authorid
+             JOIN faqoff_view_collection_24h stats ON collection.collectionid = stats.collectionid 
+             ORDER BY stats.hits DESC
+             OFFSET {$offset} LIMIT {$amount}
+            "
+        );
+        if (!$entries) {
+            return [];
+        }
+        foreach ($entries as $i => $entry) {
+            $entries[$i]['options'] = json_decode($entry['options'] ?? '[]', true);
+        }
+        return $entries;
+    }
 
     /**
      * @param int $authorId

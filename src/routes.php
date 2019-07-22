@@ -69,8 +69,8 @@ $app->any('/auth/{action:register|invite|login|twitter|verify}[/{extra:[^/]+}]',
 $app->any('/auth/{action:activate}[/{extra:[^/]+}]', 'authorize');
 $app->any('/generic-error[/{error:[^/]+}]', 'error');
 $app->get('/authors', 'author');
-$app->get('/', 'staticpage');
-$app->get('', 'staticpage');
+$app->get('/', 'homepage');
+$app->get('', 'homepage');
 
 
 $container['admin.ajax'] = function (Container $c) {
@@ -138,6 +138,9 @@ $container['entry'] = function (Container $c) {
 };
 $container['error'] = function (Container $c) {
     return new GenericError($c);
+};
+$container['homepage'] = function (Container $c) {
+    return new HomePage($c);
 };
 $container['staticpage'] = function (Container $c) {
     return new StaticPage($c);

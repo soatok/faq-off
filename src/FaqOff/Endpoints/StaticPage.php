@@ -21,19 +21,6 @@ use Twig\Error\{
  */
 class StaticPage extends Endpoint
 {
-    /**
-     * @param RequestInterface $request
-     *
-     * @return ResponseInterface
-     * @throws ContainerException
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
-     */
-    protected function index(RequestInterface $request): ResponseInterface
-    {
-        return $this->view('index.twig');
-    }
 
     /**
      * @param int $status
@@ -64,11 +51,6 @@ class StaticPage extends Endpoint
         ?ResponseInterface $response = null,
         array $routerParams = []
     ): ResponseInterface {
-        switch ($request->getUri()->getPath()) {
-            case '/':
-            case '':
-                return $this->index($request);
-        }
         return $this->errorPage(404);
     }
 }

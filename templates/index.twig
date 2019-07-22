@@ -1,5 +1,33 @@
 {% extends "base.twig" %}
 
 {% block main %}
-<h1>{{ faqoff_custom.vars['site-name']|default('FAQ Off') }}</h1>
+    <h1>{{ faqoff_custom.vars['site-name']|default('FAQ Off') }}</h1>
+    <div id="front-popular" class="row">
+        <div class="col-sm-6" id="front-popular-collections">
+            <h2>Popular Collections</h2>
+            <ol>
+            {% for col in popular_collections %}
+                <li>
+                    <a href="/@{{
+                        col.author_screenname|e('url') ~ "/" ~ col.url|e('url')
+                    }}">{{ col.title }}</a>
+                </li>
+            {% endfor %}
+            </ol>
+        </div>
+        <div class="col-sm-6" id="front-popular-entries">
+            <h2>Popular Entries</h2>
+            <ol>
+                {% for ent in popular_entries %}
+                    <li>
+                        <a href="/@{{
+                            ent.author_screenname|e('url') ~ "/" ~
+                            ent.collection_url|e('url') ~ "/" ~
+                            ent.url|e('url')
+                        }}">{{ ent.title }}</a>
+                    </li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
 {% endblock %}
