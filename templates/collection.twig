@@ -5,6 +5,10 @@
 
     <p>Created by: <a href="/@{{ collection.author_screenname|e('url') }}">@{{ collection.author_screenname|e('html') }}</a></p>
 
+    {% if collection.description %}
+    <div id="collection-description">{{ collection.description|raw }}</div>
+    {% endif %}
+
     {% if entries %}
         <ol id="collection-entries">
         {% for entry in entries %}
@@ -17,7 +21,6 @@
                     entry.url|e('url')
                 }}">{{ entry.title }}</a>
             </li>
-            {#<li><pre>{{ entry|json_encode(128) }}</pre></li>#}
         {% endfor %}
         </ol>
     {% else %}

@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace Soatok\FaqOff\Endpoints;
 
 use Interop\Container\Exception\ContainerException;
+use League\CommonMark\CommonMarkConverter;
 use Psr\Http\Message\{
     RequestInterface,
     ResponseInterface
@@ -78,6 +79,18 @@ class EntryCollection extends Endpoint
         if (!$collection) {
             $this->messageOnce('Collection does not exist.', 'error');
             return $this->redirect('/@' . $author['screenname']);
+        }
+        if (!empty($collection['description'])) {
+            /** @var CommonMarkConverter $converter */
+            $converter = $this->container['markdown'];
+
+            /** @var \HTMLPurifier $purifier */
+            $purifier = $this->container['purifier'];
+            $collection['description'] = $purifier->purify(
+                $converter->convertToHtml(
+                    $collection['description'] ?? ''
+                )
+            );
         }
         $this->setTwigVar('theme_id', $collection['theme'] ?? null);
 

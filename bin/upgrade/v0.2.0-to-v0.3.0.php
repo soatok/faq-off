@@ -6,7 +6,8 @@ if (!defined('UPGRADE_SCRIPT')) {
 require_once dirname(__DIR__) . '/upgrade.php';
 
 $files = [
-    APP_ROOT . '/sql/09-analytics.sql'
+    APP_ROOT . '/sql/09-analytics.sql',
+    APP_ROOT . '/sql/updates/01-collection-description.sql'
 ];
 foreach ($files as $file) {
     $sql = \file_get_contents($file);

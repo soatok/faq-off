@@ -41,6 +41,7 @@ class EntryCollection extends Splice
             'faqoff_collection',
             [
                 'authorid' => $authorId,
+                'description' => $data['description'],
                 'theme' => $data['theme'] < 1 ? null : $data['theme'],
                 'title' => $data['title'],
                 'url' => $url
@@ -256,8 +257,18 @@ class EntryCollection extends Splice
             'faqoff_collection',
             [
                 'authorid' => $postData['author'],
+                'description' => $postData['description'],
                 'theme' => $postData['theme'] < 1 ? null : $postData['theme'],
                 'title' => $postData['title']
+            ],
+            [
+                'collectionid' => $collectionId
+            ]
+        );
+        $this->db->update(
+            'faqoff_entry',
+            [
+                'authorid' => $postData['author']
             ],
             [
                 'collectionid' => $collectionId
@@ -294,6 +305,7 @@ class EntryCollection extends Splice
             'faqoff_collection',
             [
                 'theme' => $postData['theme'] < 1 ? null : $postData['theme'],
+                'description' => $postData['description'],
                 'title' => $postData['title']
             ],
             [

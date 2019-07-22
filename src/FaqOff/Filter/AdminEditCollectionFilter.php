@@ -7,14 +7,15 @@ use ParagonIE\Ionizer\Filter\StringFilter;
 use ParagonIE\Ionizer\InputFilterContainer;
 
 /**
- * Class CreateCollectionFilter
+ * Class AdminEditCollectionFilter
  * @package Soatok\FaqOff\Filter
  */
-class CreateCollectionFilter extends InputFilterContainer
+class AdminEditCollectionFilter extends InputFilterContainer
 {
-    public function __construct(array $config = [])
+    public function __construct()
     {
         $this
+            ->addFilter('author', new IntFilter())
             ->addFilter('description', new StringFilter())
             ->addFilter('theme', new IntFilter())
             ->addFilter('title', new StringFilter())

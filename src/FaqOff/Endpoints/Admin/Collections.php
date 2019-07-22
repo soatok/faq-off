@@ -8,6 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 use Slim\Container;
 use Soatok\AnthroKit\Endpoint;
 use Soatok\FaqOff\Exceptions\CollectionNotFoundException;
+use Soatok\FaqOff\Filter\AdminEditCollectionFilter;
 use Soatok\FaqOff\MessageOnceTrait;
 use Soatok\FaqOff\Splices\Authors;
 use Soatok\FaqOff\Splices\Entry;
@@ -64,7 +65,8 @@ class Collections extends Endpoint
             return $this->redirect('/admin/collections');
         }
 
-        $post = $this->post($request);
+        $filter = new AdminEditCollectionFilter();
+        $post = $this->post($request, self::TYPE_FORM, $filter);
         if ($post) {
             if (empty($post['author'])) {
                 $this->messageOnce('No author specified.', 'error');

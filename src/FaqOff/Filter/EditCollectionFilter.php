@@ -15,6 +15,7 @@ class EditCollectionFilter extends InputFilterContainer
     public function __construct()
     {
         $this
+            ->addFilter('description', new StringFilter())
             ->addFilter('theme', new IntFilter())
             ->addFilter('title', new StringFilter());
     }

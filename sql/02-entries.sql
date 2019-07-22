@@ -18,6 +18,7 @@ CREATE TABLE faqoff_collection (
     collectionid BIGSERIAL PRIMARY KEY,
     title TEXT,
     url TEXT,
+    description TEXT,
     authorid BIGINT REFERENCES faqoff_author(authorid),
     custom_style TEXT, -- JSON containing CSS/JS files and relevant metadata (e.g. for CSP)
     created TIMESTAMP DEFAULT NOW(),
