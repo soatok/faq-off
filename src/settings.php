@@ -9,7 +9,7 @@ $default = [
     'admin-accounts' => [],
 
     // Enable aggregate statistics
-    'aggregate-stats' => false,
+    'aggregate-stats' => true,
 
     'encryption-key' => include __DIR__ . '/encryption-key.php',
 
