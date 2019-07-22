@@ -10,7 +10,9 @@
                 <li>
                     <a href="/@{{
                         col.author_screenname|e('url') ~ "/" ~ col.url|e('url')
-                    }}">{{ col.title }}</a>
+                    }}"
+                       title="{{ col.hits|number_format }} hit{{ col.hits == 1 ? '' : 's' }} in the past 24 hours"
+                    >{{ col.title }}</a>
                 </li>
             {% endfor %}
             </ol>
@@ -24,7 +26,9 @@
                             ent.author_screenname|e('url') ~ "/" ~
                             ent.collection_url|e('url') ~ "/" ~
                             ent.url|e('url')
-                        }}">{{ ent.title }}</a>
+                        }}"
+                           title="{{ ent.count|number_format }} hit{{ ent.count == 1 ? '' : 's' }} in the past 24 hours"
+                        >{{ ent.title }}</a>
                     </li>
                 {% endfor %}
             </ol>
