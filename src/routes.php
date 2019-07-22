@@ -29,6 +29,7 @@ $app->group('/admin', function () use ($app, $container) {
     $app->get('/collections', 'admin.collections');
     $app->any('/custom[/{action:[^/]+}]', 'admin.custom');
     $app->get('/invite-tree', 'admin.invitetree');
+    $app->any('/notices[/{id:[0-9]+}]', 'admin.notices');
     $app->any('/settings[/{which:[^/]+}]', 'admin.settings');
     $app->any('/theme/{action:[^/]+}/[{id:[0-9]+}]', 'admin.themes');
     $app->any('/theme[/{action:[^/]+}]', 'admin.themes');
@@ -99,6 +100,9 @@ $container['admin.invitetree'] = function (Container $c) {
 };
 $container['admin.settings'] = function (Container $c) {
     return new Admin\Settings($c);
+};
+$container['admin.notices'] = function (Container $c) {
+    return new Admin\Notices($c);
 };
 $container['admin.themes'] = function (Container $c) {
     return new Admin\Themes($c);

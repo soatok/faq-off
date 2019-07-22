@@ -34,4 +34,16 @@
             </ol>
         </div>
     </div>
+    {% if notices %}
+    <h2>News and Updates</h2>
+    <div id="front-page-news">
+    {% for notice in notices %}
+        <div class="front-page-news">
+            <h2>{{ notice.headline }}</h2>
+            <div class="front-page-news-time">{{ notice.created|date('F j, Y g:i:s A') }}</div>
+            <div class="front-page-news-body">{{ notice.body|raw }}</div>
+        </div>
+    {% endfor %}
+    </div>
+    {% endif %}
 {% endblock %}
