@@ -1,0 +1,49 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h2>Administrator Notices</h2>
+    {% if notices %}
+    <ul>
+    {% for notice in notices %}
+        <li><a href="/admin/notices/{{ notice.noticeid }}">{{ notice.headline }}</a></li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+
+    <h3>Post a New Notice</h3>
+    <form method="post">
+        {{ anti_csrf() }}
+        <div class="form-group">
+            <label for="notice-title">Headline:</label>
+            <input
+                class="form-control"
+                id="notice-title"
+                name="title"
+                type="text"
+            />
+        </div>
+
+        <div class="form-group">
+            <label for="notice-body">Contents:</label>
+            <textarea
+                class="form-control"
+                id="notice-body"
+                name="contents"
+            ></textarea>
+            <small>Markdown allowed.</small>
+        </div>
+        <div class="form-group">
+            <label for="contents-preview">Preview:</label>
+            <div class="scrollbox entry-preview" id="contents-preview"></div>
+        </div>
+
+        <button class="btn btn-verydark form-control" type="submit">
+            Publish New Notice
+        </button>
+    </form>
+
+{% endblock %}
+{% block javascript %}
+{{ parent() }}
+<script src="/static/admin-notice.js" nonce="{{ csp_nonce('script-src') }}"></script>
+{% endblock %}

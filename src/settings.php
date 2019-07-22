@@ -11,6 +11,9 @@ $default = [
     // Enable aggregate statistics
     'aggregate-stats' => true,
 
+    // Change in local/settings.php to show more news.
+    'front-news-limit' => 5,
+
     'encryption-key' => include __DIR__ . '/encryption-key.php',
 
     'database' => [

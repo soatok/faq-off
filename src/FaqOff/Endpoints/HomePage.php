@@ -9,6 +9,7 @@ use Slim\Container;
 use Soatok\AnthroKit\Endpoint;
 use Soatok\FaqOff\MessageOnceTrait;
 use Soatok\FaqOff\Splices\Authors;
+use Soatok\FaqOff\Splices\Notices;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -30,12 +31,16 @@ class HomePage extends Endpoint
     /** @var \Soatok\FaqOff\Splices\Entry $entries */
     private $entries;
 
+    /** @var Notices $notices */
+    private $notices;
+
     public function __construct(Container $container)
     {
         parent::__construct($container);
         $this->authors = $this->splice('Authors');
         $this->collections = $this->splice('EntryCollection');
         $this->entries = $this->splice('Entry');
+        $this->notices = $this->splice('Notices');
     }
 
     /**
@@ -47,11 +52,15 @@ class HomePage extends Endpoint
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    protected function index(RequestInterface $request): ResponseInterface
+    protected function index(): ResponseInterface
     {
+        $config = $this->container['settings'];
         return $this->view('index.twig', [
             'popular_collections' => $this->collections->getMostPopular(),
             'popular_entries' => $this->entries->getMostPopular(),
+            'notices' => $this->notices->getRecent(
+                (int) ($config['front-news-limit'])
+            )
         ]);
     }
 
@@ -73,7 +82,7 @@ class HomePage extends Endpoint
         switch ($request->getUri()->getPath()) {
             case '/':
             case '':
-                return $this->index($request);
+                return $this->index();
         }
         return $this->redirect('/');
     }
