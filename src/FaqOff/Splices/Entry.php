@@ -213,8 +213,8 @@ class Entry extends Splice
                 fc.url AS collection_url 
              FROM faqoff_entry entry
              JOIN faqoff_view_entry_24h stats ON entry.entryid = stats.entry
-            JOIN faqoff_collection fc on entry.collectionid = fc.collectionid
-            JOIN faqoff_author fa on entry.authorid = fa.authorid
+             JOIN faqoff_collection fc on entry.collectionid = fc.collectionid
+             JOIN faqoff_author fa on entry.authorid = fa.authorid
              ORDER BY stats.count DESC
              OFFSET {$offset} LIMIT {$amount}
             "
