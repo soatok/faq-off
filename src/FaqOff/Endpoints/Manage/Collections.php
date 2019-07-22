@@ -80,7 +80,7 @@ class Collections extends Endpoint
         if ($post) {
             if ($this->collections->update($collectionId, $post)) {
                 // Success
-                $this->messageOnce('Collection updated successfully');
+                $this->messageOnce('Collection updated successfully', 'success');
                 return $this->redirect('/manage/collection/' . $collectionId);
             } else {
                 $errors[] = "An unknown error occurred trying to update the collection";
