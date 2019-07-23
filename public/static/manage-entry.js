@@ -1,9 +1,12 @@
+let requestPending = false;
 
 function entryPreview()
 {
+    requestPending = true;
     $.post('/manage/ajax/preview', {
         "markdown": $("#entry-contents").val()
     }, function (res) {
+        requestPending = false;
         if (res['status'] !== 'SUCCESS') {
             console.log(res);
             return;
@@ -12,8 +15,15 @@ function entryPreview()
     });
 }
 
+function entryKeyUp() {
+    if (requestPending) {
+        return;
+    }
+    entryPreview();
+}
+
 $(document).ready(function() {
     let el = $("#entry-contents");
     el.on('change',  entryPreview);
-    el.on('keydown', entryPreview);
+    el.on('keyup', entryKeyUp);
 });
