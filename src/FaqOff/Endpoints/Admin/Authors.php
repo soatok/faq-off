@@ -8,7 +8,6 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Container;
 use Soatok\AnthroKit\Endpoint;
-use Soatok\FaqOff\Filter\AdminEditAccountFilter;
 use Soatok\FaqOff\Filter\AdminEditAuthorFilter;
 use Soatok\FaqOff\MessageOnceTrait;
 use Soatok\FaqOff\Splices\Accounts as AccountSplice;

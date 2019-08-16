@@ -12,7 +12,12 @@ use Soatok\AnthroKit\Endpoint;
 use Soatok\FaqOff\Exceptions\CollectionNotFoundException;
 use Soatok\FaqOff\Filter\EditCollectionFilter;
 use Soatok\FaqOff\MessageOnceTrait;
-use Soatok\FaqOff\Splices\{Authors, Entry, EntryCollection, Themes};
+use Soatok\FaqOff\Splices\{
+    Authors,
+    Entry,
+    EntryCollection,
+    Themes
+};
 use Twig\Error\{
     LoaderError,
     RuntimeError,

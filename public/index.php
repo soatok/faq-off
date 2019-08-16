@@ -13,7 +13,8 @@ if (PHP_SAPI == 'cli-server') {
 
 require __DIR__ . '/../vendor/autoload.php';
 
-session_start(['cookie.samesite' => 'Strict']);
+session_set_cookie_params(['samesite' => 'Strict']);
+session_start();
 
 // Instantiate the app
 $settings = require __DIR__ . '/../src/settings.php';
