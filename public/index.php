@@ -1,4 +1,5 @@
 <?php
+use Slim\App;
 define('APP_ROOT', dirname(__DIR__));
 define('FAQOFF_PUBLIC', __DIR__);
 if (PHP_SAPI == 'cli-server') {
@@ -18,7 +19,7 @@ session_start();
 
 // Instantiate the app
 $settings = require __DIR__ . '/../src/settings.php';
-$app = new \Slim\App($settings);
+$app = new App($settings);
 
 // Set up dependencies
 require __DIR__ . '/../src/dependencies.php';
