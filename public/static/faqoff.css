@@ -325,3 +325,43 @@ blockquote {
     padding: 0.5rem 0.5rem 0.5rem 0.6rem;
     font-size: 14pt;
 }
+#front-popular-collections-wrapper,
+#front-popular-entries-wrapper {
+    background-color: #21262c;
+    padding: 0.5rem;
+}
+#front-popular-collections-list,
+#front-popular-entries-list {
+    font-size: 14pt;
+}
+#front-page-news {
+    padding: 0.5rem 2rem;
+}
+.front-page-news {
+    background-color: #21262c;
+    border: 1px solid #333;
+    padding: 0.5rem;
+    margin-bottom: 1.75rem;
+}
+.front-page-news h3 {
+    margin-bottom: 0;
+}
+.front-page-news-time {
+    color: #ccc;
+}
+.front-page-news-body {
+    background-color: #171b1f;
+    padding: 0.67rem;
+}
+.front-page-news-body *:last-child {
+    margin-bottom: 0;
+}
+
+#main h1,
+#main h2,
+#main h3,
+#main h4,
+#main h5,
+#main h6 {
+    font-family: serif;
+}

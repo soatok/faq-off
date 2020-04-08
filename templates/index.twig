@@ -1,13 +1,14 @@
 {% extends "base.twig" %}
 
 {% block main %}
-    <h1>{{ faqoff_custom.vars['site-name']|default('FAQ Off') }}</h1>
+    <h1 id="front-site-name">{{ faqoff_custom.vars['site-name']|default('FAQ Off') }}</h1>
     <div id="front-popular" class="row">
         <div class="col-sm-6" id="front-popular-collections">
+            <div id="front-popular-collections-wrapper">
             <h2>Popular Collections</h2>
-            <ol>
+            <ol id="front-popular-collections-list">
             {% for col in popular_collections %}
-                <li>
+                <li class="front-popular-collection">
                     <a href="/@{{
                         col.author_screenname|e('url') ~ "/" ~ col.url|e('url')
                     }}"
@@ -16,12 +17,14 @@
                 </li>
             {% endfor %}
             </ol>
+            </div>
         </div>
         <div class="col-sm-6" id="front-popular-entries">
+            <div id="front-popular-entries-wrapper">
             <h2>Popular Entries</h2>
-            <ol>
+            <ol id="front-popular-entries-list">
                 {% for ent in popular_entries %}
-                    <li>
+                    <li class="front-popular-entry">
                         <a href="/@{{
                             ent.author_screenname|e('url') ~ "/" ~
                             ent.collection_url|e('url') ~ "/" ~
@@ -32,6 +35,7 @@
                     </li>
                 {% endfor %}
             </ol>
+            </div>
         </div>
     </div>
     {% if notices %}
