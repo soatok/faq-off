@@ -1,14 +1,12 @@
 <?php
 namespace Soatok\FaqOff;
 
-use Psr\Container\ContainerInterface;
 use Slim\App;
 use Slim\Container;
 use Slim\Http\Headers;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\Uri;
-use Zend\Stdlib\ResponseInterface;
 
 /**
  * Class TestHelper
