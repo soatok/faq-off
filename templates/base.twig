@@ -9,7 +9,7 @@
                 faqoff_custom.vars['site-name']|default('FAQ Off')
             }}{% endblock %}</title>
         {% block css %}
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous" />
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" integrity="sha256-UzFD2WYH2U1dQpKDjjZK72VtPeWP50NoJjd26rnAdUI=" crossorigin="anonymous" />
         <link rel="stylesheet" href="/static/faqoff.css" />
         {% for css_file in faqoff_custom.css %}
@@ -38,12 +38,12 @@
                     {% if faqoff_custom.vars['footer-html'] %}
                         {{ faqoff_custom.vars['footer-html']|raw }}
                     {% else %}
-                    <a class="footer-icon" href="https://twitch.tv/soatok"><i class="fab fa-twitch"></i></a>
-                    <a class="footer-icon" href="https://www.patreon.com/soatok"><i class="fab fa-patreon"></i></a>
-                    <a class="footer-icon" href="https://github.com/soatok"><i class="fab fa-github"></i></a>
                     <span class="text-muted">
                         This website is powered by <a href="https://github.com/soatok/faq-off">open source software</a>.
                     </span>
+                    <a class="footer-icon" href="https://twitch.tv/soatok"><i class="fab fa-twitch"></i></a>
+                    <a class="footer-icon" href="https://www.patreon.com/soatok"><i class="fab fa-patreon"></i></a>
+                    <a class="footer-icon" href="https://github.com/soatok"><i class="fab fa-github"></i></a>
                     {% endif %}
                 {% endblock %}
             </div>
@@ -52,7 +52,7 @@
     {% block javascript %}
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     {% for js_file in faqoff_custom.js %}
         <script nonce="{{ csp_nonce('script-src') }}" src="{{ js_file|e('html_attr') }}"></script>
     {% endfor %}
