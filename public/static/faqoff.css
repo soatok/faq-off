@@ -405,6 +405,9 @@ blockquote {
 .dark-body .front-page-news-time {
     color: #ccc;
 }
+.dark-body .table {
+    color: #efefef;
+}
 
 #main h1,
 #main h2,
