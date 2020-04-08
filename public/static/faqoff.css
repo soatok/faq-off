@@ -363,6 +363,10 @@ blockquote {
     padding: 1rem 1.5rem;
     margin: 1rem 2rem;
 }
+#author-collections {
+    margin: 1rem 1rem;
+    padding: 1rem 2.5rem;
+}
 #collection-description {
     background-color: #eee;
     font-size: 12pt;
@@ -382,6 +386,7 @@ blockquote {
 }
 .dark-body #authors-list,
 .dark-body #collection-entries,
+.dark-body #author-collections,
 .dark-body .front-page-news,
 .dark-body #front-popular-collections-wrapper,
 .dark-body #front-popular-entries-wrapper {
@@ -400,6 +405,7 @@ blockquote {
     font-family: serif;
 }
 
+#author-collections,
 #authors-list,
 #biography,
 #collection-entries,
