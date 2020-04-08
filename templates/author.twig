@@ -5,15 +5,15 @@
     <div id="biography">{{ author.biography|raw }}</div>
 
     <h2>Author's Collections</h2>
-    <ol id="author-collections">
-        {% for coll in collections %}
-        <li>
-            <a href="/@{{ coll['author_screenname']|e('url') }}/{{ coll.url|e('url') }}">{{ coll.title|e('html') }}</a>
-        </li>
-        {% endfor %}
-    </ol>
-
-    {% if not collections %}
+    {% if collections %}
+        <ol id="author-collections">
+            {% for coll in collections %}
+            <li>
+                <a href="/@{{ coll['author_screenname']|e('url') }}/{{ coll.url|e('url') }}">{{ coll.title|e('html') }}</a>
+            </li>
+            {% endfor %}
+        </ol>
+    {% else %}
         <p>
             This author has not created any collections.
         </p>
