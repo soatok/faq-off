@@ -39,7 +39,7 @@
     <div id="front-page-news">
     {% for notice in notices %}
         <div class="front-page-news">
-            <h2>{{ notice.headline }}</h2>
+            <h3>{{ notice.headline }}</h3>
             <div class="front-page-news-time">{{ notice.created|date('F j, Y g:i:s A') }}</div>
             <div class="front-page-news-body">{{ notice.body|raw }}</div>
         </div>
