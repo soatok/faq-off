@@ -2,7 +2,23 @@
 
 {% block main %}
     <h1>Authors</h1>
-    <ul>
+    {% if authors %}
+        <p>
+            What follows is a list of authors that have published Q&A entries on
+            <em>{{ faqoff_custom.vars['site-name']|default('FAQ Off') }}</em>.
+        </p>
+        <p>
+            Click on one of their names to see their biography and a list of
+            their collections.
+        </p>
+        <h3>List of Authors</h3>
+    {% else %}
+        <p>
+            There are currently no published authors on
+            <em>{{ faqoff_custom.vars['site-name']|default('FAQ Off') }}</em>.
+        </p>
+    {% endif %}
+    <ul id="authors-list">
         {% for author in authors %}
             <li>
                 <a href="/@{{ author|e('url') }}">{{ author|e('html') }}</a>

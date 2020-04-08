@@ -365,3 +365,8 @@ blockquote {
 #main h6 {
     font-family: serif;
 }
+
+#biography,
+#front-entry-contents {
+    font-size: 14pt;
+}
