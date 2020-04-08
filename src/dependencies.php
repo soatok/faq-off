@@ -7,10 +7,12 @@ use Slim\Container;
 use Soatok\FaqOff\Utility;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
-use Zend\Mail\Transport\Sendmail;
-use Zend\Mail\Transport\Smtp;
-use Zend\Mail\Transport\SmtpOptions;
-use Zend\Mail\Transport\TransportInterface;
+use Laminas\Mail\Transport\{
+    Sendmail,
+    Smtp,
+    SmtpOptions,
+    TransportInterface
+};
 
 // DIC configuration
 
