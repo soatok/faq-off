@@ -3,10 +3,13 @@
 {% block main %}
     <h1>{{ collection.title|e('html') }}</h1>
 
-    <p>Created by: <a href="/@{{ collection.author_screenname|e('url') }}">@{{ collection.author_screenname|e('html') }}</a></p>
+    <p class="collection-owner">
+        Created by: <a href="/@{{ collection.author_screenname|e('url') }}">@{{ collection.author_screenname|e('html') }}</a>
+    </p>
 
     {% if collection.description %}
     <div id="collection-description">{{ collection.description|raw }}</div>
+    <h3 id="collection-entry-header">Entries in This Collection</h3>
     {% endif %}
 
     {% if entries %}

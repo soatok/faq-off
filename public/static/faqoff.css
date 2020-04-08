@@ -353,18 +353,35 @@ blockquote {
     background-color: #eee;
     padding: 0.67rem;
 }
+#collection-description *:last-child,
 .front-page-news-body *:last-child {
     margin-bottom: 0;
 }
 #authors-list {
     background-color: #ddd;
+    list-style: none;
     padding: 1rem 1.5rem;
     margin: 1rem 2rem;
 }
+#collection-description {
+    background-color: #eee;
+    font-size: 12pt;
+    padding: 0.67rem;
+}
+#collection-entries {
+    background-color: #ddd;
+    padding: 1rem 2.5rem;
+    margin: 1rem 1rem;
+}
+#collection-entry-header {
+    margin-top: 1rem;
+}
+.dark-body #collection-description,
 .dark-body .front-page-news-body {
     background-color: #21262c;
 }
 .dark-body #authors-list,
+.dark-body #collection-entries,
 .dark-body .front-page-news,
 .dark-body #front-popular-collections-wrapper,
 .dark-body #front-popular-entries-wrapper {
@@ -383,12 +400,13 @@ blockquote {
     font-family: serif;
 }
 
+#authors-list,
 #biography,
-#front-entry-contents,
-#authors-list {
+#collection-entries,
+#front-entry-contents{
     font-size: 14pt;
-    list-style: none;
 }
+
 .faq-icon {
     padding-right: 0.33rem;
 }

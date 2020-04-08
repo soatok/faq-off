@@ -2,7 +2,7 @@
 
 {% block main %}
     <div id="front-entry-wrapper">
-        <h1 id="entry-title">{{ entry.title }}</h1>
+        <h1 id="entry-title"><q>{{ entry.title }}</q></h1>
         <article id="front-entry-contents">{{ entry.contents|raw }}</article>
         {% if entry['follow-ups'] %}
             <h3 id="entry-follow-up-header">Follow-Ups</h3>
