@@ -55,7 +55,6 @@ class Accounts extends BaseClass
     /**
      * @param int $accountId
      * @return bool
-     * @throws \Exception
      */
     public function generatePublicId(int $accountId): bool
     {
@@ -192,6 +191,12 @@ class Accounts extends BaseClass
             "SELECT * FROM faqoff_accounts WHERE accountid = ?",
             $accountId
         );
+        if (empty($acc['public_id'])) {
+            if ($this->generatePublicId($accountId)) {
+                // Generate on demand.
+                return $this->getInfoByAccountId($accountId);
+            }
+        }
         if (!empty($acc['external_auth'])) {
             $acc['external_auth'] = json_decode($acc['external_auth'], true);
         }
