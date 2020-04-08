@@ -243,6 +243,7 @@ footer {
 }
 .helptext-icon-large {
     font-size: 5rem;
+    margin-top: -0.5rem;
 }
 .helptext-icon-xl {
     font-size: 7rem;
