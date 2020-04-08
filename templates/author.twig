@@ -13,4 +13,9 @@
         {% endfor %}
     </ol>
 
+    {% if not collections %}
+        <p>
+            This author has not created any collections.
+        </p>
+    {% endif %}
 {% endblock %}

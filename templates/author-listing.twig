@@ -21,7 +21,10 @@
     <ul id="authors-list">
         {% for author in authors %}
             <li>
-                <a href="/@{{ author|e('url') }}">{{ author|e('html') }}</a>
+                <a href="/@{{ author|e('url') }}">
+                    <i class="fas fa-people-carry faq-icon"></i>{#
+                    #}{{ author|e('html') }}
+                </a>
             </li>
         {% endfor %}
     </ul>

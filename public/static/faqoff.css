@@ -356,9 +356,15 @@ blockquote {
 .front-page-news-body *:last-child {
     margin-bottom: 0;
 }
+#authors-list {
+    background-color: #ddd;
+    padding: 1rem 1.5rem;
+    margin: 1rem 2rem;
+}
 .dark-body .front-page-news-body {
     background-color: #21262c;
 }
+.dark-body #authors-list,
 .dark-body .front-page-news,
 .dark-body #front-popular-collections-wrapper,
 .dark-body #front-popular-entries-wrapper {
@@ -378,6 +384,24 @@ blockquote {
 }
 
 #biography,
-#front-entry-contents {
+#front-entry-contents,
+#authors-list {
     font-size: 14pt;
+    list-style: none;
+}
+.faq-icon {
+    padding-right: 0.33rem;
+}
+a .faq-icon {
+    color: #0f5499;
+    transition: color 0.2s;
+}
+a:hover .faq-icon {
+    color: #0a3866;
+}
+.dark-body a .faq-icon {
+    color: #cce;
+}
+.dark-body a:hover .faq-icon {
+    color: #66b3ff;
 }
