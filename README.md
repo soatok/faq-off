@@ -20,6 +20,30 @@ FAQ Off is a self-hostable microservice based on Slim Framework 3 and
 
 To learn more, please see [the Patreon post that introduced FAQ Off](https://www.patreon.com/posts/tell-sea-lions-24475473).
 
+## FAQ Off Features at a Glance
+
+* **Interactive Question and Answer Website**:
+  * Guide your readers to the answers to their question.
+  * Short-circuit common lines of disruptive discourse.  
+    *Write once, answer ad nauseum!*
+* **HTML and Markdown Support**
+* **Troll and Spam Defense**:
+  * Administrators can enable "invite only" mode, which requires an invitation code
+    from an existing user to sign up.
+  * The invitation tree: Administrators can see who invited who, to identify common
+    entry points of misbehaving users to curate their own community.
+* **Collaboration**:
+  * Users can share an **Author** profile with colleagues and publish as a group.
+  * Users can belong to an unlimited number of **Authors**.
+  * Authors can share access to an unlimited number of users, or just one.
+* **Security**:
+  * Entries are written in HTML / Markdown and processed by [HTML Purifier](http://htmlpurifier.org)
+    to protect against cross-site scripting attacks.
+  * Passwords are [stored securely](https://github.com/soatok/dhole-cryptography#password-storage), or you can use Twitter. 
+  * Your username or Twitter handle is only knowable by *administrators*.
+    A randomly generated `Public ID` is provided to keep your login handle
+    and/or Twitter handle anonymous to everyone else.
+
 ## Installation
 
 ### Getting the Code and Dependencies
