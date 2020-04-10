@@ -57,8 +57,8 @@ $app->group('/manage', function () use ($app, $container) {
     $app->get('', 'manage');
 })->add($authOnly);
 
-$app->get('/@{author:[^/]+}/{collection:[^/]+}/[{entry:[^/]+}]', 'entry');
-$app->get('/@{author:[^/]+}/{collection:[^/]+}', 'collection');
+$app->any('/@{author:[^/]+}/{collection:[^/]+}/[{entry:[^/]+}]', 'entry');
+$app->any('/@{author:[^/]+}/{collection:[^/]+}', 'collection');
 $app->get('/@{author:[^/]+}[/]', 'author');
 // Only authenticated users can logout:
 $app->any('/auth/{action:logout}[/{extra:[^/]+}]', 'authorize')

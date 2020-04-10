@@ -29,4 +29,8 @@
     {% else %}
         <p>Sorry, there are no indexed entries in this collection.</p>
     {% endif %}
+
+    {% if allow_questions %}
+        {% include "layout/questions-box.twig" with {"type": "collection"} %}
+    {% endif %}
 {% endblock %}

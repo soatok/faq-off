@@ -21,6 +21,7 @@ CREATE TABLE faqoff_collection (
     description TEXT,
     authorid BIGINT REFERENCES faqoff_author(authorid),
     custom_style TEXT, -- JSON containing CSS/JS files and relevant metadata (e.g. for CSP)
+    allow_questions BOOLEAN DEFAULT FALSE,
     created TIMESTAMP DEFAULT NOW(),
     modified TIMESTAMP
 );
@@ -33,6 +34,7 @@ CREATE TABLE faqoff_entry (
     title TEXT,
     contents TEXT,
     options TEXT, -- JSON blob for more entries
+    allow_questions BOOLEAN DEFAULT FALSE,
     created TIMESTAMP DEFAULT NOW(),
     modified TIMESTAMP
 );

@@ -20,6 +20,9 @@
                 {% endfor %}
             </ul>
         {% endif %}
+        {% if allow_questions %}
+            {% include "layout/questions-box.twig" with {"type": "entry"} %}
+        {% endif %}
     </div>
     <h4 id="entry-metadata-header">Metadata</h4>
     <dl class="row" id="entry-metadata">
