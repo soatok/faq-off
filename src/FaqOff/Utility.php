@@ -283,6 +283,33 @@ abstract class Utility
     }
 
     /**
+     * Order $rows by mapping $keys compared against $rows[$i][$column]
+     *
+     * @param array $rows
+     * @param array-key $column
+     * @param array $keys
+     * @return array
+     */
+    public static function orderBy(array $rows, $column, array $keys): array
+    {
+        $out = [];
+        foreach ($keys as $k) {
+            foreach ($rows as $id => $row) {
+                // Does it match?
+                if ($row[$column] == $k) {
+                    // Append to output array
+                    $out []= $row;
+                    // Remove from input array
+                    unset($rows[$id]);
+                    // Break inner foreach loop.
+                    break;
+                }
+            }
+        }
+        return $out;
+    }
+
+    /**
      * @param string $body
      * @return Stream
      */

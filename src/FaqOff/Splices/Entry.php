@@ -5,6 +5,7 @@ namespace Soatok\FaqOff\Splices;
 use SebastianBergmann\Diff\Differ;
 use Slim\Http\Request;
 use Soatok\AnthroKit\Splice;
+use Soatok\FaqOff\Utility;
 
 /**
  * Class Entry
@@ -170,7 +171,7 @@ class Entry extends Splice
         $place = array_fill(0, count($followUps), '?');
         $statement = implode(', ', $place);
         if ($getURLs) {
-            $followUps = $this->db->run(
+            $results = $this->db->run(
                 "SELECT
                     faqoff_entry.entryid,
                     faqoff_entry.url,
@@ -185,16 +186,16 @@ class Entry extends Splice
                 ...$followUps
             );
         } else {
-            $followUps = $this->db->run(
+            $results = $this->db->run(
                 'SELECT entryid, title FROM faqoff_entry
                 WHERE entryid IN (' . $statement . ')',
                 ...$followUps
             );
         }
-        if (!$followUps) {
+        if (!$results) {
             return [];
         }
-        return $followUps;
+        return Utility::orderBy($results, 'entryid', $followUps);
     }
 
     /**
