@@ -13,7 +13,11 @@ use Slim\Http\Request;
 use Soatok\AnthroKit\Endpoint;
 use Soatok\AnthroKit\Privacy;
 use Soatok\DholeCrypto\Exceptions\CryptoException;
-use Soatok\FaqOff\MessageOnceTrait;
+use Soatok\FaqOff\{
+    Filter\FrontQuestionFilter,
+    FrontAccountInfoTrait,
+    MessageOnceTrait
+};
 use Soatok\FaqOff\Splices\Authors;
 use Twig\Error\{
     LoaderError,
@@ -28,6 +32,7 @@ use Twig\Error\{
 class Entry extends Endpoint
 {
     use MessageOnceTrait;
+    use FrontAccountInfoTrait;
 
     /** @var Authors $authors */
     private $authors;
@@ -44,6 +49,7 @@ class Entry extends Endpoint
         $this->authors = $this->splice('Authors');
         $this->collections = $this->splice('EntryCollection');
         $this->entries = $this->splice('Entry');
+        $this->questions = $this->splice('Questions');
     }
 
     /**
@@ -100,6 +106,26 @@ class Entry extends Endpoint
                 '/@' . $author['screenname'] . '/' . $collection['url']
             );
         }
+        $questionsAllowed = false;
+        if ($this->isLoggedIn()) {
+            $questionsAllowed = !empty($entry['allow_questions']);
+        }
+        if ($questionsAllowed) {
+            // We only process this if the user is allowed to post a question:
+            $filter = new FrontQuestionFilter();
+            $post = $this->post($request, self::TYPE_FORM, $filter);
+            if ($post) {
+                return $this->addQuestion(
+                    $post,
+                    'entry',
+                    $entry,
+                    '/@' . $author['screenname'] .
+                        '/' . $collection['url'] .
+                        '/' . $routerParams['entry']
+                );
+            }
+        }
+        $this->setTwigVar('allow_questions', $questionsAllowed);
 
         /** @var CommonMarkConverter $converter */
         $converter = $this->container['markdown'];

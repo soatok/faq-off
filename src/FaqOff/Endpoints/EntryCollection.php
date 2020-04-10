@@ -10,7 +10,7 @@ use Psr\Http\Message\{
 };
 use Slim\Container;
 use Soatok\AnthroKit\Endpoint;
-use Soatok\FaqOff\MessageOnceTrait;
+use Soatok\FaqOff\{Filter\FrontQuestionFilter, FrontAccountInfoTrait, MessageOnceTrait};
 use Soatok\FaqOff\Splices\Authors;
 use Twig\Error\{
     LoaderError,
@@ -25,6 +25,7 @@ use Twig\Error\{
 class EntryCollection extends Endpoint
 {
     use MessageOnceTrait;
+    use FrontAccountInfoTrait;
 
     /** @var Authors $authors */
     private $authors;
@@ -41,6 +42,7 @@ class EntryCollection extends Endpoint
         $this->authors = $this->splice('Authors');
         $this->collections = $this->splice('EntryCollection');
         $this->entries = $this->splice('Entry');
+        $this->questions = $this->splice('Questions');
     }
 
     /**
@@ -93,6 +95,24 @@ class EntryCollection extends Endpoint
             );
         }
         $this->setTwigVar('theme_id', $collection['theme'] ?? null);
+        $questionsAllowed = false;
+        if ($this->isLoggedIn()) {
+            $questionsAllowed = !empty($collection['allow_questions']);
+        }
+        if ($questionsAllowed) {
+            // We only process this if the user is allowed to post a question:
+            $filter = new FrontQuestionFilter();
+            $post = $this->post($request, self::TYPE_FORM, $filter);
+            if ($post) {
+                return $this->addQuestion(
+                    $post,
+                    'collection',
+                    $collection,
+                    '/@' . $author['screenname'] . '/' . $routerParams['collection']
+                );
+            }
+        }
+        $this->setTwigVar('allow_questions', $questionsAllowed);
 
         return $this->view('collection.twig', [
             'collection' => $collection,
