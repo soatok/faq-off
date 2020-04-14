@@ -16,6 +16,7 @@ class CreateEntryFilter extends InputFilterContainer
     public function __construct()
     {
         $this
+            ->addFilter('question_box', new BoolFilter())
             ->addFilter('title', new StringFilter())
             ->addFilter('contents', new StringFilter())
             ->addFilter('attach-to', new IntArrayFilter())

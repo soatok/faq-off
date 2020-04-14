@@ -70,6 +70,19 @@
             </label>
         </div>
 
+        <div class="form-group">
+            <input{% if entry['allow_questions'] %}
+                checked="checked"{% endif %}
+                id="entry-questions-checkbox"
+                name="question_box"
+                type="checkbox"
+                value="1"
+            />
+            <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="entry-questions-checkbox">
+                Accept questions for this entry?
+            </label>
+        </div>
+
         <button type="submit" class="btn btn-verydark">Update Entry</button>
     </form>
 {% endblock %}

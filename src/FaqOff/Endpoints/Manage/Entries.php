@@ -110,6 +110,7 @@ class Entries extends Endpoint
                 $post['contents'] ?? '',
                 $post['attach-to'] ?? [],
                 $post['index-me'],
+                $post['question_box'],
                 $question['questionid'] ?? null
             );
             if ($newEntryId) {

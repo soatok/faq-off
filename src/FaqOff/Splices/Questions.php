@@ -60,7 +60,7 @@ class Questions extends Splice
         bool $includeHidden = false
     ): array
     {
-        $queryString = "SELECT q.*
+        $queryString = "SELECT q.*, e.title AS entry_title
             FROM faqoff_question_box q
             LEFT JOIN faqoff_collection c
                 ON q.collectionid = c.collectionid
@@ -86,27 +86,17 @@ class Questions extends Splice
      */
     public function getForAuthor(int $authorId, bool $includeHidden = false): array
     {
-        $queryString = "SELECT q.*, c.collectionid, NULL
+        $queryString = "SELECT q.*, e.collectionid, q.entryid, e.title AS entry_title
             FROM faqoff_question_box q
             LEFT JOIN faqoff_collection c
                 ON q.collectionid = c.collectionid
-            WHERE c.authorid = ?";
-        if (!$includeHidden) {
-            $queryString .= " AND NOT q.archived";
-        }
-
-        $queryString .= ' UNION ';
-
-        $queryString .= "SELECT q.*, e.collectionid, e.entryid
-            FROM faqoff_question_box q
             LEFT JOIN faqoff_entry e
-                ON q.collectionid = e.entryid
-            WHERE e.authorid = ?";
+                ON q.entryid = e.entryid
+            WHERE (c.authorid = ? OR e.authorid = ?)";
         if (!$includeHidden) {
             $queryString .= " AND NOT q.archived";
         }
-
-        $rows = $this->db->run($queryString, $authorId, $authorId);
+        $rows = $this->db->row($queryString, $authorId, $authorId);
         if (empty($rows)) {
             return [];
         }

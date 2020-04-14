@@ -44,7 +44,8 @@ class EntryCollection extends Splice
                 'description' => $data['description'],
                 'theme' => $data['theme'] < 1 ? null : $data['theme'],
                 'title' => $data['title'],
-                'url' => $url
+                'url' => $url,
+                'allow_questions' => $data['question_box']
             ],
             'collectionid'
         );
@@ -259,7 +260,8 @@ class EntryCollection extends Splice
                 'authorid' => $postData['author'],
                 'description' => $postData['description'],
                 'theme' => $postData['theme'] < 1 ? null : $postData['theme'],
-                'title' => $postData['title']
+                'title' => $postData['title'],
+                'allow_questions' => $postData['question_box']
             ],
             [
                 'collectionid' => $collectionId
@@ -306,7 +308,8 @@ class EntryCollection extends Splice
             [
                 'theme' => $postData['theme'] < 1 ? null : $postData['theme'],
                 'description' => $postData['description'],
-                'title' => $postData['title']
+                'title' => $postData['title'],
+                'allow_questions' => $postData['question_box']
             ],
             [
                 'collectionid' => $collectionId
