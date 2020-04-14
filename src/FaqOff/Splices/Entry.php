@@ -98,6 +98,7 @@ class Entry extends Splice
      * @param string $contents
      * @param array<int, int> $attachTo
      * @param bool $indexMe
+     * @param int|null $questionId
      * @return int|null
      * @throws \Exception
      */
@@ -107,7 +108,8 @@ class Entry extends Splice
         string $title,
         string $contents,
         array $attachTo,
-        bool $indexMe = false
+        bool $indexMe = false,
+        ?int $questionId = null
     ): ?int {
         $now = (new \DateTime())->format(\DateTime::ISO8601);
         $newEntryId = $this->db->insertGet(
@@ -131,6 +133,14 @@ class Entry extends Splice
                     'collectionid' => $collectionId,
                     'entryid' => $newEntryId
                 ]
+            );
+        }
+
+        if (!empty($questionId)) {
+            $this->db->update(
+                'faqoff_question_box',
+                ['archived' => true],
+                ['questionid' => $questionId]
             );
         }
 

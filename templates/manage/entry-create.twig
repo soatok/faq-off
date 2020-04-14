@@ -32,7 +32,11 @@
                 name="title"
                 required="required"
                 type="text"
-                value="{{ post.title|e('html_attr') }}"
+                value="{% if post.title %}{#
+                        #}{{ post.title|e('html_attr') }}{#
+                    #}{% elseif question.question %}{#
+                        #}{{ question.question|e('html_attr') }}{#
+                    #}{% endif %}"
             />
         </div>
         <div class="form-group">

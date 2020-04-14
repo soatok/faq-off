@@ -46,6 +46,38 @@ class Questions extends Splice
     }
 
     /**
+     * Load a specific question.
+     * Checks that the given author matches the author on file.
+     *
+     * @param int $questionId
+     * @param int $authorId
+     * @param bool $includeHidden
+     * @return array
+     */
+    public function getQuestionAuthorCheck(
+        int $questionId,
+        int $authorId,
+        bool $includeHidden = false
+    ): array
+    {
+        $queryString = "SELECT q.*
+            FROM faqoff_question_box q
+            LEFT JOIN faqoff_collection c
+                ON q.collectionid = c.collectionid
+            LEFT JOIN faqoff_entry e
+                ON q.entryid = e.entryid
+            WHERE q.questionid = ? AND (c.authorid = ? OR e.authorid = ?)";
+        if (!$includeHidden) {
+            $queryString .= " AND NOT q.archived";
+        }
+        $row = $this->db->row($queryString, $questionId, $authorId, $authorId);
+        if (empty($row)) {
+            return [];
+        }
+        return $row;
+    }
+
+    /**
      * Get all questions asked to a collection or entry owned by a given author.
      *
      * @param int $authorId

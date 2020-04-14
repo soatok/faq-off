@@ -9,7 +9,11 @@ use Psr\Http\Message\{
 };
 use Slim\Container;
 use Soatok\AnthroKit\Endpoint;
-use Soatok\FaqOff\Splices\{Accounts, Authors, EntryCollection};
+use Soatok\FaqOff\Splices\{
+    Accounts,
+    Authors,
+    EntryCollection
+};
 use Twig\Error\{
     LoaderError,
     RuntimeError,
