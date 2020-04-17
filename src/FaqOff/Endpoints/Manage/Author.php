@@ -181,6 +181,9 @@ class Author extends Endpoint
             }
         }
         $author = $this->authors->getById($authorId);
+        $author['question_count'] = $this->questions->countForAuthor(
+            (int) $author['authorid']
+        );
         return $this->view(
             'manage/author-edit.twig',
             [
@@ -204,11 +207,17 @@ class Author extends Endpoint
      */
     protected function homePage(): ResponseInterface
     {
+        // question_count
+        $authors = $this->authors->getByAccount($_SESSION['account_id']);
+        foreach ($authors as $i => $author) {
+            $authors[$i]['question_count'] = $this->questions->countForAuthor(
+                (int) $author['authorid']
+            );
+        }
         return $this->view(
             'manage/authors-index.twig',
             [
-                'authors' =>
-                    $this->authors->getByAccount($_SESSION['account_id'])
+                'authors' => $authors
             ]
         );
     }
@@ -239,9 +248,15 @@ class Author extends Endpoint
                 case 'collections':
                     $sub = $routerParams['sub'] ?? '';
                     if ($sub === 'create') {
-                        return $this->createCollection((int) $routerParams['id'], $request);
+                        return $this->createCollection(
+                            (int) $routerParams['id'],
+                            $request
+                        );
                     }
-                    return $this->collections((int) $routerParams['id'], $request);
+                    return $this->collections(
+                        (int) $routerParams['id'],
+                        $request
+                    );
                 case 'inbox':
                     return $this->questionQueue(
                         $request,

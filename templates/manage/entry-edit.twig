@@ -7,6 +7,11 @@
     <ul>
         <li><a href="/manage/collection/{{ collection.collectionid }}/entries">View/Manage Entries</a></li>
         <li><a href="/manage/collection/{{ collection.collectionid }}/entry/create">Create New Entry</a></li>
+        <li>
+            <a href="/manage/collection/{{ collection.collectionid }}/entry/{{ entry.entryid }}/inbox">
+                View questions for this entry ({{ entry.question_count }})
+            </a>
+        </li>
     </ul>
 
     <h3>Update Entry</h3>

@@ -122,10 +122,12 @@ class Entries extends Endpoint
                 );
             }
         }
+        $collection = $this->collections->getById($collectionId);
+        $collection['question_count'] = $this->questions->countForCollection($collectionId);
         return $this->view(
             'manage/entry-create.twig',
             [
-                'collection' => $this->collections->getById($collectionId),
+                'collection' => $collection,
                 'post' => $post,
                 'question' => $question
             ]
@@ -163,6 +165,7 @@ class Entries extends Endpoint
         $entry['options']['follow-up'] = $this->entries->getFollowUps(
             $entry['options']['follow-up'] ?? []
         );
+        $entry['question_count'] = $this->questions->countForEntry($entryId);
         return $this->view(
             'manage/entry-edit.twig',
             [
@@ -214,7 +217,7 @@ class Entries extends Endpoint
             case 'inbox':
                 return $this->questionQueue(
                     $request,
-                    (int) $routerParams['id'],
+                    (int) $routerParams['entry'],
                     $routerParams
                 );
             default:

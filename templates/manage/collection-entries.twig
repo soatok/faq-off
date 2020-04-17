@@ -7,6 +7,11 @@
     <ul>
         <li><a href="/manage/collection/{{ collection.collectionid }}">Edit Collection Info</a></li>
         <li><a href="/manage/collection/{{ collection.collectionid }}/entry/create">Create New Entry</a></li>
+        <li>
+            <a href="/manage/collection/{{ collection.collectionid }}/inbox">
+                View questions for this collection ({{ collection.question_count }})
+            </a>
+        </li>
     </ul>
 
     <h3>Entries</h3>
@@ -17,6 +22,7 @@
             <th>Question</th>
             <th>Created</th>
             <th>Modified</th>
+            <th>Questions</th>
         </tr>
         </thead>
         <tfoot>
@@ -24,6 +30,7 @@
             <th>Question</th>
             <th>Created</th>
             <th>Modified</th>
+            <th>Questions</th>
         </tr>
         </tfoot>
         <tbody>
@@ -39,6 +46,15 @@
                 </td>
                 <td>
                     <time datetime="{{ entry.modified }}">{{ entry.modified|format('F j, Y g:i A') }}</time>
+                </td>
+                <td>
+                    <a href="/manage/collection/{{ collection.collectionid }}/entry/{{ entry.entryid }}/inbox">
+                        Questions ({% if entry.question_count > 0 %}{#
+                            #}<strong>{{ entry.question_count }}</strong>{#
+                        #}{% else %}{#
+                            #}{{ entry.question_count }}{#
+                        #}{% endif %})
+                    </a>
                 </td>
             </tr>
             {% endfor %}

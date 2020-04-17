@@ -94,6 +94,7 @@ class Collections extends Endpoint
             }
         }
         $collection = $this->collections->getById($collectionId);
+        $collection['question_count'] = $this->questions->countForCollection($collectionId);
         return $this->view(
             'manage/collection-edit.twig',
             [
@@ -121,11 +122,18 @@ class Collections extends Endpoint
             return $this->redirect('/manage/authors');
         }
         $collection = $this->collections->getById($collectionId);
+        $collection['question_count'] = $this->questions->countForCollection($collectionId);
+        $entries = $this->entries->listByCollectionId($collectionId);
+        foreach ($entries as $i => $entry) {
+            $entries[$i]['question_count'] = $this->questions->countForEntry(
+                (int) $entry['entryid']
+            );
+        }
         return $this->view(
             'manage/collection-entries.twig',
             [
                 'collection' => $collection,
-                'entries' => $this->entries->listByCollectionId($collectionId)
+                'entries' => $entries
             ]
         );
     }
@@ -139,11 +147,16 @@ class Collections extends Endpoint
      */
     protected function homePage(): ResponseInterface
     {
+        $collections = $this->collections->getByAccount($_SESSION['account_id']);
+        foreach ($collections as $i => $collection) {
+            $collections[$i]['question_count'] = $this->questions->countForCollection(
+                (int) $collection['entryid']
+            );
+        }
         return $this->view(
             'manage/collections-index.twig',
             [
-                'collections' =>
-                    $this->collections->getByAccount($_SESSION['account_id'])
+                'collections' => $collections
             ]
         );
     }

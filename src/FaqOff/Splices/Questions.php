@@ -28,6 +28,64 @@ class Questions extends Splice
     }
 
     /**
+     * Number of questions for an author.
+     *
+     * @param int $authorId
+     * @param bool $includeHidden
+     * @return int
+     */
+    public function countForAuthor(int $authorId, bool $includeHidden = false): int
+    {
+        $queryString = "SELECT count(q.questionid)
+            FROM faqoff_question_box q
+            LEFT JOIN faqoff_collection c
+                ON q.collectionid = c.collectionid
+            LEFT JOIN faqoff_entry e
+                ON q.entryid = e.entryid
+            WHERE (c.authorid = ? OR e.authorid = ?)";
+        if (!$includeHidden) {
+            $queryString .= " AND NOT q.archived";
+        }
+        return (int) $this->db->cell($queryString, $authorId, $authorId);
+    }
+
+    /**
+     * Number of questions for a collection.
+     *
+     * @param int $collectionId
+     * @param bool $includeHidden
+     * @return int
+     */
+    public function countForCollection(int $collectionId, bool $includeHidden = false): int
+    {
+        $queryString = "SELECT count(q.questionid)
+            FROM faqoff_question_box q
+            WHERE q.collectionid = ?";
+        if (!$includeHidden) {
+            $queryString .= " AND NOT q.archived";
+        }
+        return (int) $this->db->cell($queryString, $collectionId);
+    }
+
+    /**
+     * Number of questions for an entry.
+     *
+     * @param int $entryId
+     * @param bool $includeHidden
+     * @return int
+     */
+    public function countForEntry(int $entryId, bool $includeHidden = false): int
+    {
+        $queryString = "SELECT count(q.questionid)
+            FROM faqoff_question_box q
+            WHERE q.entryid = ?";
+        if (!$includeHidden) {
+            $queryString .= " AND NOT q.archived";
+        }
+        return (int) $this->db->cell($queryString, $entryId);
+    }
+
+    /**
      * Load a specific question.
      *
      * @param int $questionId
@@ -88,7 +146,12 @@ class Questions extends Splice
      */
     public function getForAuthor(int $authorId, bool $includeHidden = false): array
     {
-        $queryString = "SELECT q.*, e.collectionid, q.entryid, e.title AS entry_title, fa.public_id
+        $queryString = "SELECT 
+                q.*, 
+                COALESCE(e.collectionid, c.collectionid) AS collectionid,
+                q.entryid,
+                e.title AS entry_title,
+                fa.public_id
             FROM faqoff_question_box q
             LEFT JOIN faqoff_accounts fa
                 ON q.asked_by = fa.accountid
@@ -100,7 +163,7 @@ class Questions extends Splice
         if (!$includeHidden) {
             $queryString .= " AND NOT q.archived";
         }
-        $rows = $this->db->row($queryString, $authorId, $authorId);
+        $rows = $this->db->run($queryString, $authorId, $authorId);
         if (empty($rows)) {
             return [];
         }
