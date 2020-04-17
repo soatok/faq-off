@@ -53,7 +53,6 @@ $app->group('/manage', function () use ($app, $container) {
     $app->any('/author', 'manage.author');
     $app->any('/invite/{action:create}', 'manage.invite');
     $app->any('/invite', 'manage.invite');
-    $app->get('/inbox', 'manage.questions');
     $app->get('/', 'manage');
     $app->get('', 'manage');
 })->add($authOnly);
@@ -124,9 +123,6 @@ $container['manage.invite'] = function (Container $c) {
 };
 $container['manage.collections'] = function (Container $c) {
     return new Manage\Collections($c);
-};
-$container['manage.questions'] = function (Container $c) {
-    return new Manage\Questions($c);
 };
 $container['manage.entry'] = function (Container $c) {
     return new Manage\Entries($c);

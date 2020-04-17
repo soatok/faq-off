@@ -476,3 +476,34 @@ a:hover .faq-icon {
         padding-left: 1.5rem;
     }
 }
+.question-inbox-header {
+    font-weight: bold;
+    padding-top: 0.33rem;
+    padding-bottom: 0.33rem;
+}
+.dark-body .question-inbox-header {
+    background-color: #1f2326;
+}
+.question-inbox-anonymous {
+    content: "&mdash;";
+}
+#question-inbox-form {
+    background-color: rgba(0, 0, 0, 0.05);
+    box-shadow: #000 0 0 0.5rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+#question-inbox-form div:nth-child(n-4) {
+    padding-top: 0.33rem;
+    padding-bottom: 0.33rem;
+}
+#question-inbox-form div:nth-child(5),
+#question-inbox-form div:nth-child(6),
+#question-inbox-form div:nth-child(7) {
+    padding-top: 0.5rem !important;
+}
+#question-inbox-form div:nth-child(6n),
+#question-inbox-form div:nth-child(6n+1),
+#question-inbox-form div:nth-child(6n+5) {
+    background-color: rgba(0, 0, 0, 0.1);
+}

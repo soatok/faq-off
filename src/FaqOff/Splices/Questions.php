@@ -60,8 +60,10 @@ class Questions extends Splice
         bool $includeHidden = false
     ): array
     {
-        $queryString = "SELECT q.*, e.title AS entry_title
+        $queryString = "SELECT q.*, e.title AS entry_title, fa.public_id
             FROM faqoff_question_box q
+            LEFT JOIN faqoff_accounts fa
+                ON q.asked_by = fa.accountid
             LEFT JOIN faqoff_collection c
                 ON q.collectionid = c.collectionid
             LEFT JOIN faqoff_entry e
@@ -86,8 +88,10 @@ class Questions extends Splice
      */
     public function getForAuthor(int $authorId, bool $includeHidden = false): array
     {
-        $queryString = "SELECT q.*, e.collectionid, q.entryid, e.title AS entry_title
+        $queryString = "SELECT q.*, e.collectionid, q.entryid, e.title AS entry_title, fa.public_id
             FROM faqoff_question_box q
+            LEFT JOIN faqoff_accounts fa
+                ON q.asked_by = fa.accountid
             LEFT JOIN faqoff_collection c
                 ON q.collectionid = c.collectionid
             LEFT JOIN faqoff_entry e
@@ -113,9 +117,12 @@ class Questions extends Splice
      */
     public function getForCollection(int $collectionId, bool $includeHidden = false): array
     {
-        $queryString = "SELECT * FROM faqoff_question_box WHERE collectionid = ?";
+        $queryString = "SELECT q.*, fa.public_id
+            FROM faqoff_question_box q
+            LEFT JOIN faqoff_accounts fa ON q.asked_by = fa.accountid
+            WHERE q.collectionid = ?";
         if (!$includeHidden) {
-            $queryString .= " AND NOT archived";
+            $queryString .= " AND NOT q.archived";
         }
         $rows = $this->db->run($queryString, $collectionId);
         if (empty($rows)) {
@@ -134,9 +141,12 @@ class Questions extends Splice
      */
     public function getForEntry(int $entryId, bool $includeHidden = false): array
     {
-        $queryString = "SELECT * FROM faqoff_question_box WHERE entryid = ?";
+        $queryString = "SELECT q.*, fa.public_id
+            FROM faqoff_question_box q
+            LEFT JOIN faqoff_accounts fa ON q.asked_by = fa.accountid
+            WHERE q.entryid = ?";
         if (!$includeHidden) {
-            $queryString .= " AND NOT archived";
+            $queryString .= " AND NOT q.archived";
         }
         $rows = $this->db->run($queryString, $entryId);
         if (empty($rows)) {

@@ -12,12 +12,7 @@ use Soatok\AnthroKit\Endpoint;
 use Soatok\FaqOff\Exceptions\CollectionNotFoundException;
 use Soatok\FaqOff\Filter\EditCollectionFilter;
 use Soatok\FaqOff\MessageOnceTrait;
-use Soatok\FaqOff\Splices\{
-    Authors,
-    Entry,
-    EntryCollection,
-    Themes
-};
+use Soatok\FaqOff\Splices\{Authors, Entry, EntryCollection, Questions, Themes};
 use Twig\Error\{
     LoaderError,
     RuntimeError,
@@ -30,7 +25,10 @@ use Twig\Error\{
  */
 class Collections extends Endpoint
 {
+    const QUESTION_TYPE = 'collection';
+
     use MessageOnceTrait;
+    use QuestionableTrait;
 
     /** @var Authors $authors */
     private $authors;
@@ -41,6 +39,9 @@ class Collections extends Endpoint
     /** @var Entry $entries */
     private $entries;
 
+    /** @var Questions */
+    private $questions;
+
     /** @var Themes $themes */
     private $themes;
 
@@ -50,6 +51,7 @@ class Collections extends Endpoint
         $this->authors = $this->splice('Authors');
         $this->collections = $this->splice('EntryCollection');
         $this->entries = $this->splice('Entry');
+        $this->questions = $this->splice('Questions');
         $this->themes = $this->splice('Themes');
     }
 
@@ -168,6 +170,12 @@ class Collections extends Endpoint
             switch ($action) {
                 case 'entries':
                     return $this->listEntries((int) $routerParams['id']);
+                case 'inbox':
+                    return $this->questionQueue(
+                        $request,
+                        (int) $routerParams['id'],
+                        $routerParams
+                    );
                 default:
                     return $this->editCollection($request, (int) $routerParams['id']);
             }

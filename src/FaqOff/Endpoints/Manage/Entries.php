@@ -33,7 +33,9 @@ use Soatok\FaqOff\Utility;
  */
 class Entries extends Endpoint
 {
+    const QUESTION_TYPE = 'entry';
     use MessageOnceTrait;
+    use QuestionableTrait;
 
     /** @var Authors $authors */
     private $authors;
@@ -209,6 +211,12 @@ class Entries extends Endpoint
         }
         $action = $routerParams['action'] ?? '';
         switch ($action) {
+            case 'inbox':
+                return $this->questionQueue(
+                    $request,
+                    (int) $routerParams['id'],
+                    $routerParams
+                );
             default:
                 return $this->editEntry($collectionId, $entryId, $request);
         }

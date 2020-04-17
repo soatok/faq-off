@@ -9,13 +9,18 @@ use Psr\Http\Message\{
 };
 use Slim\Container;
 use Soatok\AnthroKit\Endpoint;
-use Soatok\FaqOff\Filter\CreateAuthorFilter;
-use Soatok\FaqOff\Filter\CreateCollectionFilter;
-use Soatok\FaqOff\Filter\EditAuthorFilter;
+use Soatok\FaqOff\Filter\{
+    CreateAuthorFilter,
+    CreateCollectionFilter,
+    EditAuthorFilter
+};
 use Soatok\FaqOff\MessageOnceTrait;
-use Soatok\FaqOff\Splices\Authors;
-use Soatok\FaqOff\Splices\EntryCollection;
-use Soatok\FaqOff\Splices\Themes;
+use Soatok\FaqOff\Splices\{
+    Authors,
+    EntryCollection,
+    Questions,
+    Themes
+};
 use Twig\Error\{
     LoaderError,
     RuntimeError,
@@ -28,13 +33,18 @@ use Twig\Error\{
  */
 class Author extends Endpoint
 {
+    const QUESTION_TYPE = 'author';
     use MessageOnceTrait;
+    use QuestionableTrait;
 
     /** @var Authors $authors */
     private $authors;
 
     /** @var EntryCollection $collections */
     private $collections;
+
+    /** @var Questions $questions */
+    private $questions;
 
     /** @var Themes $themes */
     private $themes;
@@ -44,6 +54,7 @@ class Author extends Endpoint
         parent::__construct($container);
         $this->authors = $this->splice('Authors');
         $this->collections = $this->splice('EntryCollection');
+        $this->questions = $this->splice('Questions');
         $this->themes = $this->splice('Themes');
     }
 
@@ -231,6 +242,12 @@ class Author extends Endpoint
                         return $this->createCollection((int) $routerParams['id'], $request);
                     }
                     return $this->collections((int) $routerParams['id'], $request);
+                case 'inbox':
+                    return $this->questionQueue(
+                        $request,
+                        (int) $routerParams['id'],
+                        $routerParams
+                    );
             }
         } elseif (isset($routerParams['action'])) {
             if ($routerParams['action'] === 'create') {
