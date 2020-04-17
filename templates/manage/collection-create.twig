@@ -63,6 +63,20 @@
                 {% endif %}
             </select>
         </div>
+
+        <div class="form-group">
+            <input{% if post['question_box'] %}
+                checked="checked"{% endif %}
+                id="collection-questions-checkbox"
+                name="question_box"
+                type="checkbox"
+                value="1"
+            />
+            <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="collection-questions-checkbox">
+                Accept questions for this collection?
+            </label>
+        </div>
+
         <button type="submit" class="btn btn-verydark">Create New Collection</button>
     </form>
 {% endblock %}

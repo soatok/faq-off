@@ -7,6 +7,11 @@
     <ul>
         <li><a href="/manage/collection/{{ collection.collectionid }}/entries">View/Manage Entries</a></li>
         <li><a href="/manage/collection/{{ collection.collectionid }}/entry/create">Create New Entry</a></li>
+        <li>
+            <a href="/manage/collection/{{ collection.collectionid }}/inbox">
+                View questions for this collection ({{ collection.question_count }})
+            </a>
+        </li>
     </ul>
 
 
@@ -35,10 +40,10 @@
         </div>
 
         <div class="form-group">
-            <label for="collection-description">Collection Description:</label>
+            <label for="manage-collection-description">Collection Description:</label>
             <textarea
                 class="form-control"
-                id="collection-description"
+                id="manage-collection-description"
                 name="description"
             >{{ post.description|e('html_attr') }}</textarea>
             <small>Markdown allowed.</small>
@@ -62,6 +67,20 @@
                 {% endif %}
             </select>
         </div>
+
+        <div class="form-group">
+            <input{% if collection['allow_questions'] %}
+                checked="checked"{% endif %}
+                id="collection-questions-checkbox"
+                name="question_box"
+                type="checkbox"
+                value="1"
+            />
+            <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="collection-questions-checkbox">
+                Accept questions for this collection?
+            </label>
+        </div>
+
         <button type="submit" class="btn btn-verydark">Update Collection</button>
     </form>
 {% endblock %}

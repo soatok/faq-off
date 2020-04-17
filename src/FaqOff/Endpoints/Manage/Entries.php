@@ -9,19 +9,23 @@ use Psr\Http\Message\{
     ResponseInterface
 };
 use Slim\Container;
-use Slim\Http\StatusCode;
 use Soatok\AnthroKit\Endpoint;
 use Soatok\FaqOff\Exceptions\CollectionNotFoundException;
 use Soatok\FaqOff\Filter\CreateEntryFilter;
+use Soatok\FaqOff\Filter\QuestionIdFilter;
 use Soatok\FaqOff\MessageOnceTrait;
-use Soatok\FaqOff\Splices\Authors;
-use Soatok\FaqOff\Splices\Entry;
-use Soatok\FaqOff\Splices\EntryCollection;
+use Soatok\FaqOff\Splices\{
+    Authors,
+    Entry,
+    EntryCollection,
+    Questions
+};
 use Twig\Error\{
     LoaderError,
     RuntimeError,
     SyntaxError
 };
+use Soatok\FaqOff\Utility;
 
 /**
  * Class Entries
@@ -29,7 +33,9 @@ use Twig\Error\{
  */
 class Entries extends Endpoint
 {
+    const QUESTION_TYPE = 'entry';
     use MessageOnceTrait;
+    use QuestionableTrait;
 
     /** @var Authors $authors */
     private $authors;
@@ -40,12 +46,41 @@ class Entries extends Endpoint
     /** @var Entry $entries */
     private $entries;
 
+    /** @var Questions */
+    private $questions;
+
     public function __construct(Container $container)
     {
         parent::__construct($container);
         $this->authors = $this->splice('Authors');
         $this->collections = $this->splice('EntryCollection');
         $this->entries = $this->splice('Entry');
+        $this->questions = $this->splice('Questions');
+    }
+
+    /**
+     * Grab a question.
+     *
+     * @param RequestInterface $request
+     * @param int $authorId
+     * @return array
+     */
+    protected function getQuestion(
+        RequestInterface $request,
+        int $authorId
+    ): array {
+        $filter = new QuestionIdFilter();
+        $get = Utility::getGetVars($request, $filter);
+        $questionId = $get['question'] ?? 0;
+        if (empty($questionId)) {
+            return [];
+        }
+        $row = $this->questions->getQuestionAuthorCheck((int) $questionId, $authorId);
+        if (empty($row)) {
+            return [];
+        }
+        $row['questionid'] = (int) $row['questionid'];
+        return $row;
     }
 
     /**
@@ -68,6 +103,7 @@ class Entries extends Endpoint
         $this->cspBuilder->setSelfAllowed('style-src', true);
         $filter = new CreateEntryFilter();
         $post = $this->post($request, self::TYPE_FORM, $filter);
+        $question = $this->getQuestion($request, $authorId);
         if ($post) {
             $newEntryId = $this->entries->create(
                 $collectionId,
@@ -75,7 +111,9 @@ class Entries extends Endpoint
                 $post['title'] ?? '',
                 $post['contents'] ?? '',
                 $post['attach-to'] ?? [],
-                $post['index-me']
+                $post['index-me'],
+                $post['question_box'],
+                $question['questionid'] ?? null
             );
             if ($newEntryId) {
                 $this->messageOnce('Entry created successfully', 'success');
@@ -84,14 +122,16 @@ class Entries extends Endpoint
                 );
             }
         }
+        $collection = $this->collections->getById($collectionId);
+        $collection['question_count'] = $this->questions->countForCollection($collectionId);
         return $this->view(
             'manage/entry-create.twig',
             [
-                'collection' => $this->collections->getById($collectionId),
-                'post' => $post
+                'collection' => $collection,
+                'post' => $post,
+                'question' => $question
             ]
         );
-
     }
 
     /**
@@ -125,6 +165,7 @@ class Entries extends Endpoint
         $entry['options']['follow-up'] = $this->entries->getFollowUps(
             $entry['options']['follow-up'] ?? []
         );
+        $entry['question_count'] = $this->questions->countForEntry($entryId);
         return $this->view(
             'manage/entry-edit.twig',
             [
@@ -173,6 +214,12 @@ class Entries extends Endpoint
         }
         $action = $routerParams['action'] ?? '';
         switch ($action) {
+            case 'inbox':
+                return $this->questionQueue(
+                    $request,
+                    (int) $routerParams['entry'],
+                    $routerParams
+                );
             default:
                 return $this->editEntry($collectionId, $entryId, $request);
         }

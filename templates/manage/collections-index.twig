@@ -19,7 +19,7 @@
         <tr>
             <th>Author</th>
             <th>Collection</th>
-            <th colspan="2" class="text-center">Actions</th>
+            <th colspan="3" class="text-center">Actions</th>
         </tr>
         </thead>
     {% for collection in collections %}
@@ -40,6 +40,11 @@
             <td>
                 <a href="/manage/collection/{{ collection.collectionid }}/entry/create">
                     Create Entry
+                </a>
+            </td>
+            <td>
+                <a href="/manage/collection/{{ collection.collectionid }}/inbox">
+                    Questions ({{ collection.question_count|number_format }})
                 </a>
             </td>
         </tr>

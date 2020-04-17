@@ -25,14 +25,28 @@
 
     {% if authors %}
     <h3>My Authors</h3>
-    <ul>
+    <div class="manage-author-list">
         {% for author in authors %}
-            <li>
-                <a href="/manage/author/{{ author.authorid }}">{{ author.screenname|e }}</a>
-                {% if author.is_owner %} (Owner) {% else %} (Contributor) {% endif %}
-            </li>
+            <div class="row">
+                <div class="col-sm-10">
+                    <a href="/manage/author/{{ author.authorid }}">{{ author.screenname|e }}</a>
+                    {% if author.is_owner %} (Owner) {% else %} (Contributor) {% endif %}
+                </div>
+                <div class="col-sm-2 text-right">
+                    <a href="/manage/author/{{ author.authorid }}/inbox" class="btn btn-verydark">
+                        <i class="fas fa-inbox"></i>
+                        Questions ({#
+                            #}{% if author.question_count > 0 %}{#
+                                #}<strong>{{ author.question_count|number_format }}</strong>{#
+                            #}{% else %}{#
+                                #}{{ author.question_count|number_format }}{#
+                            #}{% endif %}{#
+                        #})
+                    </a>
+                </div>
+            </div>
         {% endfor %}
-    </ul>
+    </div>
     <p>
         <a class="btn btn-verydark" href="/manage/author/create">Create New Author Profile</a>
     </p>

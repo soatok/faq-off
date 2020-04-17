@@ -12,12 +12,7 @@ use Soatok\AnthroKit\Endpoint;
 use Soatok\FaqOff\Exceptions\CollectionNotFoundException;
 use Soatok\FaqOff\Filter\EditCollectionFilter;
 use Soatok\FaqOff\MessageOnceTrait;
-use Soatok\FaqOff\Splices\{
-    Authors,
-    Entry,
-    EntryCollection,
-    Themes
-};
+use Soatok\FaqOff\Splices\{Authors, Entry, EntryCollection, Questions, Themes};
 use Twig\Error\{
     LoaderError,
     RuntimeError,
@@ -30,7 +25,10 @@ use Twig\Error\{
  */
 class Collections extends Endpoint
 {
+    const QUESTION_TYPE = 'collection';
+
     use MessageOnceTrait;
+    use QuestionableTrait;
 
     /** @var Authors $authors */
     private $authors;
@@ -41,6 +39,9 @@ class Collections extends Endpoint
     /** @var Entry $entries */
     private $entries;
 
+    /** @var Questions */
+    private $questions;
+
     /** @var Themes $themes */
     private $themes;
 
@@ -50,6 +51,7 @@ class Collections extends Endpoint
         $this->authors = $this->splice('Authors');
         $this->collections = $this->splice('EntryCollection');
         $this->entries = $this->splice('Entry');
+        $this->questions = $this->splice('Questions');
         $this->themes = $this->splice('Themes');
     }
 
@@ -92,6 +94,7 @@ class Collections extends Endpoint
             }
         }
         $collection = $this->collections->getById($collectionId);
+        $collection['question_count'] = $this->questions->countForCollection($collectionId);
         return $this->view(
             'manage/collection-edit.twig',
             [
@@ -119,11 +122,18 @@ class Collections extends Endpoint
             return $this->redirect('/manage/authors');
         }
         $collection = $this->collections->getById($collectionId);
+        $collection['question_count'] = $this->questions->countForCollection($collectionId);
+        $entries = $this->entries->listByCollectionId($collectionId);
+        foreach ($entries as $i => $entry) {
+            $entries[$i]['question_count'] = $this->questions->countForEntry(
+                (int) $entry['entryid']
+            );
+        }
         return $this->view(
             'manage/collection-entries.twig',
             [
                 'collection' => $collection,
-                'entries' => $this->entries->listByCollectionId($collectionId)
+                'entries' => $entries
             ]
         );
     }
@@ -137,11 +147,16 @@ class Collections extends Endpoint
      */
     protected function homePage(): ResponseInterface
     {
+        $collections = $this->collections->getByAccount($_SESSION['account_id']);
+        foreach ($collections as $i => $collection) {
+            $collections[$i]['question_count'] = $this->questions->countForCollection(
+                (int) $collection['entryid']
+            );
+        }
         return $this->view(
             'manage/collections-index.twig',
             [
-                'collections' =>
-                    $this->collections->getByAccount($_SESSION['account_id'])
+                'collections' => $collections
             ]
         );
     }
@@ -168,6 +183,12 @@ class Collections extends Endpoint
             switch ($action) {
                 case 'entries':
                     return $this->listEntries((int) $routerParams['id']);
+                case 'inbox':
+                    return $this->questionQueue(
+                        $request,
+                        (int) $routerParams['id'],
+                        $routerParams
+                    );
                 default:
                     return $this->editCollection($request, (int) $routerParams['id']);
             }

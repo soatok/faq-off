@@ -98,6 +98,8 @@ class Entry extends Splice
      * @param string $contents
      * @param array<int, int> $attachTo
      * @param bool $indexMe
+     * @param bool $allowQuestions
+     * @param int|null $questionId
      * @return int|null
      * @throws \Exception
      */
@@ -107,7 +109,9 @@ class Entry extends Splice
         string $title,
         string $contents,
         array $attachTo,
-        bool $indexMe = false
+        bool $indexMe = false,
+        bool $allowQuestions = false,
+        ?int $questionId = null
     ): ?int {
         $now = (new \DateTime())->format(\DateTime::ISO8601);
         $newEntryId = $this->db->insertGet(
@@ -120,6 +124,7 @@ class Entry extends Splice
                 'created' => $now,
                 'modified' => $now,
                 'contents' => $contents,
+                'allow_questions' => $allowQuestions,
             ],
             'entryid'
         );
@@ -131,6 +136,14 @@ class Entry extends Splice
                     'collectionid' => $collectionId,
                     'entryid' => $newEntryId
                 ]
+            );
+        }
+
+        if (!empty($questionId)) {
+            $this->db->update(
+                'faqoff_question_box',
+                ['archived' => true],
+                ['questionid' => $questionId]
             );
         }
 
@@ -412,7 +425,8 @@ class Entry extends Splice
                 'contents' => $post['contents'],
                 'options' => json_encode($options),
                 'modified' => (new \DateTime())
-                    ->format(\DateTime::ISO8601)
+                    ->format(\DateTime::ISO8601),
+                'allow_questions' => $post['question_box']
             ],
             ['entryid' => $entryId]
         );

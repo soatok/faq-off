@@ -7,6 +7,11 @@
     <ul>
         <li><a href="/manage/collection/{{ collection.collectionid }}">Edit Collection Info</a></li>
         <li><a href="/manage/collection/{{ collection.collectionid }}/entries">View/Manage Entries</a></li>
+        <li>
+            <a href="/manage/collection/{{ collection.collectionid }}/inbox">
+                View questions for this collection ({{ collection.question_count }})
+            </a>
+        </li>
     </ul>
 
     <h3>Create New Entry</h3>
@@ -32,7 +37,11 @@
                 name="title"
                 required="required"
                 type="text"
-                value="{{ post.title|e('html_attr') }}"
+                value="{% if post.title %}{#
+                        #}{{ post.title|e('html_attr') }}{#
+                    #}{% elseif question.question %}{#
+                        #}{{ question.question|e('html_attr') }}{#
+                    #}{% endif %}"
             />
         </div>
         <div class="form-group">
@@ -52,19 +61,36 @@
 
         <div class="form-group full-width">
             <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="entry-attach-to">Attach to:</label>
-            <select id="entry-attach-to" multiple="multiple" class="full-width darktext" name="attach-to[]"></select>
+            <select id="entry-attach-to" multiple="multiple" class="full-width darktext" name="attach-to[]">{#
+                #}{% if question.entryid %}
+                    <option value="{{ question.entryid }}" selected="selected">{{ question.entry_title|e('html') }}</option>
+                {% endif %}{#
+            #}</select>
         </div>
 
         <div class="form-group">
             <input{% if post['index-me'] %}
                 checked="checked"{% endif %}
-                    id="entry-index-checkbox"
-                    name="index-me"
-                    type="checkbox"
-                    value="1"
+                id="entry-index-checkbox"
+                name="index-me"
+                type="checkbox"
+                value="1"
             />
             <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="entry-index-checkbox">
                 Include this Entry in the Collection Index?
+            </label>
+        </div>
+
+        <div class="form-group">
+            <input{% if post['question_box'] %}
+                checked="checked"{% endif %}
+                id="entry-questions-checkbox"
+                name="question_box"
+                type="checkbox"
+                value="1"
+            />
+            <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="entry-questions-checkbox">
+                Accept questions for this entry?
             </label>
         </div>
 

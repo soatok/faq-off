@@ -4,7 +4,7 @@ function preview()
 {
     requestPending = true;
     $.post('/manage/ajax/preview', {
-        "markdown": $("#collection-description").val()
+        "markdown": $("#manage-collection-description").val()
     }, function (res) {
         requestPending = false;
         if (res['status'] !== 'SUCCESS') {
@@ -22,7 +22,7 @@ function previewKeyUp()
     }
     requestPending = true;
     $.post('/manage/ajax/preview', {
-        "markdown": $("#collection-description").val()
+        "markdown": $("#manage-collection-description").val()
     }, function (res) {
         requestPending = false;
         if (res['status'] !== 'SUCCESS') {
@@ -34,7 +34,7 @@ function previewKeyUp()
 }
 
 $(document).ready(function() {
-    let el = $("#collection-description");
+    let el = $("#manage-collection-description");
     el.on('change', preview);
     el.on('keyup', previewKeyUp);
     preview();

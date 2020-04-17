@@ -1,0 +1,54 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h2>Control Panel &rsaquo; Questions</h2>
+    {% if questions %}
+    <form method="post" id="question-inbox-form" class="row">{{ anti_csrf() }}
+        <div class="col-sm-6 question-inbox-header">
+            Question
+        </div>
+        <div class="col-sm-3 question-inbox-header">
+            Asked By
+        </div>
+        <div class="col-sm-3 question-inbox-header text-right">
+            Actions
+        </div>
+        {% for q in questions %}
+            <div class="question-inbox-question col-sm-6">
+                {{ q.question|e('html_attr') }}
+            </div>
+
+            {% if q.attribution %}
+                <div class="question-inbox-attribution col-sm-3">
+                    {{ q.public_id }}
+                </div>
+            {% else %}
+                <div class="question-inbox-anonymous col-sm-3" title="Anonymous">&mdash;</div>
+            {% endif %}
+
+            <div class="question-inbox-buttons col-sm-3 text-right">
+                <button
+                    class="btn btn-verydark"
+                    name="question_id"
+                    type="submit"
+                    value="{{ q.questionid }}"
+                >
+                    <i class="fas fa-archive"></i> Archive
+                </button>
+                <a
+                    class="btn btn-verydark"
+                    href="/manage/collection/{{ q.collectionid }}/entry/create?question={{ q.questionid }}"
+                >
+                    <i class="fas fa-plus-square"></i> Answer
+                </a>
+            </div>
+        {% endfor %}
+    </form>
+    {% else %}
+        <p>No pending questions!</p>
+    {% endif %}
+
+    <hr />
+
+    <a href="{{ return_uri }}">Return</a>
+{% endblock %}

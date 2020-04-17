@@ -84,6 +84,27 @@ abstract class Utility
      * @param InputFilterContainer|null $filter
      * @return array
      */
+    public static function getGetVars(
+        RequestInterface $request,
+        ?InputFilterContainer $filter = null
+    ): array {
+        $array = [];
+        \parse_str((string) $request->getUri()->getQuery(), $array);
+        if (!\is_null($filter)) {
+            try {
+                return $filter($array);
+            } catch (InvalidDataException $ex) {
+                return [];
+            }
+        }
+        return $array;
+    }
+
+    /**
+     * @param RequestInterface $request
+     * @param InputFilterContainer|null $filter
+     * @return array
+     */
     public static function getPostVars(
         RequestInterface $request,
         ?InputFilterContainer $filter = null
