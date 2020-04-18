@@ -34,6 +34,7 @@ CREATE TABLE faqoff_entry (
     title TEXT,
     contents TEXT,
     options TEXT, -- JSON blob for more entries
+    uniqueid TEXT NOT NULL UNIQUE,
     allow_questions BOOLEAN DEFAULT FALSE,
     created TIMESTAMP DEFAULT NOW(),
     modified TIMESTAMP

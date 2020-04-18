@@ -19,6 +19,7 @@ class AdminEditCollectionFilter extends InputFilterContainer
             ->addFilter('question_box', new BoolFilter())
             ->addFilter('author', new IntFilter())
             ->addFilter('description', new StringFilter())
+            ->addFilter('opengraph_image_url', new StringFilter())
             ->addFilter('theme', new IntFilter())
             ->addFilter('title', new StringFilter())
             ->addFilter('url', new StringFilter());

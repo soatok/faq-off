@@ -14,6 +14,7 @@ class AdminEditEntryFilter extends InputFilterContainer
             ->addFilter('title', new StringFilter())
             ->addFilter('contents', new StringFilter())
             ->addFilter('options', new StringFilter()) // JSON
+            ->addFilter('opengraph_image_url', new StringFilter())
         ;
     }
 }

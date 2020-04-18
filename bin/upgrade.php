@@ -50,6 +50,9 @@ function upgrade_auto_detect(EasyDB $db)
     if (!table_exists($db, 'faqoff_entry_accesslog')) {
         $scripts[] = 'v0.2.0-to-v0.3.0.php';
     }
+    if (!table_exists($db, 'faqoff_question_box')) {
+        $scripts[] = 'v0.3.0-to-v0.4.0.php';
+    }
     return $scripts;
 }
 
@@ -80,7 +83,7 @@ if (UPGRADE_SCRIPT === $argv[0]) {
         $scripts = upgrade_auto_detect($db);
     } else {
         $scripts = [];
-        $file = realpath($argv[1] . '.php');
+        $file = realpath(APP_ROOT . '/bin/upgrade/' . $argv[1] . '.php');
         if (!$file) {
             echo 'File not found: ', $file, PHP_EOL;
             exit(2);

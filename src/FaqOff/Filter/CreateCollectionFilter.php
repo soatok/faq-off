@@ -20,6 +20,7 @@ class CreateCollectionFilter extends InputFilterContainer
             ->addFilter('description', new StringFilter())
             ->addFilter('theme', new IntFilter())
             ->addFilter('title', new StringFilter())
-            ->addFilter('url', new StringFilter());
+            ->addFilter('url', new StringFilter())
+            ->addFilter('opengraph_image_url', new StringFilter());
     }
 }

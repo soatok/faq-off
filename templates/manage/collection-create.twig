@@ -38,10 +38,10 @@
             <small>Optional. Will be automatically generated if not provided.</small>
         </div>
         <div class="form-group">
-            <label for="collection-description">Collection Description:</label>
+            <label for="manage-collection-description">Collection Description:</label>
             <textarea
                 class="form-control"
-                id="collection-description"
+                id="manage-collection-description"
                 name="description"
             >{{ post.description|e('html_attr') }}</textarea>
             <small>Markdown allowed.</small>
@@ -75,6 +75,18 @@
             <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="collection-questions-checkbox">
                 Accept questions for this collection?
             </label>
+        </div>
+        <div class="form-group">
+            <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="collection-image">OpenGraph Image URL:</label>
+            <input
+                class="form-control"
+                id="collection-image"
+                name="opengraph_image_url"
+                pattern="^(https?://)?.*"
+                placeholder="https:// ... Image URL (optional)"
+                type="text"
+                value="{{ post.opengraph_image_url|e('html_attr') }}"
+            />
         </div>
 
         <button type="submit" class="btn btn-verydark">Create New Collection</button>

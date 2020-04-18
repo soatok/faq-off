@@ -69,6 +69,17 @@
                 {% endif %}
             </select>
         </div>
+
+        <div class="form-group">
+            <label{% if faqoff_custom.vars['dark-theme'] %} class="bg-dark text-light"{% endif %} for="collection-image">OpenGraph Image URL:</label>
+            <input
+                class="form-control"
+                id="collection-image"
+                name="opengraph_image_url"
+                type="text"
+                value="{{ collection.opengraph_image_url|e('html_attr') }}"
+            />
+        </div>
         <button type="submit" class="btn btn-verydark">Update Collection</button>
         <a class="btn btn-default" href="/admin/collections">Go Back</a>
     </form>

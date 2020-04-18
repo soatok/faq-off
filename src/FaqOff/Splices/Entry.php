@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace Soatok\FaqOff\Splices;
 
+use ParagonIE\ConstantTime\Base32;
 use SebastianBergmann\Diff\Differ;
 use Slim\Http\Request;
 use Soatok\AnthroKit\Splice;
@@ -124,6 +125,10 @@ class Entry extends Splice
                 'created' => $now,
                 'modified' => $now,
                 'contents' => $contents,
+                'uniqueid' => Base32::encode(random_bytes(20)),
+                'opengraph_image_url' => !empty($postData['opengraph_image_url'])
+                    ? $postData['opengraph_image_url']
+                    : null,
                 'allow_questions' => $allowQuestions,
             ],
             'entryid'
@@ -319,6 +324,31 @@ class Entry extends Splice
     }
 
     /**
+     * @param string $uniqueId
+     * @return string
+     */
+    public function getUrlByUniqueId(string $uniqueId): string
+    {
+        $entry = $this->db->row(
+            "SELECT fa.screenname, fc.url AS collection_url, fe.url AS entry_url 
+            FROM faqoff_entry fe
+            JOIN faqoff_collection fc on fe.collectionid = fc.collectionid
+            JOIN faqoff_author fa on fc.authorid = fa.authorid
+            WHERE fe.uniqueid = ?",
+            $uniqueId
+        );
+        if (empty($entry)) {
+            return '';
+        }
+        return implode('/', [
+            '',
+            '@' . urlencode($entry['screenname']),
+            urlencode($entry['collection_url']),
+            urlencode($entry['entry_url'])
+        ]);
+    }
+
+    /**
      * @param int $collectionId
      * @return array
      */
@@ -462,6 +492,9 @@ class Entry extends Splice
                 'options' => json_encode($options),
                 'modified' => (new \DateTime())
                     ->format(\DateTime::ISO8601),
+                'opengraph_image_url' => !empty($postData['opengraph_image_url'])
+                    ? $postData['opengraph_image_url']
+                    : null,
                 'allow_questions' => $post['question_box']
             ],
             ['entryid' => $entryId]

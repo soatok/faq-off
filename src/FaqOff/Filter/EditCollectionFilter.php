@@ -19,6 +19,7 @@ class EditCollectionFilter extends InputFilterContainer
             ->addFilter('question_box', new BoolFilter())
             ->addFilter('description', new StringFilter())
             ->addFilter('theme', new IntFilter())
-            ->addFilter('title', new StringFilter());
+            ->addFilter('title', new StringFilter())
+            ->addFilter('opengraph_image_url', new StringFilter());
     }
 }
