@@ -519,3 +519,9 @@ a:hover .faq-icon {
 .manage-author-list .row:nth-child(2) {
     background-color: rgba(0, 0, 0, 0.1);
 }
+.leave-question-form-entry .leave-question-form-wrapper {
+    margin: 0.5rem 1rem 0 1rem;
+}
+.leave-question-header {
+    margin-top: 1rem;
+}

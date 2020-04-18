@@ -1,30 +1,32 @@
 <div id="leave-a-question question-box-{{ type }}">
-    <form method="post" class="leave-question-form">
+    <form method="post" class="leave-question-form leave-question-form-{{ type }}">
         {{ anti_csrf() }}
-        <h3>Leave a question?</h3>
+        <h3 class="leave-question-header leave-question-{{ type }}-header">Leave a question?</h3>
 
-        <div class="form-group" id="leave-question-form-group">
-            <label for="question-question">Question:</label>
-            <input
-                class="form-control"
-                id="question-question"
-                name="question"
-                placeholder="Type your question here..."
-                required="required"
-                pattern="^.{4,}$"
-                type="text"
-            />
-            <div class="row">
-                <div class="col-sm-10">
-                    <input
-                        id="question-attribution"
-                        name="attribution"
-                        type="checkbox"
-                    />
-                    <label for="question-attribution">Attribute to you? (Default is anonymous)</label>
-                </div>
-                <div class="col-sm-2 text-right">
-                    <button class="btn btn-verydark" type="submit">Ask Question</button>
+        <div class="leave-question-form-wrapper">
+            <div class="form-group leave-question-form-group" id="leave-question-form-group">
+                <label for="question-question">Question:</label>
+                <input
+                    class="form-control"
+                    id="question-question"
+                    name="question"
+                    placeholder="Type your question here..."
+                    required="required"
+                    pattern="^.{4,}$"
+                    type="text"
+                />
+                <div class="row">
+                    <div class="col-sm-10">
+                        <input
+                            id="question-attribution"
+                            name="attribution"
+                            type="checkbox"
+                        />
+                        <label for="question-attribution">Attribute to you? (Default is anonymous)</label>
+                    </div>
+                    <div class="col-sm-2 text-right">
+                        <button class="btn btn-verydark" type="submit">Ask Question</button>
+                    </div>
                 </div>
             </div>
         </div>
