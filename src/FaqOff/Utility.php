@@ -37,7 +37,6 @@ abstract class Utility
 
     /**
      * @return EasyDB
-     * @throws \Interop\Container\Exception\ContainerException
      */
     public static function getDatabase(): EasyDB
     {
@@ -61,7 +60,6 @@ abstract class Utility
 
     /**
      * @return int[]
-     * @throws \Interop\Container\Exception\ContainerException
      */
     public static function getAdminAccountIDs(): array
     {
@@ -129,7 +127,6 @@ abstract class Utility
      *
      * @param Environment $env
      * @return Environment
-     * @throws \Interop\Container\Exception\ContainerException
      */
     public static function terraform(Environment $env): Environment
     {
@@ -271,7 +268,6 @@ abstract class Utility
      * @param string $type
      * @param string|int|null $themeId
      * @return array
-     * @throws \Interop\Container\Exception\ContainerException
      */
     public static function getThemeData($type, $themeId = null): array
     {

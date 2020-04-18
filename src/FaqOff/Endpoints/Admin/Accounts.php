@@ -4,28 +4,28 @@ namespace Soatok\FaqOff\Endpoints\Admin;
 
 use Interop\Container\Exception\ContainerException;
 use ParagonIE\Ionizer\InvalidDataException;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\{
+    RequestInterface,
+    ResponseInterface
+};
 use Slim\Container;
-use Soatok\AnthroKit\Endpoint;
+use Soatok\FaqOff\BackendEndpoint;
 use Soatok\FaqOff\Filter\AdminEditAccountFilter;
 use Soatok\FaqOff\MessageOnceTrait;
-use Soatok\FaqOff\Splices\Accounts as AccountSplice;
 use Soatok\FaqOff\Splices\Authors;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
+use Twig\Error\{
+    LoaderError,
+    RuntimeError,
+    SyntaxError
+};
 
 /**
  * Class Accounts
  * @package Soatok\FaqOff\Endpoints\Admin
  */
-class Accounts extends Endpoint
+class Accounts extends BackendEndpoint
 {
     use MessageOnceTrait;
-
-    /** @var AccountSplice $accounts */
-    protected $accounts;
 
     /** @var Authors $authors */
     protected $authors;
@@ -33,7 +33,6 @@ class Accounts extends Endpoint
     public function __construct(Container $container)
     {
         parent::__construct($container);
-        $this->accounts = $this->splice('Accounts');
         $this->authors = $this->splice('Authors');
     }
 

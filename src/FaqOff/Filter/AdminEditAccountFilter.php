@@ -16,6 +16,7 @@ class AdminEditAccountFilter extends InputFilterContainer
     {
         $this
             ->addFilter('active', new BoolFilter())
+            ->addFilter('can-invite', new BoolFilter())
             ->addFilter('disable-external', new BoolFilter())
             ->addFilter('disable-two-factor', new BoolFilter())
             ->addFilter('email', new StringFilter())

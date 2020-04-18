@@ -3,22 +3,27 @@ declare(strict_types=1);
 namespace Soatok\FaqOff\Endpoints\Admin;
 
 use Interop\Container\Exception\ContainerException;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
-use Soatok\AnthroKit\Endpoint;
+use Psr\Http\Message\{
+    RequestInterface,
+    ResponseInterface
+};
+use Soatok\FaqOff\BackendEndpoint;
 use Soatok\FaqOff\Exceptions\AdminFileException;
-use Soatok\FaqOff\Filter\AdminCreateFileFilter;
-use Soatok\FaqOff\Filter\AdminEditFileFilter;
+use Soatok\FaqOff\Filter\{
+    AdminCreateFileFilter,
+    AdminEditFileFilter
+};
 use Soatok\FaqOff\MessageOnceTrait;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
-
+use Twig\Error\{
+    LoaderError,
+    RuntimeError,
+    SyntaxError
+};
 /**
  * Class CustomContent
  * @package Soatok\FaqOff\Endpoints\Admin
  */
-class CustomContent extends Endpoint
+class CustomContent extends BackendEndpoint
 {
     use MessageOnceTrait;
 

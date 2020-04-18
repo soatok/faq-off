@@ -9,9 +9,17 @@ use Psr\Http\Message\{
     ResponseInterface
 };
 use Slim\Container;
-use Soatok\AnthroKit\Endpoint;
-use Soatok\FaqOff\{Filter\FrontQuestionFilter, FrontAccountInfoTrait, MessageOnceTrait};
-use Soatok\FaqOff\Splices\Authors;
+use Soatok\FaqOff\{
+    Filter\FrontQuestionFilter,
+    FrontAccountInfoTrait,
+    FrontendEndpoint,
+    MessageOnceTrait
+};
+use Soatok\FaqOff\Splices\{
+    Authors,
+    Entry,
+    EntryCollection as Collection
+};
 use Twig\Error\{
     LoaderError,
     RuntimeError,
@@ -22,7 +30,7 @@ use Twig\Error\{
  * Class EntryCollection
  * @package Soatok\FaqOff\Endpoints
  */
-class EntryCollection extends Endpoint
+class EntryCollection extends FrontendEndpoint
 {
     use MessageOnceTrait;
     use FrontAccountInfoTrait;
@@ -30,10 +38,10 @@ class EntryCollection extends Endpoint
     /** @var Authors $authors */
     private $authors;
 
-    /** @var \Soatok\FaqOff\Splices\EntryCollection $collections */
+    /** @var Collection $collections */
     private $collections;
 
-    /** @var \Soatok\FaqOff\Splices\Entry $entries */
+    /** @var Entry $entries */
     private $entries;
 
     public function __construct(Container $container)

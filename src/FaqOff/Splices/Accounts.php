@@ -14,6 +14,23 @@ use Soatok\DholeCrypto\Password;
 class Accounts extends BaseClass
 {
     /**
+     * Can this account invite other users to create accounts?
+     *
+     * Should return TRUE for users who have not had their privileges revoked.
+     *
+     * @param int $accountId
+     * @return bool
+     */
+    public function accountCanInvite(int $accountId): bool
+    {
+        $cell = $this->db->cell(
+            "SELECT can_invite FROM faqoff_accounts WHERE accountid = ?",
+            $accountId
+        );
+        return !empty($cell);
+    }
+
+    /**
      * @param string $login
      * @param HiddenString $password
      * @param string $email
@@ -212,8 +229,9 @@ class Accounts extends BaseClass
     public function updateAccountByAdmin(int $accountId, array $post): bool
     {
         $updates = [
+            'active' => $post['active'] ?? false,
+            'can_invite' => !empty($post['can-invite']),
             'login' => $post['login'],
-            'active' => $post['active'] ?? false
         ];
         if (empty($post['public_id'])) {
             $this->generatePublicId($accountId);

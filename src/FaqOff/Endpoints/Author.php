@@ -10,10 +10,12 @@ use Psr\Http\Message\{
 };
 use Slim\Container;
 use Slim\Http\Response;
-use Soatok\AnthroKit\Endpoint;
+use Soatok\FaqOff\FrontendEndpoint;
 use Soatok\FaqOff\MessageOnceTrait;
-use Soatok\FaqOff\Splices\Authors;
-use Soatok\FaqOff\Splices\EntryCollection;
+use Soatok\FaqOff\Splices\{
+    Authors,
+    EntryCollection
+};
 use Twig\Error\{
     LoaderError,
     RuntimeError,
@@ -24,7 +26,7 @@ use Twig\Error\{
  * Class Author
  * @package Soatok\FaqOff\Endpoints
  */
-class Author extends Endpoint
+class Author extends FrontendEndpoint
 {
     use MessageOnceTrait;
 

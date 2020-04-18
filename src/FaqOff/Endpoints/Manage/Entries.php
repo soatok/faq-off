@@ -9,10 +9,12 @@ use Psr\Http\Message\{
     ResponseInterface
 };
 use Slim\Container;
-use Soatok\AnthroKit\Endpoint;
+use Soatok\FaqOff\BackendEndpoint;
 use Soatok\FaqOff\Exceptions\CollectionNotFoundException;
-use Soatok\FaqOff\Filter\CreateEntryFilter;
-use Soatok\FaqOff\Filter\QuestionIdFilter;
+use Soatok\FaqOff\Filter\{
+    CreateEntryFilter,
+    QuestionIdFilter
+};
 use Soatok\FaqOff\MessageOnceTrait;
 use Soatok\FaqOff\Splices\{
     Authors,
@@ -31,7 +33,7 @@ use Soatok\FaqOff\Utility;
  * Class Entries
  * @package Soatok\FaqOff\Endpoints\Manage
  */
-class Entries extends Endpoint
+class Entries extends BackendEndpoint
 {
     const QUESTION_TYPE = 'entry';
     use MessageOnceTrait;

@@ -8,7 +8,7 @@ use Psr\Http\Message\{
     ResponseInterface
 };
 use Slim\Container;
-use Soatok\AnthroKit\Endpoint;
+use Soatok\FaqOff\BackendEndpoint;
 use Soatok\FaqOff\Splices\{
     Accounts,
     Authors,
@@ -24,13 +24,10 @@ use Twig\Error\{
  * Class ControlPanel
  * @package Soatok\FaqOff\Endpoints\Manage
  */
-class ControlPanel extends Endpoint
+class ControlPanel extends BackendEndpoint
 {
     /** @var Authors $authors */
     private $authors;
-
-    /** @var Accounts $accounts */
-    private $accounts;
 
     /** @var EntryCollection $collections */
     private $collections;
@@ -38,7 +35,6 @@ class ControlPanel extends Endpoint
     public function __construct(Container $container)
     {
         parent::__construct($container);
-        $this->accounts = $this->splice('Accounts');
         $this->authors = $this->splice('Authors');
         $this->collections = $this->splice('EntryCollection');
     }

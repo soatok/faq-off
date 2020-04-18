@@ -2,18 +2,22 @@
 declare(strict_types=1);
 namespace Soatok\FaqOff\Endpoints\Admin;
 
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\{
+    RequestInterface,
+    ResponseInterface
+};
 use Slim\Http\StatusCode;
-use Soatok\AnthroKit\Endpoint;
-use Soatok\FaqOff\Filter\AdminListDirFilter;
-use Soatok\FaqOff\Filter\AdminMkdirFilter;
+use Soatok\FaqOff\BackendEndpoint;
+use Soatok\FaqOff\Filter\{
+    AdminListDirFilter,
+    AdminMkdirFilter
+};
 
 /**
  * Class AJAX
  * @package Soatok\FaqOff\Endpoints\Admin
  */
-class AJAX extends Endpoint
+class AJAX extends BackendEndpoint
 {
     /**
      * @param RequestInterface $request

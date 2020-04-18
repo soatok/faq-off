@@ -3,26 +3,32 @@ declare(strict_types=1);
 namespace Soatok\FaqOff\Endpoints\Admin;
 
 use Interop\Container\Exception\ContainerException;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\{
+    RequestInterface,
+    ResponseInterface
+};
 use Slim\Container;
-use Soatok\AnthroKit\Endpoint;
+use Soatok\FaqOff\BackendEndpoint;
 use Soatok\FaqOff\Exceptions\CollectionNotFoundException;
 use Soatok\FaqOff\Filter\AdminEditCollectionFilter;
 use Soatok\FaqOff\MessageOnceTrait;
-use Soatok\FaqOff\Splices\Authors;
-use Soatok\FaqOff\Splices\Entry;
-use Soatok\FaqOff\Splices\EntryCollection;
-use Soatok\FaqOff\Splices\Themes;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
+use Soatok\FaqOff\Splices\{
+    Authors,
+    Entry,
+    EntryCollection,
+    Themes
+};
+use Twig\Error\{
+    LoaderError,
+    RuntimeError,
+    SyntaxError
+};
 
 /**
  * Class Collections
  * @package Soatok\FaqOff\Endpoints\Admin
  */
-class Collections extends Endpoint
+class Collections extends BackendEndpoint
 {
     use MessageOnceTrait;
 

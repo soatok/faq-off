@@ -6,18 +6,20 @@ use League\CommonMark\CommonMarkConverter;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\StatusCode;
-use Soatok\AnthroKit\Endpoint;
+use Soatok\FaqOff\BackendEndpoint;
 use Soatok\FaqOff\Filter\ContributorAjaxFilter;
-use Soatok\FaqOff\Splices\Accounts;
-use Soatok\FaqOff\Splices\Authors;
-use Soatok\FaqOff\Splices\Entry;
-use Soatok\FaqOff\Splices\EntryCollection;
+use Soatok\FaqOff\Splices\{
+    Accounts,
+    Authors,
+    Entry,
+    EntryCollection
+};
 
 /**
  * Class AJAX
  * @package Soatok\FaqOff\Endpoints\Manage
  */
-class AJAX extends Endpoint
+class AJAX extends BackendEndpoint
 {
     /**
      * @param RequestInterface $request
@@ -46,7 +48,7 @@ class AJAX extends Endpoint
         }
 
         /** @var Accounts $accounts */
-        $accounts = $this->splice('Accounts');
+        $accounts = $this->accounts;
         $accountId = $accounts->getAccountIdByPublicId($publicId);
         if (!$accountId) {
             return $this->json(
@@ -100,7 +102,7 @@ class AJAX extends Endpoint
         }
 
         /** @var Accounts $accounts */
-        $accounts = $this->splice('Accounts');
+        $accounts = $this->accounts;
         $accountId = $accounts->getAccountIdByPublicId($publicId);
         if (!$accountId) {
             return $this->json(

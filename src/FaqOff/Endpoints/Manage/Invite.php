@@ -9,22 +9,22 @@ use Psr\Http\Message\{
 };
 use Slim\Container;
 use Soatok\AnthroKit\Auth\Fursona;
-use Soatok\AnthroKit\Endpoint;
 use Twig\Error\{
     LoaderError,
     RuntimeError,
     SyntaxError
 };
+use Soatok\FaqOff\BackendEndpoint;
+use Soatok\FaqOff\MessageOnceTrait;
 use Soatok\FaqOff\Splices\Accounts;
 
 /**
  * Class Invite
  * @package Soatok\FaqOff\Endpoints\Manage
  */
-class Invite extends Endpoint
+class Invite extends BackendEndpoint
 {
-    /** @var Accounts $accounts */
-    private $accounts;
+    use MessageOnceTrait;
 
     /** @var array<string, string|array> $config */
     protected $config;
@@ -34,10 +34,6 @@ class Invite extends Endpoint
         parent::__construct($container);
         $config = $container->get(Fursona::CONTAINER_KEY) ?? [];
         $this->config = Fursona::autoConfig($config);
-        $this->accounts = $this->splice('Accounts');
-        if (!($this->accounts instanceof Accounts)) {
-            throw new \TypeError('Invalid splice');
-        }
         $this->accounts->setConfig($this->config);
     }
 
@@ -102,6 +98,13 @@ class Invite extends Endpoint
         ?ResponseInterface $response = null,
         array $routerParams = []
     ): ResponseInterface {
+        if (!$this->accounts->accountCanInvite($_SESSION['account_id'])) {
+            $this->messageOnce(
+                'You do not have permission to invite new users.',
+                'error'
+            );
+            return $this->redirect('/manage');
+        }
         if (empty($routerParams)) {
             return $this->viewInvitePage($request);
         }

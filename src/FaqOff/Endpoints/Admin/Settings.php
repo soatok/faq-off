@@ -4,20 +4,24 @@ namespace Soatok\FaqOff\Endpoints\Admin;
 
 use Interop\Container\Exception\ContainerException;
 use ParagonIE\Ionizer\InvalidDataException;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
-use Soatok\AnthroKit\Endpoint;
+use Psr\Http\Message\{
+    RequestInterface,
+    ResponseInterface
+};
+use Soatok\FaqOff\BackendEndpoint;
 use Soatok\FaqOff\Filter\AdminEditSettingsFilter;
 use Soatok\FaqOff\MessageOnceTrait;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
+use Twig\Error\{
+    LoaderError,
+    RuntimeError,
+    SyntaxError
+};
 
 /**
  * Class Settings
  * @package Soatok\FaqOff\Endpoints\Admin
  */
-class Settings extends Endpoint
+class Settings extends BackendEndpoint
 {
     use MessageOnceTrait;
 

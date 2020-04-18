@@ -10,15 +10,19 @@ use Psr\Http\Message\{
 };
 use Slim\Container;
 use Slim\Http\Request;
-use Soatok\AnthroKit\Endpoint;
 use Soatok\AnthroKit\Privacy;
 use Soatok\DholeCrypto\Exceptions\CryptoException;
 use Soatok\FaqOff\{
     Filter\FrontQuestionFilter,
     FrontAccountInfoTrait,
+    FrontendEndpoint,
     MessageOnceTrait
 };
-use Soatok\FaqOff\Splices\Authors;
+use Soatok\FaqOff\Splices\{
+    Authors,
+    Entry as EntrySplice,
+    EntryCollection
+};
 use Twig\Error\{
     LoaderError,
     RuntimeError,
@@ -29,7 +33,7 @@ use Twig\Error\{
  * Class Entry
  * @package Soatok\FaqOff\Endpoints
  */
-class Entry extends Endpoint
+class Entry extends FrontendEndpoint
 {
     use MessageOnceTrait;
     use FrontAccountInfoTrait;
@@ -37,10 +41,10 @@ class Entry extends Endpoint
     /** @var Authors $authors */
     private $authors;
 
-    /** @var \Soatok\FaqOff\Splices\EntryCollection $collections */
+    /** @var EntryCollection $collections */
     private $collections;
 
-    /** @var \Soatok\FaqOff\Splices\Entry $entries */
+    /** @var EntrySplice $entries */
     private $entries;
 
     public function __construct(Container $container)

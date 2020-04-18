@@ -7,6 +7,7 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Container;
 use Soatok\AnthroKit\Endpoint;
+use Soatok\FaqOff\FrontendEndpoint;
 use Soatok\FaqOff\MessageOnceTrait;
 use Soatok\FaqOff\Splices\Authors;
 use Soatok\FaqOff\Splices\Notices;
@@ -18,7 +19,7 @@ use Twig\Error\SyntaxError;
  * Class HomePage
  * @package Soatok\FaqOff\Endpoints
  */
-class HomePage extends Endpoint
+class HomePage extends FrontendEndpoint
 {
     use MessageOnceTrait;
 

@@ -14,6 +14,7 @@
                 <th>Public ID</th>
                 <th>Username</th>
                 <th>Active?</th>
+                <th>Can Invite?</th>
                 <th>Created</th>
                 <th>Auth. Type</th>
             </tr>
@@ -48,6 +49,9 @@
                 </td>
                 <td>
                     {{ acc.active ? YES|raw : NO|raw }}
+                </td>
+                <td>
+                    {{ acc.can_invite ? YES|raw : NO|raw }}
                 </td>
                 <td>
                     {{ acc.created|date('F j, Y') }}

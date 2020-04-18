@@ -4,29 +4,31 @@ namespace Soatok\FaqOff\Endpoints\Admin;
 
 use Interop\Container\Exception\ContainerException;
 use ParagonIE\Ionizer\InvalidDataException;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\{
+    RequestInterface,
+    ResponseInterface
+};
 use Slim\Container;
-use Soatok\AnthroKit\Endpoint;
+use Soatok\FaqOff\BackendEndpoint;
 use Soatok\FaqOff\Filter\AdminEditAuthorFilter;
 use Soatok\FaqOff\MessageOnceTrait;
-use Soatok\FaqOff\Splices\Accounts as AccountSplice;
-use Soatok\FaqOff\Splices\Authors as AuthorSplice;
-use Soatok\FaqOff\Splices\EntryCollection;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
+use Soatok\FaqOff\Splices\{
+    Authors as AuthorSplice,
+    EntryCollection
+};
+use Twig\Error\{
+    LoaderError,
+    RuntimeError,
+    SyntaxError
+};
 
 /**
  * Class Authors
  * @package Soatok\FaqOff\Endpoints\Admin
  */
-class Authors extends Endpoint
+class Authors extends BackendEndpoint
 {
     use MessageOnceTrait;
-
-    /** @var AccountSplice $accounts */
-    protected $accounts;
 
     /** @var AuthorSplice $authors */
     protected $authors;
@@ -37,7 +39,6 @@ class Authors extends Endpoint
     public function __construct(Container $container)
     {
         parent::__construct($container);
-        $this->accounts = $this->splice('Accounts');
         $this->authors = $this->splice('Authors');
         $this->collections = $this->splice('EntryCollection');
     }
@@ -47,7 +48,6 @@ class Authors extends Endpoint
      * @param int $authorId
      * @return ResponseInterface
      * @throws ContainerException
-     * @throws InvalidDataException
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
@@ -94,7 +94,6 @@ class Authors extends Endpoint
      * @param array $routerParams
      * @return ResponseInterface
      * @throws ContainerException
-     * @throws InvalidDataException
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
