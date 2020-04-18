@@ -3,30 +3,23 @@ declare(strict_types=1);
 namespace Soatok\FaqOff\Endpoints\Admin;
 
 use Interop\Container\Exception\ContainerException;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
-use Slim\Container;
-use Soatok\AnthroKit\Endpoint;
-use Soatok\FaqOff\Splices\Accounts as AccountSplice;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
+use Psr\Http\Message\{
+    RequestInterface,
+    ResponseInterface
+};
+use Soatok\FaqOff\BackendEndpoint;
+use Twig\Error\{
+    LoaderError,
+    RuntimeError,
+    SyntaxError
+};
 
 /**
  * Class InviteTree
  * @package Soatok\FaqOff\Endpoints\Admin
  */
-class InviteTree extends Endpoint
+class InviteTree extends BackendEndpoint
 {
-    /** @var AccountSplice $accounts  */
-    protected $accounts;
-
-    public function __construct(Container $container)
-    {
-        parent::__construct($container);
-        $this->accounts = $this->splice('Accounts');
-    }
-
     /**
      * @param RequestInterface $request
      * @param ResponseInterface|null $response

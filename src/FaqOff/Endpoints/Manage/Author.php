@@ -8,12 +8,12 @@ use Psr\Http\Message\{
     ResponseInterface
 };
 use Slim\Container;
-use Soatok\AnthroKit\Endpoint;
 use Soatok\FaqOff\Filter\{
     CreateAuthorFilter,
     CreateCollectionFilter,
     EditAuthorFilter
 };
+use Soatok\FaqOff\BackendEndpoint;
 use Soatok\FaqOff\MessageOnceTrait;
 use Soatok\FaqOff\Splices\{
     Authors,
@@ -31,7 +31,7 @@ use Twig\Error\{
  * Class Author
  * @package Soatok\FaqOff\Endpoints\Manage
  */
-class Author extends Endpoint
+class Author extends BackendEndpoint
 {
     const QUESTION_TYPE = 'author';
     use MessageOnceTrait;

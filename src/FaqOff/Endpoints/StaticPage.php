@@ -7,8 +7,7 @@ use Psr\Http\Message\{
     RequestInterface,
     ResponseInterface
 };
-use Soatok\AnthroKit\Endpoint;
-use Soatok\FaqOff\Splices\Authors;
+use Soatok\FaqOff\FrontendEndpoint;
 use Twig\Error\{
     LoaderError,
     RuntimeError,
@@ -19,9 +18,8 @@ use Twig\Error\{
  * Class StaticPage
  * @package Soatok\FaqOff\Endpoints
  */
-class StaticPage extends Endpoint
+class StaticPage extends FrontendEndpoint
 {
-
     /**
      * @param int $status
      *

@@ -32,9 +32,11 @@
                 {% endfor %}
                 </ul>{% endif %}
         </li>
+        {% if can_invite %}
         <li>
             <a href="/manage/invite">Invite Users</a>
         </li>
+        {% endif %}
     </ul>
 
 {% endblock %}

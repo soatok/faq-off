@@ -5,14 +5,14 @@ namespace Soatok\FaqOff\Endpoints;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
-use Soatok\AnthroKit\Endpoint;
+use Soatok\FaqOff\FrontendEndpoint;
 use Soatok\FaqOff\MessageOnceTrait;
 
 /**
  * Class GenericError
  * @package Soatok\FaqOff\Endpoints
  */
-class GenericError extends Endpoint
+class GenericError extends FrontendEndpoint
 {
     use MessageOnceTrait;
 

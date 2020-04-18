@@ -8,11 +8,17 @@ use Psr\Http\Message\{
     ResponseInterface
 };
 use Slim\Container;
-use Soatok\AnthroKit\Endpoint;
+use Soatok\FaqOff\BackendEndpoint;
 use Soatok\FaqOff\Exceptions\CollectionNotFoundException;
 use Soatok\FaqOff\Filter\EditCollectionFilter;
 use Soatok\FaqOff\MessageOnceTrait;
-use Soatok\FaqOff\Splices\{Authors, Entry, EntryCollection, Questions, Themes};
+use Soatok\FaqOff\Splices\{
+    Authors,
+    Entry,
+    EntryCollection,
+    Questions,
+    Themes
+};
 use Twig\Error\{
     LoaderError,
     RuntimeError,
@@ -23,7 +29,7 @@ use Twig\Error\{
  * Class Collections
  * @package Soatok\FaqOff\Endpoints\Manage
  */
-class Collections extends Endpoint
+class Collections extends BackendEndpoint
 {
     const QUESTION_TYPE = 'collection';
 

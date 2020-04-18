@@ -3,23 +3,29 @@ declare(strict_types=1);
 namespace Soatok\FaqOff\Endpoints\Admin;
 
 use Interop\Container\Exception\ContainerException;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\{
+    RequestInterface,
+    ResponseInterface
+};
 use Slim\Container;
-use Soatok\AnthroKit\Endpoint;
-use Soatok\FaqOff\Filter\CreateThemeFilter;
-use Soatok\FaqOff\Filter\EditThemeFilter;
+use Soatok\FaqOff\Filter\{
+    CreateThemeFilter,
+    EditThemeFilter
+};
+use Soatok\FaqOff\BackendEndpoint;
 use Soatok\FaqOff\MessageOnceTrait;
 use Soatok\FaqOff\Splices\Themes as ThemeSplice;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
+use Twig\Error\{
+    LoaderError,
+    RuntimeError,
+    SyntaxError
+};
 
 /**
  * Class Themes
  * @package Soatok\FaqOff\Endpoints\Admin
  */
-class Themes extends Endpoint
+class Themes extends BackendEndpoint
 {
     use MessageOnceTrait;
 
@@ -29,7 +35,6 @@ class Themes extends Endpoint
     /**
      * Themes constructor.
      * @param Container $container
-     * @throws ContainerException
      */
     public function __construct(Container $container)
     {

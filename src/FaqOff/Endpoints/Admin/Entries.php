@@ -4,26 +4,32 @@ namespace Soatok\FaqOff\Endpoints\Admin;
 
 use Interop\Container\Exception\ContainerException;
 use ParagonIE\Ionizer\InvalidDataException;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\{
+    RequestInterface,
+    ResponseInterface
+};
 use Slim\Container;
-use Soatok\AnthroKit\Endpoint;
+use Soatok\FaqOff\BackendEndpoint;
 use Soatok\FaqOff\Exceptions\CollectionNotFoundException;
 use Soatok\FaqOff\Filter\AdminEditEntryFilter;
 use Soatok\FaqOff\MessageOnceTrait;
-use Soatok\FaqOff\Splices\Authors;
-use Soatok\FaqOff\Splices\Entry;
-use Soatok\FaqOff\Splices\EntryCollection;
-use Soatok\FaqOff\Splices\Themes;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
+use Soatok\FaqOff\Splices\{
+    Authors,
+    Entry,
+    EntryCollection,
+    Themes
+};
+use Twig\Error\{
+    LoaderError,
+    RuntimeError,
+    SyntaxError
+};
 
 /**
  * Class Entries
  * @package Soatok\FaqOff\Endpoints\Admin
  */
-class Entries extends Endpoint
+class Entries extends BackendEndpoint
 {
     use MessageOnceTrait;
 

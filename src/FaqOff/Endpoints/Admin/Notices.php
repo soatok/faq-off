@@ -3,12 +3,15 @@ declare(strict_types=1);
 namespace Soatok\FaqOff\Endpoints\Admin;
 
 use Interop\Container\Exception\ContainerException;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\{
+    RequestInterface,
+    ResponseInterface
+};
 use Slim\Container;
-use Soatok\AnthroKit\Endpoint;
+use Soatok\FaqOff\BackendEndpoint;
 use Soatok\FaqOff\Filter\AdminCreateNoticeFilter;
 use Soatok\FaqOff\MessageOnceTrait;
+use Soatok\FaqOff\Splices\Notices as NoticesSplice;
 use Twig\Error\{
     LoaderError,
     RuntimeError,
@@ -19,11 +22,11 @@ use Twig\Error\{
  * Class Notices
  * @package Soatok\FaqOff\Endpoints\Admin
  */
-class Notices extends Endpoint
+class Notices extends BackendEndpoint
 {
     use MessageOnceTrait;
 
-    /** @var \Soatok\FaqOff\Splices\Notices $notices */
+    /** @var NoticesSplice $notices */
     private $notices;
 
     public function __construct(Container $container)

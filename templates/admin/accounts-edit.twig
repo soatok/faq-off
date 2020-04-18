@@ -66,6 +66,18 @@
             <small>Uncheck to ban the user.</small>
         </div>
 
+        <div class="form-group">
+            <input
+                {% if account.can_invite %} checked="checked"{% endif %}
+                id="admin-account-can-invite"
+                name="can-invite"
+                type="checkbox"
+                value="1"
+            />
+            <label for="admin-account-can-invite">Can this account invite new accounts to join?</label><br />
+            <small>Uncheck to disable their invite privileges.</small>
+        </div>
+
         <fieldset>
             <legend>Security Settings</legend>
             <div class="form-group">
@@ -81,20 +93,20 @@
             <div class="form-group">
                 <label for="admin-account-password2">Re-enter Password:</label>
                 <input
-                        class="form-control"
-                        id="admin-account-password2"
-                        name="password2"
-                        type="password"
+                    class="form-control"
+                    id="admin-account-password2"
+                    name="password2"
+                    type="password"
                 />
                 <small>This will reset the user's password immediately.</small>
             </div>
 
             <div class="form-group">
                 <input
-                        id="admin-account-disable-2fa"
-                        name="disable-two-factor"
-                        type="checkbox"
-                        value="1"
+                    id="admin-account-disable-2fa"
+                    name="disable-two-factor"
+                    type="checkbox"
+                    value="1"
                 />
                 <label for="admin-account-disable-2fa">Disable two-factor authentication?</label>
                 <br />
