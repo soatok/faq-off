@@ -74,6 +74,7 @@ $app->any('/auth/{action:register|invite|login|twitter|verify}[/{extra:[^/]+}]',
 $app->any('/auth/{action:activate}[/{extra:[^/]+}]', 'authorize');
 $app->any('/generic-error[/{error:[^/]+}]', 'error');
 $app->get('/authors', 'author');
+$app->get('/e/{uniqueid:[^/]+}', 'entry');
 $app->get('/', 'homepage');
 $app->get('', 'homepage');
 

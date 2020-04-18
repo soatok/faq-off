@@ -73,6 +73,13 @@ class Entry extends FrontendEndpoint
         ?ResponseInterface $response = null,
         array $routerParams = []
     ): ResponseInterface {
+        if (!empty($routerParams['uniqueid'])) {
+            $url = $this->entries->getUrlByUniqueId($routerParams['uniqueid']);
+            if (empty($url)) {
+                return $this->redirect('/');
+            }
+            return $this->redirect($url);
+        }
         if (empty($routerParams['author'])) {
             return $this->redirect('/');
         }

@@ -1,0 +1,1 @@
+ALTER TABLE faqoff_entry ADD COLUMN uniqueid TEXT NULL UNIQUE;

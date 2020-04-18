@@ -26,6 +26,12 @@
     </div>
     <h4 id="entry-metadata-header">Metadata</h4>
     <dl class="row" id="entry-metadata">
+        <dt class="col-sm-2">Permalink:</dt>
+        <dd class="col-sm-10">
+            <a href="/e/{{ entry.uniqueid|e('url') }}">
+                {{ faqoff_custom.vars['hostname'] }}/e/{{ entry.uniqueid|e('html') }}
+            </a>
+        </dd>
         <dt class="col-sm-2">Author:</dt>
         <dd class="col-sm-10">
             <a href="/@{{ author['screenname']|e('url') }}">@{{

@@ -1,6 +1,8 @@
 <?php
 use Soatok\AnthroKit\Auth\Fursona;
 
+$isHttps = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
+
 $default = [
     'displayErrorDetails' => true, // set to false in production
     'addContentLengthHeader' => false, // Allow the web server to send the content-length header
@@ -34,6 +36,14 @@ $default = [
         'css' => [],
         'js' => [],
         'vars' => [
+            'hostname' =>
+                ($isHttps ? 'https' : 'http') .
+                '://' .
+                \preg_replace(
+                    '/[^A-Za-z0-9.:]+/',
+                    '',
+                    $_SERVER['HTTP_HOST'] ?? 'localhost'
+                ),
             'dark-theme' => true,
             'site-name' => 'FAQ Off'
         ]
