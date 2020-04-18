@@ -1,0 +1,14 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h1>Questions - {{ qtype|ucfirst }}</h1>
+
+    <ul>
+    {% for li in typelist %}
+        <li><a href="/admin/questions/{{ qtype }}/{{ li.id }}">{{ li.label|e('html_attr') }}</a></li>
+    {% endfor %}
+    </ul>
+
+    <hr />
+    <a href="/admin/questions">Return to Questions Home</a>
+{% endblock %}

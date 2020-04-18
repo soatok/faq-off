@@ -1,0 +1,89 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h1>Edit Question</h1>
+
+    <form method="post">{{ anti_csrf() }}
+
+        <div class="form-group">
+            <label for="admin-question-text">Question:</label>
+            <input
+                class="form-control"
+                id="admin-question-text"
+                name="question"
+                type="text"
+                value="{{ question.question|e('html_attr') }}"
+            />
+        </div>
+
+        <div class="form-group">
+            <input
+                    {% if question.attribution %} checked="checked"{% endif %}
+                    id="admin-question-attribution"
+                    name="attribution"
+                    type="checkbox"
+                    value="1"
+            />
+            <label for="admin-question-attribution">Attribute this question to <code>{{ question.public_id }}</code>?</label>
+        </div>
+
+        <div class="form-group">
+            <input
+                {% if question.archived %} checked="checked"{% endif %}
+                id="admin-question-archived"
+                name="archived"
+                type="checkbox"
+                value="1"
+            />
+            <label for="admin-question-archived">Archive this question?</label>
+        </div>
+
+        <div class="form-group">
+            <label for="admin-question-collection">Collection:</label>
+            <select
+                class="form-control"
+                id="admin-question-collection"
+                name="collection"
+            >
+                <option value=""></option>
+                {% for col in collections %}
+                    <option
+                        {% if question.collectionid == col.collectionid %} selected="selected"{% endif %}
+                        value="{{ col.collectionid }}"
+                    >
+                        @{{ col.author_screenname }}
+                        &rsaquo;
+                        {{ col.title|e('html_attr') }}
+                        (#{{ col.collectionid }})
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="admin-question-entry">Entry:</label>
+            <select
+                class="form-control"
+                id="admin-question-entry"
+                name="entry"
+            >
+                <option value=""></option>
+                {% for entry in entries %}
+                    <option
+                        {% if question.entryid == entry.entryid %} selected="selected"{% endif %}
+                        value="{{ entry.entryid }}"
+                    >
+                        @{{ entry.author_screenname|e('html_attr') }}
+                        &rsaquo;
+                        {{ entry.collection_title|e('html_attr') }}
+                        &rsaquo;
+                        {{ entry.title|e('html_attr') }}
+                        (#{{ entry.entryid}})
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button class="btn btn-verydark form-control">Update Question</button>
+    </form>
+{% endblock %}

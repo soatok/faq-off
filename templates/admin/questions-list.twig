@@ -1,0 +1,43 @@
+{% extends "base.twig" %}
+
+{% set YES = "<i class='fas fa-check color-success'></i> Yes" %}
+{% set NO = "<i class='fas fa-archive color-error'></i> No" %}
+
+{% block main %}
+    <h1>Questions - {{ qtype|ucfirst }} - {{ qmeta.title}}</h1>
+
+    {% if questionlist %}
+    <div class="admin-question-list">
+        <div class="admin-question-header row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-8">Question</div>
+            <div class="col-sm-1">Visible?</div>
+            <div class="col-sm-2">Account</div>
+        </div>
+
+        {% for li in questionlist %}
+            <div class="admin-question-list-item row">
+                <div class="col-sm-1">
+                    <a
+                        class="btn btn-verydark"
+                        href="/admin/questions/edit/{{ li.questionid }}"
+                    >
+                        Edit
+                    </a>
+                </div>
+                <div class="col-sm-8">
+                    {{ li.question|e('html_attr') }}
+                </div>
+                <div class="col-sm-1">
+                    {% if li.archived %}{{ NO|raw }}{% else %}{{ YES|raw }}{% endif %}
+                </div>
+                <div class="col-sm-2">
+                    {{ li.public_id }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <hr />
+    <a href="/admin/questions/{{ qtype }}">Return to {{ qtype|ucfirst }} List</a>
+{% endblock %}

@@ -205,6 +205,25 @@ class Authors extends Splice
     }
 
     /**
+     * @return array
+     */
+    public function listForAdminQuestionIndex(): array
+    {
+        $authors = $this->db->run(
+            "SELECT
+                 authorid AS id, screenname AS label 
+             FROM 
+                 faqoff_author
+             ORDER BY
+                 created ASC"
+        );
+        if (empty($authors)) {
+            return [];
+        }
+        return $authors;
+    }
+
+    /**
      * Allow another user account access to this author profile
      *
      * @param int $authorId

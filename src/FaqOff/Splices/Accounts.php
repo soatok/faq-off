@@ -221,6 +221,26 @@ class Accounts extends BaseClass
     }
 
     /**
+     * @return array
+     */
+    public function listForAdminQuestionIndex(): array
+    {
+        $accounts = $this->db->run(
+            "SELECT
+                 accountid AS id, public_id AS label 
+             FROM 
+                 faqoff_accounts
+             ORDER BY
+                 created ASC"
+        );
+        if (empty($accounts)) {
+            return [];
+        }
+        return $accounts;
+    }
+
+
+    /**
      * @param int $accountId
      * @param array $post
      * @return bool
@@ -259,6 +279,14 @@ class Accounts extends BaseClass
             $updates,
             ['accountid' => $accountId]
         );
+        if (!$updates['active']) {
+            /* Hide all unanswered questions when banning a user. */
+            $this->db->update(
+                'faqoff_question_box',
+                ['archived' => true],
+                ['asked_by' => $accountId]
+            );
+        }
         return $this->db->commit();
     }
 }

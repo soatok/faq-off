@@ -247,6 +247,25 @@ class EntryCollection extends Splice
     }
 
     /**
+     * @return array
+     */
+    public function listForAdminQuestionIndex(): array
+    {
+        $collections = $this->db->run(
+            "SELECT
+                 collectionid AS id, title AS label 
+             FROM 
+                 faqoff_collection
+             ORDER BY
+                 created ASC"
+        );
+        if (empty($collections)) {
+            return [];
+        }
+        return $collections;
+    }
+
+    /**
      * @param int $collectionId
      * @param array $postData
      * @return bool

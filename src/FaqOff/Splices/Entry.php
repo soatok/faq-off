@@ -171,6 +171,24 @@ class Entry extends Splice
         return $results;
     }
 
+    public function getAll(): array
+    {
+        return $this->db->run(
+            "SELECT 
+                e.*, 
+                a.screenname AS author_screenname,
+                c.title AS collection_title
+            FROM
+                faqoff_entry e
+            JOIN
+                faqoff_collection c 
+                    ON e.collectionid = c.collectionid
+            JOIN
+                faqoff_author a 
+                ON c.authorid = a.authorid
+            ORDER BY c.created, e.created");
+    }
+
     /**
      * @param array $followUps
      * @param bool $getURLs
@@ -359,6 +377,24 @@ class Entry extends Splice
                 $entry['entryid']
             );
             $entries[$index]['options'] = json_decode($entry['options'] ?? '[]', true);
+        }
+        return $entries;
+    }
+    /**
+     * @return array
+     */
+    public function listForAdminQuestionIndex(): array
+    {
+        $entries = $this->db->run(
+            "SELECT
+                 entryid AS id, title AS label 
+             FROM 
+                 faqoff_entry
+             ORDER BY
+                 created ASC"
+        );
+        if (empty($entries)) {
+            return [];
         }
         return $entries;
     }
