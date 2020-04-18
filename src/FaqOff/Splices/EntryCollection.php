@@ -45,6 +45,9 @@ class EntryCollection extends Splice
                 'theme' => $data['theme'] < 1 ? null : $data['theme'],
                 'title' => $data['title'],
                 'url' => $url,
+                'opengraph_image_url' => !empty($postData['opengraph_image_url'])
+                    ? $postData['opengraph_image_url']
+                    : null,
                 'allow_questions' => $data['question_box']
             ],
             'collectionid'
@@ -280,6 +283,9 @@ class EntryCollection extends Splice
                 'description' => $postData['description'],
                 'theme' => $postData['theme'] < 1 ? null : $postData['theme'],
                 'title' => $postData['title'],
+                'opengraph_image_url' => !empty($postData['opengraph_image_url'])
+                    ? $postData['opengraph_image_url']
+                    : null,
                 'allow_questions' => $postData['question_box']
             ],
             [
@@ -328,6 +334,9 @@ class EntryCollection extends Splice
                 'theme' => $postData['theme'] < 1 ? null : $postData['theme'],
                 'description' => $postData['description'],
                 'title' => $postData['title'],
+                'opengraph_image_url' => !empty($postData['opengraph_image_url'])
+                    ? $postData['opengraph_image_url']
+                    : null,
                 'allow_questions' => $postData['question_box']
             ],
             [

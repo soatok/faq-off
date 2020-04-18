@@ -20,6 +20,7 @@ class EditEntryFilter extends InputFilterContainer
             ->addFilter('title', new StringFilter())
             ->addFilter('contents', new StringFilter())
             ->addFilter('follow-up', new IntArrayFilter())
-            ->addFilter('index-me', new BoolFilter());
+            ->addFilter('index-me', new BoolFilter())
+            ->addFilter('opengraph_image_url', new StringFilter());
     }
 }

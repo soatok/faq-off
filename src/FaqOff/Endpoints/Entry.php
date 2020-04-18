@@ -117,6 +117,19 @@ class Entry extends FrontendEndpoint
                 '/@' . $author['screenname'] . '/' . $collection['url']
             );
         }
+
+        // If we didn't specify an OpenGraph image URL...
+        if (empty($entry['opengraph_image_url'])) {
+            // If we defined one in our collection, use that.
+            if (!empty($collection['opengraph_image_url'])) {
+                $entry['opengraph_image_url'] = $collection['opengraph_image_url'];
+            } else {
+                // Otherwise, use the default one (fallback to NULL).
+                $twigVars = $this->container->get('settings')['twig-custom']['vars'];
+                $entry['opengraph_image_url'] = $twigVars['opengraph_image_url'] ?? null;
+            }
+        }
+
         $questionsAllowed = false;
         if ($this->isLoggedIn()) {
             $questionsAllowed = !empty($entry['allow_questions']);

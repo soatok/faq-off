@@ -125,7 +125,10 @@ class Entry extends Splice
                 'created' => $now,
                 'modified' => $now,
                 'contents' => $contents,
-                'uniqueid' => Base32::encode(random_bytes(40)),
+                'uniqueid' => Base32::encode(random_bytes(20)),
+                'opengraph_image_url' => !empty($postData['opengraph_image_url'])
+                    ? $postData['opengraph_image_url']
+                    : null,
                 'allow_questions' => $allowQuestions,
             ],
             'entryid'
@@ -489,6 +492,9 @@ class Entry extends Splice
                 'options' => json_encode($options),
                 'modified' => (new \DateTime())
                     ->format(\DateTime::ISO8601),
+                'opengraph_image_url' => !empty($postData['opengraph_image_url'])
+                    ? $postData['opengraph_image_url']
+                    : null,
                 'allow_questions' => $post['question_box']
             ],
             ['entryid' => $entryId]

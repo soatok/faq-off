@@ -8,17 +8,20 @@
                 (pageTitle ? (pageTitle ~ " - ") : "") ~
                 faqoff_custom.vars['site-name']|default('FAQ Off')
             }}{% endblock %}</title>
-        {% block css %}
+
+{% block css %}
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" integrity="sha256-UzFD2WYH2U1dQpKDjjZK72VtPeWP50NoJjd26rnAdUI=" crossorigin="anonymous" />
         <link rel="stylesheet" href="/static/faqoff.css" />
-        {% for css_file in faqoff_custom.css %}
+{#    #}{% for css_file in faqoff_custom.css %}
             <link rel="stylesheet" nonce="{{ csp_nonce('style-src') }}" href="{{ css_file|e('html_attr') }}" />
-        {% endfor %}
-        {% for css_file in faqoff_theme_css(theme_id) %}
-            <link rel="stylesheet" nonce="{{ csp_nonce('style-src') }}" href="{{ css_file|e('html_attr') }}" />
-        {% endfor %}
-        {% endblock %}
+{#    #}{% endfor %}
+{#    #}{% for css_file in faqoff_theme_css(theme_id) %}
+        <link rel="stylesheet" nonce="{{ csp_nonce('style-src') }}" href="{{ css_file|e('html_attr') }}" />
+    {% endfor %}{#
+#}{% endblock %}
+
+{% block head_extra %}{% endblock %}
     </head>
     <body{% if faqoff_custom.vars['dark-theme'] %} class="text-light bg-dark dark-body"{% endif %}>
     {% block body %}

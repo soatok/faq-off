@@ -44,6 +44,8 @@ $default = [
                     '',
                     $_SERVER['HTTP_HOST'] ?? 'localhost'
                 ),
+            'opengraph_image_url' =>
+                'https://raw.githubusercontent.com/soatok/dholecrypto-web/master/public/ansi-dhole.png',
             'dark-theme' => true,
             'site-name' => 'FAQ Off'
         ]
