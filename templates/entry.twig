@@ -1,5 +1,12 @@
 {% extends "base.twig" %}
 
+{% set stripped = entry.contents|striptags|replace({"\n": ' '})|split(' ') %}
+{% if stripped|length >= 20 %}
+    {% set description = stripped|slice(0, 20)|join(' ')|trim ~ "..." %}
+{% else %}
+    {% set description = stripped|slice(0, 20)|join(' ')|trim %}
+{% endif %}
+
 {% block main %}
     <div id="front-entry-wrapper">
         <h1 id="entry-title">{{ entry.title }}</h1>
@@ -56,9 +63,13 @@
 {# OpenGraph Integration! #}
 {% block head_extra %}
         <meta property="og:title" content="{{ entry.title|e('html_attr') }}" />
+        <meta name="twitter:title" content="{{ entry.title|e('html_attr') }}">
+        <meta name="og:description" content="{{ description|e('html_attr') }}">
+        <meta name="twitter:description" content="{{ description|e('html_attr') }}">
         <meta property="og:type" content="website" />
         <meta property="og:url" content="{{ faqoff_custom.vars['hostname'] }}/e/{{ entry.uniqueid|e('html') }}" />
 {% if entry.opengraph_image_url %}
         <meta property="og:image" content="{{ entry.opengraph_image_url|e('html_attr') }}" />
+        <meta property="twitter:image" content="{{ entry.opengraph_image_url|e('html_attr') }}" />
 {% endif %}
 {% endblock %}
