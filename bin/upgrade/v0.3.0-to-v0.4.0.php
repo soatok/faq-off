@@ -26,4 +26,4 @@ foreach ($db->run("SELECT entryid FROM faqoff_entry WHERE uniqueid IS NULL") as 
     ]);
 }
 
-$db->exec('ALTER TABLE faqoff_entry ALTER COLUMN uniqueid NOT NULL');
+$db->exec('ALTER TABLE faqoff_entry ALTER COLUMN uniqueid SET NOT NULL');
