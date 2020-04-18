@@ -19,6 +19,7 @@ use Twig\Error\{
     RuntimeError,
     SyntaxError
 };
+
 /**
  * Class CustomContent
  * @package Soatok\FaqOff\Endpoints\Admin

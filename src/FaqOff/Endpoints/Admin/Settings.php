@@ -3,7 +3,6 @@ declare(strict_types=1);
 namespace Soatok\FaqOff\Endpoints\Admin;
 
 use Interop\Container\Exception\ContainerException;
-use ParagonIE\Ionizer\InvalidDataException;
 use Psr\Http\Message\{
     RequestInterface,
     ResponseInterface
@@ -37,7 +36,6 @@ class Settings extends BackendEndpoint
      * @param string $file
      * @return ResponseInterface
      * @throws ContainerException
-     * @throws InvalidDataException
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
@@ -87,7 +85,6 @@ class Settings extends BackendEndpoint
      * @param array $routerParams
      * @return ResponseInterface
      * @throws ContainerException
-     * @throws InvalidDataException
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError

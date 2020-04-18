@@ -16,7 +16,6 @@ use Twig\Error\{
 };
 use Soatok\FaqOff\BackendEndpoint;
 use Soatok\FaqOff\MessageOnceTrait;
-use Soatok\FaqOff\Splices\Accounts;
 
 /**
  * Class Invite

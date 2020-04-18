@@ -3,7 +3,6 @@ declare(strict_types=1);
 namespace Soatok\FaqOff\Endpoints\Admin;
 
 use Interop\Container\Exception\ContainerException;
-use ParagonIE\Ionizer\InvalidDataException;
 use Psr\Http\Message\{
     RequestInterface,
     ResponseInterface

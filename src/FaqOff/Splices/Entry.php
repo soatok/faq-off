@@ -101,6 +101,7 @@ class Entry extends Splice
      * @param bool $indexMe
      * @param bool $allowQuestions
      * @param int|null $questionId
+     * @param string|null $opengraphImageUrl
      * @return int|null
      * @throws \Exception
      */
@@ -112,7 +113,8 @@ class Entry extends Splice
         array $attachTo,
         bool $indexMe = false,
         bool $allowQuestions = false,
-        ?int $questionId = null
+        ?int $questionId = null,
+        ?string $opengraphImageUrl = null
     ): ?int {
         $now = (new \DateTime())->format(\DateTime::ISO8601);
         $newEntryId = $this->db->insertGet(
@@ -126,9 +128,7 @@ class Entry extends Splice
                 'modified' => $now,
                 'contents' => $contents,
                 'uniqueid' => Base32::encode(random_bytes(20)),
-                'opengraph_image_url' => !empty($postData['opengraph_image_url'])
-                    ? $postData['opengraph_image_url']
-                    : null,
+                'opengraph_image_url' => $opengraphImageUrl,
                 'allow_questions' => $allowQuestions,
             ],
             'entryid'
@@ -492,8 +492,8 @@ class Entry extends Splice
                 'options' => json_encode($options),
                 'modified' => (new \DateTime())
                     ->format(\DateTime::ISO8601),
-                'opengraph_image_url' => !empty($postData['opengraph_image_url'])
-                    ? $postData['opengraph_image_url']
+                'opengraph_image_url' => !empty($post['opengraph_image_url'])
+                    ? $post['opengraph_image_url']
                     : null,
                 'allow_questions' => $post['question_box']
             ],

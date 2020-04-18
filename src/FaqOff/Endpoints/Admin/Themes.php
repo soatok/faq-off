@@ -8,11 +8,11 @@ use Psr\Http\Message\{
     ResponseInterface
 };
 use Slim\Container;
+use Soatok\FaqOff\BackendEndpoint;
 use Soatok\FaqOff\Filter\{
     CreateThemeFilter,
     EditThemeFilter
 };
-use Soatok\FaqOff\BackendEndpoint;
 use Soatok\FaqOff\MessageOnceTrait;
 use Soatok\FaqOff\Splices\Themes as ThemeSplice;
 use Twig\Error\{

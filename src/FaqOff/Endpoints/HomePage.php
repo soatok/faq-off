@@ -3,17 +3,22 @@ declare(strict_types=1);
 namespace Soatok\FaqOff\Endpoints;
 
 use Interop\Container\Exception\ContainerException;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\{
+    RequestInterface,
+    ResponseInterface
+};
 use Slim\Container;
-use Soatok\AnthroKit\Endpoint;
 use Soatok\FaqOff\FrontendEndpoint;
 use Soatok\FaqOff\MessageOnceTrait;
-use Soatok\FaqOff\Splices\Authors;
-use Soatok\FaqOff\Splices\Notices;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
+use Soatok\FaqOff\Splices\{
+    Authors,
+    Notices
+};
+use Twig\Error\{
+    LoaderError,
+    RuntimeError,
+    SyntaxError
+};
 
 /**
  * Class HomePage

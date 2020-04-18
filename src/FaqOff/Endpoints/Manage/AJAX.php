@@ -3,8 +3,10 @@ declare(strict_types=1);
 namespace Soatok\FaqOff\Endpoints\Manage;
 
 use League\CommonMark\CommonMarkConverter;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\{
+    RequestInterface,
+    ResponseInterface
+};
 use Slim\Http\StatusCode;
 use Soatok\FaqOff\BackendEndpoint;
 use Soatok\FaqOff\Filter\ContributorAjaxFilter;

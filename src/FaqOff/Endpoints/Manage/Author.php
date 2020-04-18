@@ -8,12 +8,12 @@ use Psr\Http\Message\{
     ResponseInterface
 };
 use Slim\Container;
+use Soatok\FaqOff\BackendEndpoint;
 use Soatok\FaqOff\Filter\{
     CreateAuthorFilter,
     CreateCollectionFilter,
     EditAuthorFilter
 };
-use Soatok\FaqOff\BackendEndpoint;
 use Soatok\FaqOff\MessageOnceTrait;
 use Soatok\FaqOff\Splices\{
     Authors,

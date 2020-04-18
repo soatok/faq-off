@@ -115,7 +115,10 @@ class Entries extends BackendEndpoint
                 $post['attach-to'] ?? [],
                 $post['index-me'],
                 $post['question_box'],
-                $question['questionid'] ?? null
+                $question['questionid'] ?? null,
+                !empty($post['opengraph_image_url'])
+                    ? $post['opengraph_image_url']
+                    : null
             );
             if ($newEntryId) {
                 $this->messageOnce('Entry created successfully', 'success');

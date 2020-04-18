@@ -45,8 +45,8 @@ class EntryCollection extends Splice
                 'theme' => $data['theme'] < 1 ? null : $data['theme'],
                 'title' => $data['title'],
                 'url' => $url,
-                'opengraph_image_url' => !empty($postData['opengraph_image_url'])
-                    ? $postData['opengraph_image_url']
+                'opengraph_image_url' => !empty($data['opengraph_image_url'])
+                    ? $data['opengraph_image_url']
                     : null,
                 'allow_questions' => $data['question_box']
             ],
