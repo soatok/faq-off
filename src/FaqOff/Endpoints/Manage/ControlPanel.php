@@ -10,7 +10,6 @@ use Psr\Http\Message\{
 use Slim\Container;
 use Soatok\FaqOff\BackendEndpoint;
 use Soatok\FaqOff\Splices\{
-    Accounts,
     Authors,
     EntryCollection
 };

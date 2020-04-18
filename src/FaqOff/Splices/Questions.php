@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace Soatok\FaqOff\Splices;
 
 use Soatok\AnthroKit\Splice;
+use Soatok\FaqOff\MessageOnceTrait;
 
 /**
  * Class Questions
@@ -10,6 +11,8 @@ use Soatok\AnthroKit\Splice;
  */
 class Questions extends Splice
 {
+    use MessageOnceTrait;
+
     /**
      * Archive a question.
      *
@@ -94,7 +97,14 @@ class Questions extends Splice
     public function getQuestion(int $questionId): array
     {
         $row = $this->db->row(
-            "SELECT * FROM faqoff_question_box WHERE questionid = ?",
+            "SELECT
+                 q.*,
+                 fa.public_id
+             FROM
+                 faqoff_question_box q
+            LEFT JOIN faqoff_accounts fa
+                 ON q.asked_by = fa.accountid
+             WHERE q. questionid = ?",
             $questionId
         );
         if (empty($row)) {
@@ -281,6 +291,47 @@ class Questions extends Splice
             'question' => $question,
             'entryid' => $entryId
         ]);
+        return $this->db->commit();
+    }
+
+    /**
+     * @param int $questionId
+     * @param array $post
+     * @return bool
+     */
+    public function updateByAdmin(int $questionId, array $post): bool
+    {
+        $updates = [
+            'archived' => $post['archived'],
+            'attribution' => $post['attribution'],
+            'question' => $post['question']
+        ];
+        if (!empty($post['collection'])) {
+            if (!empty($post['entry'])) {
+                $this->messageOnce(
+                    'Questions cannot be assigned to both a collection and an entry.',
+                    'error'
+                );
+                return false;
+            }
+            $updates['collectionid'] = $post['collection'];
+            $updates['entryid'] = null;
+        } elseif (!empty($post['entry'])) {
+            $updates['collectionid'] = null;
+            $updates['entryid'] = $post['entry'];
+        } else {
+            $this->messageOnce(
+                'Questions must be assigned to a collection or an entry.',
+                'error'
+            );
+            return false;
+        }
+        $this->db->beginTransaction();
+        $this->db->update(
+            'faqoff_question_box',
+            $updates,
+            ['questionid' => $questionId]
+        );
         return $this->db->commit();
     }
 }

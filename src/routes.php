@@ -30,6 +30,10 @@ $app->group('/admin', function () use ($app, $container) {
     $app->any('/custom[/{action:[^/]+}]', 'admin.custom');
     $app->get('/invite-tree', 'admin.invitetree');
     $app->any('/notices[/{id:[0-9]+}]', 'admin.notices');
+    $app->any('/questions/edit/{id:[^/]+}', 'admin.questions');
+    $app->any('/questions/{type:[a-z]+}/{type_id:[0-9]+}', 'admin.questions');
+    $app->get('/questions/{type:[a-z]+}', 'admin.questions');
+    $app->get('/questions', 'admin.questions');
     $app->any('/settings[/{which:[^/]+}]', 'admin.settings');
     $app->any('/theme/{action:[^/]+}/[{id:[0-9]+}]', 'admin.themes');
     $app->any('/theme[/{action:[^/]+}]', 'admin.themes');
@@ -98,11 +102,14 @@ $container['admin.home'] = function (Container $c) {
 $container['admin.invitetree'] = function (Container $c) {
     return new Admin\InviteTree($c);
 };
-$container['admin.settings'] = function (Container $c) {
-    return new Admin\Settings($c);
-};
 $container['admin.notices'] = function (Container $c) {
     return new Admin\Notices($c);
+};
+$container['admin.questions'] = function (Container $c) {
+    return new Admin\Questions($c);
+};
+$container['admin.settings'] = function (Container $c) {
+    return new Admin\Settings($c);
 };
 $container['admin.themes'] = function (Container $c) {
     return new Admin\Themes($c);
