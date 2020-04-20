@@ -200,9 +200,12 @@
 .dark-dropdown .dropdown-divider {
     border-top: 1px solid #111;
 }
+#front-entry-contents a,
 #entry-follow-ups a {
     color: #0a68cc;
+    text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.5);
 }
+#front-entry-contents a:hover,
 #entry-follow-ups a:hover {
     color: #0f5499;
 }
