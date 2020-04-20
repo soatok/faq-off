@@ -36,7 +36,8 @@
         <dt class="col-sm-2">Permalink:</dt>
         <dd class="col-sm-10" id="entry-permalink">
             <a href="/e/{{ entry.uniqueid|e('url') }}">
-                {{ faqoff_custom.vars['hostname'] }}/e/{{ entry.uniqueid|e('html') }}
+                <span class="d-inline d-sm-none">Permalink</span>
+                <span class="d-none d-sm-inline">{{ faqoff_custom.vars['hostname'] }}/e/{{ entry.uniqueid|e('html') }}</span>
             </a>
         </dd>
         <dt class="col-sm-2">Author:</dt>
