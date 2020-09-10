@@ -54,6 +54,7 @@ class GenericError extends FrontendEndpoint
                 $this->messageOnce('Twitter failed.', 'error');
                 $error = $request->getQueryParam('error', '');
                 if ($error) {
+                    $error = \htmlentities($error, ENT_QUOTES | ENT_HTML5, 'utf-8');
                     $this->messageOnce($error, 'error');
                 }
                 break;
